@@ -14,7 +14,7 @@ import { useCategoriesStore } from '@/stores/categories';
 
 const categoriesStore = useCategoriesStore();
 async function sendCategory() {
-    await categoriesStore.createCategory(); // Sem precisar passar dados diretamente
+    await categoriesStore.createCategory();
 }
 </script>
 <style scoped>

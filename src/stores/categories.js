@@ -1,16 +1,18 @@
 
 import { createCategorie, getCategories } from '@/service/HttService';
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { ref, computed} from 'vue';
 
 export const useCategoriesStore = defineStore('catgories', ()=>{
     const categories = ref([])
     const nameCategorie = ref("")
     const descripitonCategorie = ref("")
-    const categoryData = {
-        name: nameCategorie.value,
-        description: descripitonCategorie.value,
-    }
+  
+const categoryData = computed(() => ({
+    name: nameCategorie.value,
+    description: descripitonCategorie.value,
+}));
+
        
     async function  getCategoriesStores() {
         console.log("enrtouu")

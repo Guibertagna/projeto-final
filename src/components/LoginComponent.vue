@@ -11,7 +11,7 @@
         <input
           id="email"
           type="email"
-          v-model="loginEmail"
+          v-model="loginStore.loginEmail"
           placeholder="exemple@exemple"
           class="form-input"
         >
@@ -22,7 +22,7 @@
         <input
           id="password"
           type="password"
-          v-model="loginPassword"
+          v-model="loginStore.loginPassword"
           class="form-input"
         >
       </div>
@@ -41,28 +41,19 @@
 
 
 <script setup>
-import router from '@/router';
-import { login } from '@/service/HttService';
-import { ref } from 'vue';
-const loginEmail = ref('');
-const loginPassword = ref('');
 
 
-const handleLogin = async () => {
-  const userCredentials = {
-    email: loginEmail.value,
-    password: loginPassword.value,
-  };
+import { useAuthenticateStore } from '@/stores/authenticate';
+import { useRouter } from 'vue-router';
+const router = useRouter();
+const loginStore = useAuthenticateStore()
+async function handleLogin() {
+  const success = await loginStore.loginStore();
 
-  try {
-    const data = await login(userCredentials);
-    localStorage.setItem('auth-token', data.token)
-    console.log('Login bem-sucedido', data);
-    router.push('/')
-  } catch (error) {
-    console.error('Falha no login', error);
+  if (success) {
+    router.push('/'); 
   }
-};
+}
 </script>
 <style scoped>
 .login-container {
