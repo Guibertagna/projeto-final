@@ -1,35 +1,56 @@
-@import './base.css';
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders&display=swap');
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+:root {
+  --second-color: #3AA39F;
+  --hover-second-color: #4b7977;
+}
+body {
+  line-height: 1.5;
+  background-color: #f4f4f4; /* Cor de fundo padrão */
+  color: #333; /* Cor de texto padrão */
+}
+
+h1, h2, h3, h4, h5, h6 {
   font-weight: normal;
+  margin: 0;
 }
 
-a,
-.green {
+ul, ol {
+  list-style: none;
+}
+
+a {
   text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
+  color: inherit; /* Evita mudança de cor no link */
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
+input, button, textarea {
+  font-family: inherit;
+  font-size: inherit;
+  border: none;
+  outline: none;
+}
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Evita que o conteúdo ultrapasse os limites */
+html, body {
+  overflow-x: hidden;
 }
