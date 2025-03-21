@@ -15,7 +15,6 @@ const categoryData = computed(() => ({
 
        
     async function  getCategoriesStores() {
-        console.log("enrtouu")
         try{
             const storeCategories = await getCategories()
             categories.value = storeCategories
@@ -29,6 +28,7 @@ const categoryData = computed(() => ({
     async function createCategory() {
 
         try{
+        
          const data = await createCategorie(categoryData.value)
          return data
         }catch{

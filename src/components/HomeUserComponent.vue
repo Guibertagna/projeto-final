@@ -13,17 +13,20 @@
         </div>
     </div>
 </template>
+
 <script setup>
 import { useCategoriesStore } from '@/stores/categories';
 import { onMounted, ref } from 'vue';
 
 const categoriesStore = useCategoriesStore();
-const categoriesComponent = ref([])
+const categoriesComponent = ref([]);  // Inicializando o ref como um array vazio.
+
 onMounted(async () => {
     await getCategorie();
-    categoriesComponent.value = categoriesStore.categories;
+    categoriesComponent.value = categoriesStore.categories.data; 
 });
-async function getCategorie(){
-    await categoriesStore.getCategoriesStores()
-    }
+
+async function getCategorie() {
+    await categoriesStore.getCategoriesStores();
+}
 </script>
