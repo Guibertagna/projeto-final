@@ -38,7 +38,7 @@ export async function getCategories() {
 }
 export async function createProduct(productsinfo) {
     const authStore = useAuthenticateStore(); 
-    console.log(productsinfo)
+    console.log(productsinfo.value)
     
     const token = authStore.token; 
     try {
@@ -50,8 +50,10 @@ export async function createProduct(productsinfo) {
             }
         });
         
-        
+        alert("deucerto!!!")
         return response.data; 
+
+
        
     }catch (error) {
     console.log(productsinfo)
