@@ -14,7 +14,16 @@ export async function login(credentials) {
     throw error;
     }
 }
-
+export async function register(credentialsRegister) {
+    try {
+        const response = await apiUrl.post('/register', credentialsRegister); 
+        return response;
+    }catch (error) {
+    console.log(credentialsRegister)
+    console.error('Erro ao fazer registro:', error);
+    throw error;
+    }
+}
 export async function getCategories() {
     try{
         const response = await apiUrl.get('/categories');

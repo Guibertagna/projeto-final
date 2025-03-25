@@ -26,7 +26,7 @@ const router = createRouter({
   routes,
 });
 
-// Verificação de autenticação antes de cada rota
+
 router.beforeEach((to, from, next) => {
 
   const auth = useAuthenticateStore()
