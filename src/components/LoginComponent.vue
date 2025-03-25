@@ -223,6 +223,8 @@ function toggleMode() {
 }
 
 .login-container {
+  height: 100vh;
+  background-color: var(--secondary-color-orange);
   flex: 1;
   justify-content: center;
   align-items: center;
@@ -232,10 +234,11 @@ function toggleMode() {
 }
 
 .login-card {
-  background-color: white;
+  background-color: var(--primary-color);
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 2rem;
+  color: var(--neutral-color-01);
   width: 100%;
   max-width: 400px;
 }
@@ -243,7 +246,7 @@ function toggleMode() {
 .login-title {
   text-align: center;
   margin-bottom: 1.5rem;
-  color: #333;
+  color:  var(--neutral-color-01);
 }
 
 .form-group {
@@ -277,8 +280,8 @@ function toggleMode() {
 .login-button {
   width: 100%;
   padding: 0.75rem;
-  background-color: var(--primary-color);
-  color: white;
+  background-color: var(--neutral-color-01);
+  color:  var(--primary-color);
   border: none;
   border-radius: 4px;
   font-size: 1rem;
