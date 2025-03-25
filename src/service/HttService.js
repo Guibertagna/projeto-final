@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useAuthenticateStore } from '@/stores/authenticate';
+import { useRouter } from 'vue-router';
 const apiUrl = axios.create({
     baseURL: 'http://34.138.111.33:8000', 
 });
@@ -7,7 +8,9 @@ const apiUrl = axios.create({
 export async function login(credentials) {
     try {
         const response = await apiUrl.post('/login', credentials); 
+        
         return response;
+       
     }catch (error) {
     console.log(credentials)
     console.error('Erro ao fazer login:', error);
@@ -33,6 +36,29 @@ export async function getCategories() {
     }
     
 }
+export async function createProduct(productsinfo) {
+    const authStore = useAuthenticateStore(); 
+    console.log(productsinfo)
+    
+    const token = authStore.token; 
+    try {
+        console.log(productsinfo)
+        const response = await apiUrl.post('/products', productsinfo, { // Corrigido!
+            headers: {
+                'Authorization': `Bearer ${token}`, 
+                'Content-Type': 'multipart/form-data',
+            }
+        });
+        
+        
+        return response.data; 
+       
+    }catch (error) {
+    console.log(productsinfo)
+    console.error('Erro ao criar produtos:', error);
+    throw error;
+    }
+}
 
 export async function createCategorie (categoryData) {
     try{
@@ -48,8 +74,8 @@ export async function createCategorie (categoryData) {
     return response;
     }catch(error){
         
-            console.error('Erro ao criar categoria:', error.response.data);
-            return error.response.data;
+            console.error('Erro ao criar categoria:', JSON.stringify(error.response?.data, null, 2));
+          
         
     }
     

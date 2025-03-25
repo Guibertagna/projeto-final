@@ -4,6 +4,7 @@ import LoginView from '@/views/LoginView.vue';
 import HomeUserView from '@/views/HomeUserView.vue';
 import CreateCategorieView from '@/views/CreateCategorieView.vue';
 import { useAuthenticateStore } from '@/stores/authenticate';
+import CreateProduct from '@/components/CreateProduct.vue';
 
 const routes = [
   { path: '/userlogin', name: 'login', component: LoginView },
@@ -17,6 +18,12 @@ const routes = [
     path: '/createcategories', 
     name: 'createcategories', 
     component: CreateCategorieView,
+    meta: { requiresAuth: true } 
+  },
+  { 
+    path: '/createproducts', 
+    name: 'createproducts', 
+    component: CreateProduct,
     meta: { requiresAuth: true } 
   },
 ];

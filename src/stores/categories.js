@@ -32,7 +32,7 @@ const categoryData = computed(() => ({
          const data = await createCategorie(categoryData.value)
          return data
         }catch{
-            console.error("Erro ao buscar categorias:", error);
+            console.error("Erro ao criar categorias:", error);
         }
     }
 
