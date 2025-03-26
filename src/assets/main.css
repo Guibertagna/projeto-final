@@ -12,7 +12,7 @@
   --primary-color: #000000;
   --secondary-color-blue: #377DFF;
   --secondary-color-green: #38CB89;
-  --secondary-color-orange: #FFAB00;
+  --secondary-color-orange: rgba(255, 171, 0, 0.63);
   --secondary-color-red: #FF5630;
   --neutral-color-07: #141718;
   --neutral-color-06: #232627;

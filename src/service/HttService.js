@@ -43,7 +43,7 @@ export async function createProduct(productsinfo) {
     const token = authStore.token; 
     try {
         console.log(productsinfo)
-        const response = await apiUrl.post('/products', productsinfo, { // Corrigido!
+        const response = await apiUrl.post('/products', productsinfo, { 
             headers: {
                 'Authorization': `Bearer ${token}`, 
                 'Content-Type': 'multipart/form-data',
