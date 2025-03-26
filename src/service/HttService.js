@@ -37,9 +37,9 @@ export async function getCategories() {
     
 }
 export async function createProduct(productsinfo) {
-    const authStore = useAuthenticateStore(); 
+   
     console.log(productsinfo.value)
-    
+    const authStore = useAuthenticateStore(); 
     const token = authStore.token; 
     try {
         console.log(productsinfo)
@@ -49,12 +49,8 @@ export async function createProduct(productsinfo) {
                 'Content-Type': 'multipart/form-data',
             }
         });
-        
         alert("deucerto!!!")
         return response.data; 
-
-
-       
     }catch (error) {
     console.log(productsinfo)
     console.error('Erro ao criar produtos:', error);
@@ -81,4 +77,14 @@ export async function createCategorie (categoryData) {
         
     }
     
+}
+
+export async function getProductsByid() {
+    try{
+        const response = await apiUrl.get('/products/user/1')
+        return response
+        
+    }catch(error){
+        console.log("erro a buscar produtos com id 1" + error)
+    }
 }

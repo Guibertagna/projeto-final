@@ -1,4 +1,4 @@
-import { computed, ref} from 'vue';
+import { ref} from 'vue';
 import { createProduct } from '@/service/HttService';
 import { defineStore } from 'pinia';
 export const useCreateProducts = defineStore('products', ()=>{
@@ -8,7 +8,9 @@ export const useCreateProducts = defineStore('products', ()=>{
     const productStock = ref(0)
     const productCategory_id = ref(0)
     const productImg = ref('')
-    
+  
+
+
  function getFormData(){
     const formData = new FormData();
     formData.append('name', productName.value)
@@ -37,7 +39,7 @@ export const useCreateProducts = defineStore('products', ()=>{
         }
     }
     
- 
+    
    
 return {
     productName,

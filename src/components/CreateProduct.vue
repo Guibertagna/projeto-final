@@ -20,7 +20,13 @@ async function sendProduct(){
     await products.createProductStore()
 }
 
-
+function handleFileUpload (event){
+     const file = event.target.files[0]
+     if(file){
+         products.productImg = file
+         console.log("arquivo selecionado" , file)
+     }
+ }
 </script>
 
 <style scoped>

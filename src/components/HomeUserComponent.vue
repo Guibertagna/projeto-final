@@ -4,13 +4,13 @@
             <div class="content-banner-dad">
                 <div class="content-banner">
                     <div class="tittles">
-                        <h1 class="text1-banner">Listen to the amazing music sound</h1>
-                        <h3 class="text2-banner">Expericence music like never before</h3>
-                        <button class="button-shop">Shopping Now!</button>
-                        
+                            <h1 class="text1-banner">Listen to <br> the <span style="color: #377DFF;"> amazing</span>  music sound</h1>
+                            <div class="end-banner">
+                                <h3 class="text2-banner">Expericence music like never before</h3>
+                                <button class="button-shop">Shopping Now!</button>
+                            </div>
                     </div>
-                    
-            </div>
+                 </div>
             </div>
         </div>
         <div class="products-containier" >
@@ -19,12 +19,10 @@
                         <h4 v-for="category in categoriesComponent" :key="category.id" class="category">
                             {{ category.name }}
                         </h4>
-                    
                 </div>
             </div>
             <div class="Products">
-                <div class="products-card">
-                </div>
+                <CardComponentProducts/>
             </div>
         </div>
     </div>
@@ -33,19 +31,20 @@
 <script setup>
 import bannerImage from '@/assets/bannerImage.png';
 import { useCategoriesStore } from '@/stores/categories';
+import { useGetProducts } from '@/stores/getProducts';
+
 import { onMounted, ref } from 'vue';
-
+import CardComponentProducts from './CardComponentProducts.vue';
+const getStoreProducts = useGetProducts()
 const categoriesStore = useCategoriesStore();
-const categoriesComponent = ref([]);  // Inicializando o ref como um array vazio.
-
+const categoriesComponent = ref([]);  
+const allProducts = ref([]);  
 onMounted(async () => {
-    await getCategorie();
+    await categoriesStore.getCategoriesStores()
     categoriesComponent.value = categoriesStore.categories.data; 
 });
 
-async function getCategorie() {
-    await categoriesStore.getCategoriesStores();
-}
+
 </script>
 
 <style scoped>
@@ -58,16 +57,16 @@ async function getCategorie() {
 }
 
 .text1-banner{
+    font-weight: 500;
     color: black;
     text-align: start;
-    font-size: 70px;
+    font-size: 75px;
 }
 
 .content-banner{
     display: flex;
     flex-direction: column;
     align-items: end;
-    padding-right: 60px;
 }
 
 .tittles{
@@ -78,6 +77,14 @@ async function getCategorie() {
     align-items: start;
 }
 
+.button-shop{
+
+    color: var( --neutral-color-01);
+    padding: 10px;
+    border-radius: 10px;
+    width: 230px;
+    background-color: var(--primary-color);
+}
 .productsContainer{
     display: flex;
     flex-direction: row;

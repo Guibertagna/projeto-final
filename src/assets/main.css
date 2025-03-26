@@ -41,7 +41,7 @@ ul, ol {
 
 a {
   text-decoration: none;
-  color: inherit; /* Evita mudança de cor no link */
+  color: inherit; 
 }
 
 button {
@@ -63,7 +63,7 @@ img {
   display: block;
 }
 
-/* Evita que o conteúdo ultrapasse os limites */
+
 html, body {
   overflow-x: hidden;
 }
