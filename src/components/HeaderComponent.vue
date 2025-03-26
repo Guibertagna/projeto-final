@@ -43,9 +43,8 @@ const isLoginPage = computed(() => route.path === "/userlogin");
 }
 
 .icons-header img {
-    
-    width: 24px; /* Define um tamanho fixo */
-    height: 24px; /* Mantém a proporção */
+    width: 24px;
+    height: 24px; 
 }
 .promotion{
     justify-content: center;
@@ -66,27 +65,25 @@ const isLoginPage = computed(() => route.path === "/userlogin");
 }
 
 .logo{
-    height: 26px;
-    width: 60px;
+    height: 16px;
+    width: 50px;
 }
 
 .all-content{
-    background-color: var(--secondary-color-orange);
+    background-color: transparent;
     display: flex;
     justify-content: center;
-    max-height: 80px;
+    max-height: 60px;
+    align-items: center;
     padding: 20px;
-
 }
 .content-intern{
     justify-content: space-between;
     display: flex;
     justify-content: space-between;
-    min-height: 60px;
     width: 100%;
-    min-height: 80px;
-    min-height: 80px;
 }
+
 .links{
     gap: 20px;
     list-style-type: none;

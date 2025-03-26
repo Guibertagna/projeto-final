@@ -29,8 +29,8 @@ const categoryData = computed(() => ({
 
         try{
         
-         const data = await createCategorie(categoryData.value)
-         return data
+        const data = await createCategorie(categoryData.value)
+        return data
         }catch{
             console.error("Erro ao criar categorias:", error);
         }
