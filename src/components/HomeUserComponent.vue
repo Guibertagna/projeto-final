@@ -24,6 +24,9 @@
             <div class="Products">
                 <CardComponentProducts/>
             </div>
+            <div class="morecategories">
+                <CategoriresCard/>
+            </div>
         </div>
     </div>
 </template>
@@ -35,6 +38,7 @@ import { useGetProducts } from '@/stores/getProducts';
 
 import { onMounted, ref } from 'vue';
 import CardComponentProducts from './CardComponentProducts.vue';
+import CategoriresCard from './CategoriresCard.vue';
 const getStoreProducts = useGetProducts()
 const categoriesStore = useCategoriesStore();
 const categoriesComponent = ref([]);  
