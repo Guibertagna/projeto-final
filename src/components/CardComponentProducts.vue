@@ -21,8 +21,8 @@
 
       <div class="name-discription">
           <h4 >  {{products.name}} </h4>
-          <h5 >{{ products.discribe }}</h5>
-          <h5 >{{ products.price }}</h5>
+          <h5 >{{ products.description }}</h5>
+          <h5 >R$ {{ products.price }}</h5>
       </div>
     </div>
   </div>
@@ -50,6 +50,15 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+
+.img-product{
+  width: 100%;
+  height: 200px; 
+  display: flex;
+  align-items: center;
+  overflow: hidden; 
+}
+
 .all-cards{
   display: grid;
   padding-top: 50px;
@@ -58,22 +67,22 @@ onMounted(async () => {
   justify-items: center;
   width: 100%;
 }
-.img-product{
-  display: flex;
-  justify-content: center;
-  max-width: 200px;
-}
+
 
 .products-card{
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
+  width: 300px; 
+  height: 450px;
+  padding: 20px;
+  text-align: center;
 }
 .button-product{
   margin-top: 30px;
   display: flex;
   justify-content: center;
+  margin-top: auto;
 }
 .button-product button{
   height: 40px;
@@ -95,8 +104,9 @@ onMounted(async () => {
     color: gold;
   }
   .name-discription {
+  width: 100%;
   text-align: start;
-  width: 100%;  
+  padding: 10px
 }
 
 .name-discription h4, 
@@ -106,7 +116,7 @@ onMounted(async () => {
   margin: 0; 
 }
 
- 
+
 </style>
 
  

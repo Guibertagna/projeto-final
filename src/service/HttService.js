@@ -38,7 +38,7 @@ export async function getCategories() {
 }
 export async function createProduct(productsinfo) {
    
-    console.log(productsinfo.value)
+    console.log(productsinfo)
     const authStore = useAuthenticateStore(); 
     const token = authStore.token; 
     try {

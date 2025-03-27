@@ -14,11 +14,11 @@ export const useCreateProducts = defineStore('products', ()=>{
  function getFormData(){
     const formData = new FormData();
     formData.append('name', productName.value)
-    formData.append('descrption', productDescription.value);
+    formData.append('description', productDescription.value);
     formData.append('price', productPrice.value);
     formData.append('stock', productStock.value);
     formData.append('category_id', productCategory_id.value);
-    formData.append('image_path', productImg.value);
+    formData.append('image', productImg.value);
    
     
     return formData;
@@ -27,7 +27,11 @@ export const useCreateProducts = defineStore('products', ()=>{
     
     async function createProductStore() {
         try {
+            
             const formData = getFormData()
+        formData.forEach((value, key) => {
+            console.log("Enviando:", key, value);
+        });
            const data = await createProduct(formData);
            console.log(data)
             return data;
