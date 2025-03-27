@@ -96,7 +96,7 @@ onMounted(async () => {
   }
 
   .rating span {
-    font-size: 24px;
+    font-size: 20px;
     color: #ccc;
   }
 
