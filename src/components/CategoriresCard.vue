@@ -9,7 +9,7 @@
         </div>
        <div class="card-container">
         <div class="headphone">
-            <img src="@/assets/p_56021_alta_1.png" alt="">
+            <img src="@/assets/p_56021_alta_1-Photoroom.png" alt="">
             <div class="button-text">
                     <h2>Headphone</h2>
                 <div class="button-product">
@@ -25,7 +25,7 @@
                     <button>Collection <img class="arrow-right" src="@/assets/icons/arrow-right.svg" alt="arrow"></button>
                 </div>
                 </div>
-                <img src="@/assets/black-01-solobuds.jpg" >
+                <img src="@/assets/black-01-solobuds-Photoroom.png" class="phone" >
             </div>
             <div class="accessories">
                 <div class="button-text">
@@ -34,7 +34,7 @@
                     <button>Collection <img class="arrow-right" src="@/assets/icons/arrow-right.svg" alt="arrow"></button>
                 </div>
                 </div>
-                <img src="@/assets/HPSA2.jpg">
+                <img src="@/assets/HPSA2-Photoroom.png" class="cabe">
             </div>
         </div>
        </div>
@@ -46,30 +46,53 @@
 
 
 <style scoped>
+.tille{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    padding-left:30px ;
+}
+.tille h1{
+    font-weight: bold;
+}
 .all-content {
-
-    text-align: center;
+    padding-top: 100px;
+ 
 }
 .card-container{
-
     justify-content: space-around;
     display: flex;
 }
 .headphone{
-   
-    max-width: 400px
+    text-align: center;
+    background-color:#F3F5F7 ;
+    max-width: 500px
 }
-.buds-acessories{
-    
-    max-width: 300px;
+.buds-acessories {
+    background-color: #F3F5F7;
+    width: 500px;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
 }
-.accessories, .earbuds{
+
+.accessories, .earbuds {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    padding: 15px 0; 
+}
 
+.accessories img, .earbuds img {
+    max-width: 300px;
+    height: auto;
 }
 h2{
+    
     font-weight: bold;
 }
 

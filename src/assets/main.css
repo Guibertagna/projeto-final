@@ -6,6 +6,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
 }
 
 :root {
@@ -26,8 +27,8 @@
 body {
   font-family: 'Poppins', sans-serif;
   line-height: 1.5;
-  background-color: #f4f4f4; /* Cor de fundo padrão */
-  color: #333; /* Cor de texto padrão */
+  background-color: var(--neutral-color-01); 
+  color: var(--primary-color); 
 }
 
 h1, h2, h3, h4, h5, h6 {

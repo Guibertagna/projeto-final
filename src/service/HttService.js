@@ -10,7 +10,6 @@ export async function login(credentials) {
         const response = await apiUrl.post('/login', credentials); 
         
         return response;
-       
     }catch (error) {
     console.log(credentials)
     console.error('Erro ao fazer login:', error);
@@ -81,7 +80,7 @@ export async function createCategorie (categoryData) {
 
 export async function getProductsByid() {
     try{
-        const response = await apiUrl.get('/products/user/1')
+        const response = await apiUrl.get('/products/user/2')
         return response
         
     }catch(error){

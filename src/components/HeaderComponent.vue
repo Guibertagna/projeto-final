@@ -5,7 +5,6 @@
             <p>30% off storewide — Limited time! </p>
             <p class="shop-now"> Shosp now  </p>
             <img class="arrow-right" src="@/assets/icons/arrow-right.svg" > 
-           
         </div>
         <div class="all-content">
             <div class="content-intern">

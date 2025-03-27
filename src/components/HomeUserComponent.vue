@@ -27,6 +27,12 @@
             <div class="morecategories">
                 <CategoriresCard/>
             </div>
+            <div class="bestsellers">
+                <BestSellers/>
+            </div>
+            <div class="promotion-card">
+                <PromotionCard/>
+            </div>
         </div>
     </div>
 </template>
@@ -39,6 +45,8 @@ import { useGetProducts } from '@/stores/getProducts';
 import { onMounted, ref } from 'vue';
 import CardComponentProducts from './CardComponentProducts.vue';
 import CategoriresCard from './CategoriresCard.vue';
+import BestSellers from './BestSellers.vue';
+import PromotionCard from './PromotionCard.vue';
 const getStoreProducts = useGetProducts()
 const categoriesStore = useCategoriesStore();
 const categoriesComponent = ref([]);  
@@ -54,6 +62,7 @@ onMounted(async () => {
 <style scoped>
 .banner{
     display: flex;
+    background-color: transparent;
     flex-direction: column;
     justify-content: center;
     padding-right: 100px;
@@ -61,6 +70,7 @@ onMounted(async () => {
 }
 
 .text1-banner{
+ 
     font-weight: 500;
     color: black;
     text-align: start;

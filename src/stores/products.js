@@ -19,8 +19,6 @@ export const useCreateProducts = defineStore('products', ()=>{
     formData.append('stock', productStock.value);
     formData.append('category_id', productCategory_id.value);
     formData.append('image', productImg.value);
-   
-    
     return formData;
 }
     
