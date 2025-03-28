@@ -26,6 +26,9 @@
             <h5>Seconds</h5>
           </div>
         </div>
+        <div class="button">
+          <button class="button-shop">Shop now</button>
+        </div>
         </div>
       </div>
     </div>
@@ -82,13 +85,17 @@
     font-weight: bold;
   }
   .ritgh-timer {
-    text-align: start;
+    align-content: center;
     width: 100vh;
     background-color: var(--secondary-color-orange);
     padding: 20px;
   
   }
   .promotion-content{
+    display: flex;
+    justify-content:space-between;
+    flex-direction: column;
+    align-items: center;       
     padding: 40px;
   }
   .left-photo img {
@@ -116,6 +123,17 @@
     justify-content: center;
     flex-direction: column;
     align-items: center;
+  }
+  .button-shop{
+    color: var( --neutral-color-01);
+    padding: 10px;
+    border-radius: 10px;
+    width: 200px;
+    background-color: var(--primary-color);
+  }
+  .button{
+    padding: 20px;
+    align-content: start;
   }
   </style>
   

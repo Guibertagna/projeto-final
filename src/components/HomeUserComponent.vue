@@ -10,7 +10,7 @@
                                 <button class="button-shop">Shopping Now!</button>
                             </div>
                     </div>
-                 </div>
+                </div>
             </div>
         </div>
         <div class="products-containier" >

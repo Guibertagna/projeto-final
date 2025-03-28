@@ -28,7 +28,7 @@ export async function register(credentialsRegister) {
 }
 export async function getCategories() {
     try{
-        const response = await apiUrl.get('/categories');
+        const response = await apiUrl.get('/categories/user/2');
         return response;
     }catch(error){
         console.error('Error ao pegar categorias', error)
@@ -64,19 +64,35 @@ export async function createCategorie (categoryData) {
         const response = await apiUrl.post('/categories', categoryData,{
             headers: {
                 'Authorization': `Bearer ${token}`, 
-                'Content-Type': 'application/json',
+                'Content-Type': 'multipart/form-data',
             }
             });
             console.log('Categoria criada com sucesso:', response.data);
+            
     return response;
     }catch(error){
         
             console.error('Erro ao criar categoria:', JSON.stringify(error.response?.data, null, 2));
-          
+        
         
     }
     
 }
+export async function deleteCategorieService(category_id) {
+    try{
+        const authStore = useAuthenticateStore(); 
+        const token = authStore.token; 
+        const response = await apiUrl.delete(`/categories/${category_id}`,{
+            headers: {
+                'Authorization': `Bearer ${token}`, 
+                
+            }
+        })
+    }catch(error){
+        console.log("erro ao deletar categoria")
+    }
+}
+
 
 export async function getProductsByid() {
     try{

@@ -1,5 +1,6 @@
 
 import { createCategorie, getCategories } from '@/service/HttService';
+import { deleteCategorieService } from '@/service/HttService';
 import { defineStore } from 'pinia';
 import { ref, computed} from 'vue';
 
@@ -19,19 +20,29 @@ const categoryData = computed(() => ({
             const storeCategories = await getCategories()
             categories.value = storeCategories
             console.log(categories.value)
-        }catch{
+        }catch(error){
             console.error("Erro ao buscar categorias:", error);
+        }finally{
+            
         }
         
     }
+    async function deleteCategorie(idCategory) {
+        try {
+            const data = await deleteCategorieService(idCategory);
+            categories.value = categories.value.filter(category => category.id !== idCategory);
 
+            return data;
+        } catch (error) {
+            console.error(error);
+        }
+    }
     async function createCategory() {
-
         try{
-        
         const data = await createCategorie(categoryData.value)
+      
         return data
-        }catch{
+        }catch(error){
             console.error("Erro ao criar categorias:", error);
         }
     }
@@ -39,6 +50,7 @@ const categoryData = computed(() => ({
 
     return{
         createCategory,
+        deleteCategorie,
         getCategoriesStores,
         categoryData,
         categories,

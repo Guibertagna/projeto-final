@@ -5,6 +5,7 @@ import HomeUserView from '@/views/HomeUserView.vue';
 import CreateCategorieView from '@/views/CreateCategorieView.vue';
 import { useAuthenticateStore } from '@/stores/authenticate';
 import CreateProduct from '@/components/CreateProduct.vue';
+import ProfileComponent from '@/components/ProfileComponent.vue';
 
 const routes = [
   { path: '/userlogin', name: 'login', component: LoginView },
@@ -12,7 +13,7 @@ const routes = [
     path: '/', 
     name: 'homeuser', 
     component: HomeUserView,
-    meta: { requiresAuth: true } // Marca a rota como protegida
+    meta: { requiresAuth: true }
   },
   { 
     path: '/createcategories', 
@@ -24,6 +25,12 @@ const routes = [
     path: '/createproducts', 
     name: 'createproducts', 
     component: CreateProduct,
+    meta: { requiresAuth: true } 
+  },
+  { 
+    path: '/userprofile', 
+    name: 'profile', 
+    component: ProfileComponent,
     meta: { requiresAuth: true } 
   },
 ];
