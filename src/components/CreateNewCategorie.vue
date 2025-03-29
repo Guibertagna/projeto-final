@@ -21,37 +21,39 @@
 
 <script setup>
 import { useCategoriesStore } from '@/stores/categories';
-import { onMounted, ref } from 'vue';
-const categoriesComponent = ref([])
-onMounted(async () => {
-    await categoriesStore.getCategoriesStores()
-    categoriesComponent.value = categoriesStore.categories.data; 
-});
+import { onMounted, computed } from 'vue';
 
 const categoriesStore = useCategoriesStore();
+
+// Computed para refletir automaticamente as mudanças no store
+const categoriesComponent = computed(() => categoriesStore.categories.data);
+
+onMounted(async () => {
+    await categoriesStore.getCategoriesStores();
+});
+
 async function sendCategory() {
     try {
-        await categoriesStore.createCategory();
-      
-        console.log(categoriesComponent.value)
-        console.log(categoriesStore.categories)
-       
-        categoriesStore.nameCategorie = ('')
-        categoriesStore.descripitonCategorie = ('')
-    }catch (error) {
+        const newCategory = await categoriesStore.createCategory();
+        
+        if (newCategory && newCategory.data) {
+            categoriesStore.categories.data.push(newCategory.data); // Adiciona à lista sem refazer a requisição
+        }
+
+        // Resetando os campos
+        categoriesStore.nameCategorie = '';
+        categoriesStore.descripitonCategorie = '';
+    } catch (error) {
         console.error('Error creating category:', error);
-        categoriesStore.descripitonCategorie = ('')
-        categoriesStore.descripitonCategorie = ('')
         alert('Failed to create category!');
-    }finally{
-        categoriesComponent.value = categoriesStore.categories.data; 
     }
 }
 
 async function deleteCategorie(id) {
     try {
         await categoriesStore.deleteCategorie(id);
-        categoriesComponent.value = categoriesComponent.value.filter(category => category.id !== id);
+        // Remove a categoria do store localmente
+        categoriesStore.categories.data = categoriesStore.categories.data.filter(category => category.id !== id);
     } catch (error) {
         console.error("Erro ao excluir categoria: " + error);
     }
@@ -59,9 +61,10 @@ async function deleteCategorie(id) {
 </script>
 
 <style scoped>
-.all-content{
+.all-content {
     width: auto;
 }
+
 .create-category-container {
     display: flex;
     flex-direction: column;
@@ -71,29 +74,26 @@ async function deleteCategorie(id) {
     border: 1px solid #ccc;
     border-radius: 8px;
     background-color: #f9f9f9;
-  }
-  
-  label {
+}
+
+label {
     margin-bottom: 8px;
     font-weight: bold;
-  }
-  
-  input {
+}
+
+input {
     padding: 8px;
     margin-bottom: 16px;
     border: 1px solid #ddd;
     border-radius: 4px;
-  }
-  
-  button {
+}
+
+button {
     padding: 10px 16px;
     background-color: var(--secondary-color-orange);
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-  }
-  
- 
-  </style>
-  
+}
+</style>

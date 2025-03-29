@@ -30,8 +30,6 @@ const categoryData = computed(() => ({
     async function deleteCategorie(idCategory) {
         try {
             const data = await deleteCategorieService(idCategory);
-            categories.value = categories.value.filter(category => category.id !== idCategory);
-
             return data;
         } catch (error) {
             console.error(error);
@@ -39,11 +37,12 @@ const categoryData = computed(() => ({
     }
     async function createCategory() {
         try{
-        const data = await createCategorie(categoryData.value)
-      
-        return data
+            const data = await createCategorie(categoryData.value)
+            return data
         }catch(error){
             console.error("Erro ao criar categorias:", error);
+        }finally{
+            
         }
     }
 

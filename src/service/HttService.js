@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useAuthenticateStore } from '@/stores/authenticate';
 import { useRouter } from 'vue-router';
 const apiUrl = axios.create({
-    baseURL: 'http://34.138.111.33:8000', 
+    baseURL: 'http://35.196.79.227:8000', 
 });
 
 export async function login(credentials) {
@@ -27,8 +27,11 @@ export async function register(credentialsRegister) {
     }
 }
 export async function getCategories() {
+    const authStore = useAuthenticateStore(); 
+    const user_id = authStore.user.id; 
+    
     try{
-        const response = await apiUrl.get('/categories/user/2');
+        const response = await apiUrl.get(`/categories/user/${user_id}`);
         return response;
     }catch(error){
         console.error('Error ao pegar categorias', error)
@@ -95,8 +98,11 @@ export async function deleteCategorieService(category_id) {
 
 
 export async function getProductsByid() {
+    const authStore = useAuthenticateStore(); 
+    const user_id = authStore.user.id; 
+    console.log(user_id)
     try{
-        const response = await apiUrl.get('/products/user/2')
+        const response = await apiUrl.get(`/products/${user_id}`)
         return response
         
     }catch(error){
