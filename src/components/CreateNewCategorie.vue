@@ -37,12 +37,11 @@ async function sendCategory() {
         const newCategory = await categoriesStore.createCategory();
         
         if (newCategory && newCategory.data) {
-            categoriesStore.categories.data.push(newCategory.data); // Adiciona à lista sem refazer a requisição
+            categoriesStore.categories.data.push(newCategory.data);
         }
-
-        // Resetando os campos
         categoriesStore.nameCategorie = '';
         categoriesStore.descripitonCategorie = '';
+        alert('categoria criada com sucesso!')
     } catch (error) {
         console.error('Error creating category:', error);
         alert('Failed to create category!');
@@ -52,7 +51,6 @@ async function sendCategory() {
 async function deleteCategorie(id) {
     try {
         await categoriesStore.deleteCategorie(id);
-        // Remove a categoria do store localmente
         categoriesStore.categories.data = categoriesStore.categories.data.filter(category => category.id !== id);
     } catch (error) {
         console.error("Erro ao excluir categoria: " + error);
