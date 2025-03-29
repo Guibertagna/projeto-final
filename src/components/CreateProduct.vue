@@ -88,8 +88,6 @@ function handleFileUpload(event) {
 
 .card-create{
     justify-content: center;
-
-
     border: 1px solid gray;
     max-width: 500px;
     margin: 0 auto;
@@ -113,7 +111,6 @@ function handleFileUpload(event) {
     padding-top: 30px;
     display: flex;
     flex-direction: row;
-    
     justify-content: space-between;
     align-items: center;
     gap: 20px;
@@ -124,7 +121,7 @@ function handleFileUpload(event) {
 input{
     width: 100%;
     padding: 10px 12px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--neutral-color-04);
     border-radius: 6px;
     font-size: 14px;
     transition: border-color 0.3s, box-shadow 0.3s;
@@ -134,7 +131,7 @@ textarea{
     min-width: 100%;
     max-width: 100%;
     height:  100px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--neutral-color-04);
     border-radius: 6px;
     font-size: 14px;
     transition: border-color 0.3s, box-shadow 0.3s;

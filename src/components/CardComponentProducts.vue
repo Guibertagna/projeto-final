@@ -32,12 +32,12 @@
 <script setup>
 import { useGetProducts } from '@/stores/getProducts';
 import { onMounted, ref } from 'vue';
-
+import { apiUrl } from '@/service/HttService';
 const getStoreProducts = useGetProducts()
 const allProducts = ref([]);  
 
 function getImg(imagePath) {
-  const baseUrl = 'http://34.138.111.33:8000';
+  const baseUrl = 'http://35.196.79.227:8000';
   return `${baseUrl}${imagePath}`;
 }
 
@@ -83,7 +83,7 @@ onMounted(async () => {
   margin-top: auto;
   display: flex;
   justify-content: center;
-  margin-bottom: 20px; /* Espaço entre o botão e a parte inferior */
+  margin-bottom: 20px; 
 }
 
 .button-product button {

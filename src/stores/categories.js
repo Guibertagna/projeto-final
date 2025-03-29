@@ -7,11 +7,11 @@ import { ref, computed} from 'vue';
 export const useCategoriesStore = defineStore('catgories', ()=>{
     const categories = ref([])
     const nameCategorie = ref("")
-    const descripitonCategorie = ref("")
+    const descriptionCategorie = ref("")
   
 const categoryData = computed(() => ({
     name: nameCategorie.value,
-    description: descripitonCategorie.value,
+    description: descriptionCategorie.value,
 }));
 
        
@@ -54,6 +54,6 @@ const categoryData = computed(() => ({
         categoryData,
         categories,
         nameCategorie,
-        descripitonCategorie,
+        descriptionCategorie,
     }
 })

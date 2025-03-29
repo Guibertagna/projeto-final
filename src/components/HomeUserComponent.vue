@@ -33,6 +33,9 @@
             <div class="promotion-card">
                 <PromotionCard/>
             </div>
+            <div class="informationComponent">
+                <InformationComponents/>
+            </div>
         </div>
     </div>
 </template>
@@ -47,6 +50,8 @@ import CardComponentProducts from './CardComponentProducts.vue';
 import CategoriresCard from './CategoriresCard.vue';
 import BestSellers from './BestSellers.vue';
 import PromotionCard from './PromotionCard.vue';
+import InformationComponents from './InformationComponents.vue';
+
 const getStoreProducts = useGetProducts()
 const categoriesStore = useCategoriesStore();
 const categoriesComponent = ref([]);  

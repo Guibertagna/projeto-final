@@ -37,9 +37,9 @@
   const allProducts = ref([]);
   
   function getImg(imagePath) {
-    return imagePath.startsWith("http") ? imagePath : `http://34.138.111.33:8000${imagePath}`;
-  }
-  
+  const baseUrl = 'http://35.196.79.227:8000';
+  return `${baseUrl}${imagePath}`;
+}
   async function fetchMockedProducts() {
     // Simulação de API
     const products = [
@@ -49,7 +49,7 @@
         "price": "199.99",
         "stock": 25,
         "category_id": 1,
-        "image_path": "/images/headphones1.png",
+        "image_path": "/uploads/products/16ae2d00-73ea-48bc-9e5c-7b4961cf6cf8.jpg",
         "description": "High-quality wireless headphones with noise cancellation."
       },
       {
@@ -58,7 +58,7 @@
         "price": "59.99",
         "stock": 40,
         "category_id": 2,
-        "image_path": "/images/mouse1.png",
+        "image_path": "/uploads/products/16ae2d00-73ea-48bc-9e5c-7b4961cf6cf8.jpg",
         "description": "Ergonomic gaming mouse with customizable buttons."
       },
       {
@@ -67,7 +67,7 @@
         "price": "129.99",
         "stock": 15,
         "category_id": 3,
-        "image_path": "/images/keyboard1.png",
+        "image_path": "/uploads/products/16ae2d00-73ea-48bc-9e5c-7b4961cf6cf8.jpg",
         "description": "RGB backlit mechanical keyboard with fast response switches."
       },
       {
@@ -76,7 +76,7 @@
         "price": "89.99",
         "stock": 30,
         "category_id": 4,
-        "image_path": "/images/speaker1.png",
+        "image_path": "/uploads/products/16ae2d00-73ea-48bc-9e5c-7b4961cf6cf8.jpg",
         "description": "Portable Bluetooth speaker with deep bass and long battery life."
       },
       {
@@ -85,7 +85,7 @@
         "price": "149.99",
         "stock": 20,
         "category_id": 5,
-        "image_path": "/images/smartwatch1.png",
+        "image_path": "/uploads/products/16ae2d00-73ea-48bc-9e5c-7b4961cf6cf8.jpg",
         "description": "Smartwatch with health tracking and notifications."
       }
     ];
