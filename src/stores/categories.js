@@ -1,5 +1,5 @@
 
-import { createCategorie, getCategories } from '@/service/HttService';
+import { createCategorie, editCategoryService, getCategories, getCategoryById} from '@/service/HttService';
 import { deleteCategorieService } from '@/service/HttService';
 import { defineStore } from 'pinia';
 import { ref, computed} from 'vue';
@@ -14,7 +14,7 @@ const categoryData = computed(() => ({
     description: descriptionCategorie.value,
 }));
 
-       
+
     async function  getCategoriesStores() {
         try{
             const storeCategories = await getCategories()
@@ -25,7 +25,15 @@ const categoryData = computed(() => ({
         }finally{
             
         }
-        
+    }
+
+    async function getCategoryId(idCategory) {
+        try{
+            const data = await getCategoryById(idCategory);
+            return data
+        }catch(error){
+            console.error(error);
+        }
     }
     async function deleteCategorie(idCategory) {
         try {
@@ -45,12 +53,21 @@ const categoryData = computed(() => ({
             
         }
     }
-
+    async function editCategoryEdit(idCategory) {
+        try {
+            const data = await editCategoryService(idCategory, categoryData.value); // Agora o id vai corretamente
+            return data;
+        } catch(error) {
+            console.error("Erro ao editar categorias:", error);
+        }
+    }
 
     return{
         createCategory,
         deleteCategorie,
         getCategoriesStores,
+        getCategoryId,
+        editCategoryEdit,
         categoryData,
         categories,
         nameCategorie,

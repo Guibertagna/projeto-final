@@ -77,10 +77,38 @@ export async function createCategorie (categoryData) {
     }
         
     }catch(error){
-         console.error('Erro ao criar categoria:', JSON.stringify(error.response?.data, null, 2));
+        console.error('Erro ao criar categoria:', JSON.stringify(error.response?.data, null, 2));
     }
     
 }
+
+
+export async function editCategoryService (category_id, categoryData) {
+    try{
+        const authStore = useAuthenticateStore(); 
+            const token = authStore.token; 
+            const response = await apiUrl.put(`/categories/${category_id}`, categoryData,{
+                headers: {
+                    'Authorization': `Bearer ${token}`, 
+                    'Content-Type': 'application/json' // Garantindo que o backend entenda o JSON
+                }
+                });
+                console.log('Categoria editada com sucesso ', response.data);
+                alert("Categoria editada com sucesso!");
+        return response;
+   
+        
+    }catch(error){
+        console.error('Erro ao EDITAR categoria:', JSON.stringify(error.response?.data, null, 2));
+    }
+    
+}
+
+
+
+
+
+
 export async function deleteCategorieService(category_id) {
     try{
         const authStore = useAuthenticateStore(); 
@@ -95,10 +123,7 @@ export async function deleteCategorieService(category_id) {
         console.log("erro ao deletar categoria")
     }
 }
-
-
-export async function getProductsByid() {
-  
+export async function getProductsService() {
     try{
         const response = await apiUrl.get(`/products/user/10`)
         return response
@@ -107,3 +132,35 @@ export async function getProductsByid() {
         console.log("erro a buscar produtos com id 1" + error)
     }
 }
+export async function getProductsServiceCategory(category_id) {
+    const authStore = useAuthenticateStore(); 
+    const token = authStore.token; 
+    try{
+        const response = await apiUrl.get(`/products/category/${category_id}`,{
+            headers: {
+                'Authorization': `Bearer ${token}`, 
+                
+            }
+        })
+        return response
+        
+    }catch(error){
+        console.log("erro a buscar produtos com id 1" + error)
+    }
+}
+export async function getCategoryById(category_id) {
+    try{
+        const authStore = useAuthenticateStore(); 
+        const token = authStore.token; 
+        const response = await apiUrl.get(`/categories/${category_id}`,{
+            headers: {
+                'Authorization': `Bearer ${token}`, 
+                
+            }
+        })
+        return response
+    }catch(error){
+        console.log("erro ao deletar categoria")
+    }
+}
+

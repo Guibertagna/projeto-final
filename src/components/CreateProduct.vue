@@ -27,7 +27,12 @@
                 
             <div class="form">
                 <label for="category">Category of product</label>
-                <input placeholder="category_id" v-model="products.productCategory_id" id="category">
+                <select placeholder="category_id" v-model="products.productCategory_id" id="category">
+                    <option value="">Select...</option>
+                    <option v-for="category in allCategories " :key="category.id" :value="category.id">
+                        {{ category.name }}
+                    </option>
+                </select>
             </div>
                 
             <div class="image-container" style="padding-top: 30px; padding-bottom: 30px;">
@@ -59,14 +64,19 @@
 
 <script setup>
 import { useCreateProducts } from '@/stores/products';
-
-
+import { useCategoriesStore } from '@/stores/categories';
+import { onMounted, ref } from 'vue';
+const category = useCategoriesStore()
 const products = useCreateProducts()
-
+const allCategories = ref([])
 async function sendProduct(){
     await products.createProductStore()
 }
-
+onMounted(async () => {
+    await category.getCategoriesStores()
+    allCategories.value = category.categories.data
+    console.log(allCategories.value)
+});
 function handleFileUpload(event) {
     const file = event.target.files[0];
     if (file) {
