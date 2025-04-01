@@ -132,6 +132,18 @@ export async function getProductsService() {
         console.log("erro a buscar produtos com id 1" + error)
     }
 }
+export async function getProductsById(product_id) {
+    try{
+        const response = await apiUrl.get(`/products/${product_id}`)
+        return response
+        
+    }catch(error){
+        console.log("erro a buscar produtos com id 1" + error)
+    }
+}
+
+
+
 export async function getProductsServiceCategory(category_id) {
     const authStore = useAuthenticateStore(); 
     const token = authStore.token; 
@@ -163,4 +175,43 @@ export async function getCategoryById(category_id) {
         console.log("erro ao deletar categoria")
     }
 }
+
+export async function addItemCart(item) {
+    const authStore = useAuthenticateStore(); 
+    const token = authStore.token; 
+    try{
+        const response = await apiUrl.post('/cart/items', item,{
+            headers: {
+                'Authorization': `Bearer ${token}`, 
+                'Content-Type': 'application/json' // Garantindo que o backend entenda o JSON
+            }
+        })
+        console.log('Categoria editada com sucesso ', response.data);
+        alert("Categoria editada com sucesso!");
+        return response;
+    }catch(error){
+        console.error(error)
+
+    }
+    
+}
+
+export async function createCart(item) {
+    const authStore = useAuthenticateStore(); 
+    const token = authStore.token; 
+    try{
+        const response = await apiUrl.post('/cart',{
+            headers: {
+                'Authorization': `Bearer ${token}`, 
+                'Content-Type': 'application/json' // Garantindo que o backend entenda o JSON
+            }
+        })
+        return response;
+    }catch(error){
+        console.error(error)
+
+    }
+    
+}
+
 

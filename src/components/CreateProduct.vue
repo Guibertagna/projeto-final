@@ -28,7 +28,6 @@
             <div class="form">
                 <label for="category">Category of product</label>
                 <select placeholder="category_id" v-model="products.productCategory_id" id="category">
-                    <option value="">Select...</option>
                     <option v-for="category in allCategories " :key="category.id" :value="category.id">
                         {{ category.name }}
                     </option>

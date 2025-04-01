@@ -6,6 +6,7 @@ import CreateCategorieView from '@/views/CreateCategorieView.vue';
 import { useAuthenticateStore } from '@/stores/authenticate';
 import CreateProduct from '@/components/CreateProduct.vue';
 import ProfileComponent from '@/components/ProfileComponent.vue';
+import DetailPdroduct from '@/components/DetailPdroduct.vue';
 
 const routes = [
   { path: '/userlogin', name: 'login', component: LoginView },
@@ -33,6 +34,9 @@ const routes = [
     component: ProfileComponent,
     meta: { requiresAuth: true } 
   },
+  {
+    path: '/products/:id', name: 'Details', component: DetailPdroduct, props: true, meta: {title: 'Details'}
+  }
 ];
 
 const router = createRouter({

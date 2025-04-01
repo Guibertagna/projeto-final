@@ -1,6 +1,6 @@
 <template>
   <div class="all-cards">
-    <div class="products-card" v-for="products in allProducts" :key="products.id">
+    <div class="products-card" v-for="products in allProducts" :key="products.id" @click="goToDetails(products.id)">
       
       <div class="img-product">
          <img :src="getImg(products.image_path)" alt="prodct image">
@@ -32,13 +32,17 @@
 <script setup>
 import { useGetProducts } from '@/stores/getProducts';
 import { onMounted, ref } from 'vue';
-import { apiUrl } from '@/service/HttService';
+import { useRouter } from 'vue-router';
+
 const getStoreProducts = useGetProducts()
 const allProducts = ref([]);  
-
+const router = useRouter();
 function getImg(imagePath) {
   const baseUrl = 'http://35.196.79.227:8000';
   return `${baseUrl}${imagePath}`;
+}
+function goToDetails (id_product){
+  router.push(`/products/${id_product}`);
 }
 
 onMounted(async () => {

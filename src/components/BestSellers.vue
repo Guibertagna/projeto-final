@@ -13,7 +13,6 @@
 
         <div class="name-description">
           <h4>{{ product.name }}</h4>
-          <h5>{{ product.description }}</h5>
           <h5>R$ {{ product.price }}</h5>
         </div>
 
@@ -43,7 +42,7 @@ function getImg(imagePath) {
   return `${baseUrl}${imagePath}`;
 }
 async function getBestSellers() {
-  await getStoreProducts.getProductsCategory(37);
+  await getStoreProducts.getProductsCategory(39);
 
   allProducts.value = getStoreProducts.filtredProcducts.data;
   console.log(allProducts.value);
@@ -127,12 +126,18 @@ onMounted(async () => {
 }
 
 .name-description {
-  width: 100%;
-  text-align: start;
-  padding: 10px;
+  margin-top: 10px;
+
+  max-width: 100%;
 }
 
-.name-description h4,
+.name-description h4 {
+  gap: 2px;
+  white-space: normal;
+  text-align: start;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
 .name-description h5 {
   text-align: left;
   font-weight: bold;

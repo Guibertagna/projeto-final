@@ -1,8 +1,9 @@
 import { ref} from 'vue';
-import { getProductsService, getProductsServiceCategory } from '@/service/HttService';
+import { getProductsById, getProductsService, getProductsServiceCategory } from '@/service/HttService';
 import { defineStore } from 'pinia';
 export const useGetProducts = defineStore('allroducts', ()=>{
     const products = ref([])
+    const productId =ref([])
     const filtredProcducts = ref([])
 
     async function getProducts() {
@@ -15,7 +16,16 @@ export const useGetProducts = defineStore('allroducts', ()=>{
         }
         
     }
-    
+    async function getProductsId(idProduct) {
+        try{
+            const productsId = await getProductsById(idProduct);
+            productId.value = productsId
+            
+        }catch(error){
+            console.error("erro ao obter produtos do id " + idProduct + error)
+        }
+        
+    }
 
     async function getProductsCategory(idCategory) {
         try{
@@ -30,6 +40,8 @@ export const useGetProducts = defineStore('allroducts', ()=>{
     return{
         getProducts,
         getProductsCategory,
+        getProductsId,
+        productId,
         filtredProcducts,
         products,
     }
