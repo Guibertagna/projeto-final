@@ -47,7 +47,7 @@
                         <p>click to upload an image</p>
                         <p class="upload-hint">PNG, JPG ou JPEG</p>
                     </label>
-                    <input type="file" @change="handleFileUpload" id="image" style="display: none;"> 
+                    <input type="file" @change="handleFileUpload" id="image" style="display: none;" accept=".png, .jpg, .jpeg">
                 </div>
                 <p v-if="products.productImg" class="selected-file">
                     Selected file: {{ products.productImg.name }}

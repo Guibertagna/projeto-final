@@ -36,11 +36,15 @@ const categoryData = computed(() => ({
         }
     }
     async function deleteCategorie(idCategory) {
-        try {
-            const data = await deleteCategorieService(idCategory);
-            return data;
-        } catch (error) {
-            console.error(error);
+        if (Number(idCategory.value) !== 37) {
+            try {
+                const data = await deleteCategorieService(idCategory);
+                return data;
+            } catch (error) {
+                console.error("Erro ao excluir a categoria:", error);
+            }
+        } else {
+            alert("Não é permitido excluir essa categoria!");
         }
     }
     async function createCategory() {

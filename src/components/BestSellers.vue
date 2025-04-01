@@ -43,7 +43,7 @@ function getImg(imagePath) {
   return `${baseUrl}${imagePath}`;
 }
 async function getBestSellers() {
-  await getStoreProducts.getProductsCategory(33);
+  await getStoreProducts.getProductsCategory(37);
 
   allProducts.value = getStoreProducts.filtredProcducts.data;
   console.log(allProducts.value);
@@ -77,23 +77,22 @@ onMounted(async () => {
 }
 
 .all-cards {
-  text-align: start;
-  display: grid;
-  padding-top: 30px;
-  padding-left: 30px;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  display: flex;
+  flex-wrap: nowrap;
   gap: 20px;
-  justify-items: center;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 20px;
   width: 100%;
 }
 
 .products-card {
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 300px;
   height: 450px;
-
   text-align: center;
 }
 

@@ -16,9 +16,7 @@
         <div class="products-containier" >
             <div class="categories">
                 <div class="category-conetnt">
-                        <h4 v-for="category in categoriesComponent" :key="category.id" class="category">
-                            {{ category.name }}
-                        </h4>
+                    <h1 class="best">New Arrivals</h1>
                 </div>
             </div>
             <div class="Products">
@@ -73,7 +71,10 @@ onMounted(async () => {
     padding-right: 100px;
     height: 100vh;
 }
-
+.best {
+  font-weight: bold;
+  padding-left: 40px;
+}
 .text1-banner{
  
     font-weight: 500;
@@ -110,7 +111,7 @@ onMounted(async () => {
 }
 .category-conetnt{
     padding-top: 40px;
-    justify-content: center;
+    justify-content: start  ;
     display: flex;
     gap: 20px;
     flex-direction: row;

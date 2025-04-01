@@ -45,16 +45,17 @@
 
         <div class="categories" v-if="showCategories && categoriesComponent.length > 0">
         <h1>All Categories</h1>
-    <div class="category-content">
-        <div v-for="category in categoriesComponent" :key="category.id" class="category-card">
-            <div class="category-info">
+    <div class="category-content" >
+        <div v-for="category in categoriesComponent" :key="category.id" class="category-card"  >
+            <div class="category-info" >
                 <h4>{{ category.name }}</h4>
                 <p class="category-description">{{ category.description || "No description available" }}</p>
             </div>
-            <div class="category-actions">
+            <div class="category-actions" v-if="category.name != 'Best Sellers'">
                 <button class="edit-btn" @click="startEditCategory(category.id)">Edit</button>
-                <button class="delete-btn" @click="deleteCategorie(category.id)">Delete</button>
+                <button  class="delete-btn" @click="deleteCategorie(category.id)">Delete</button>
             </div>
+            <p v-else class="not-delete">You cannot delete or change this category. </p>
         </div>
     </div>
     
@@ -194,6 +195,10 @@ function cancelEdit (){
     display: flex;
     flex-direction: column;
     gap: 8px;
+}
+.not-delete{
+    
+    font-size: 15px;
 }
 .categories {
     text-align: center;
