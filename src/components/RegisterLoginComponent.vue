@@ -95,7 +95,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 
-import { login, register } from '@/service/HttService';
+import { createCart, login, register } from '@/service/HttService';
 import { useAuthenticateStore } from '@/stores/authenticate';
 import { useRouter } from 'vue-router';
 const router = useRouter()
@@ -183,7 +183,7 @@ async function handleRegister() {
     if(resultLogin?.data){
         loginStore.saveUser(resultLogin.data);
         alert("login feito com sucesso")
-        router.push('/');
+
         console.log(resultLogin.data)
     }else{
         throw new Error('Credenciais inválidas.');
@@ -191,9 +191,17 @@ async function handleRegister() {
   }catch (error) {
     loginError.value = 'Falha no registro. Verifique suas credenciais.';
   }
+  try{
+    const createcartresult = await createCart()
+    console.log("deu boaaa")
+    router.push('/');
+    return createcartresult
+  }catch(error){
+    console.log("erro ao criar carrinho")
+  }
 }
 
-// Função para alternar entre login e registro
+
 function toggleMode() {
   isLoginMode.value = !isLoginMode.value;
 }

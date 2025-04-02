@@ -21,7 +21,7 @@
                     <h4 class="stock">Stock: {{ useProducts.productId.data?.stock }}</h4>
                 </div>
                 <div class="button-container">
-                    <button class="add">Add to cart</button>
+                    <button @click="addToCart()" class="add">Add to cart </button>
                     <button class="buy-now">Buy Now</button>
                 </div>
             </div>
@@ -40,6 +40,7 @@
     const loading = ref(true);
     const useCart = useCartProducts()
     const infoProduct = ref([])
+    
     onMounted(() => {
         const id = route.params.id;
         if (id) {
@@ -52,7 +53,10 @@
     });
 
     async function addToCart(){
-        useCart.addProducs()
+        useCart.productId = useProducts.productId.data.id
+        useCart.quantity = 1
+        useCart.unitPrice =  Number(useProducts.productId.data.price);
+        await useCart.addProducts()
     }
     function getImg(imagePath) {
         const baseUrl = "http://35.196.79.227:8000";

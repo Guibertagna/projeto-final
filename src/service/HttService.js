@@ -179,11 +179,12 @@ export async function getCategoryById(category_id) {
 export async function addItemCart(item) {
     const authStore = useAuthenticateStore(); 
     const token = authStore.token; 
+    console.log("Dados enviados:", JSON.stringify(item));
     try{
         const response = await apiUrl.post('/cart/items', item,{
             headers: {
                 'Authorization': `Bearer ${token}`, 
-                'Content-Type': 'application/json' // Garantindo que o backend entenda o JSON
+                'Content-Type': 'application/json' 
             }
         })
         console.log('Categoria editada com sucesso ', response.data);
@@ -196,22 +197,44 @@ export async function addItemCart(item) {
     
 }
 
-export async function createCart(item) {
+export async function createCart() {
     const authStore = useAuthenticateStore(); 
     const token = authStore.token; 
+    console.log(token)    
     try{
-        const response = await apiUrl.post('/cart',{
+        const response = await apiUrl.post('/cart',null,{
             headers: {
                 'Authorization': `Bearer ${token}`, 
-                'Content-Type': 'application/json' // Garantindo que o backend entenda o JSON
+                'Content-Type': 'application/json'
             }
         })
-        return response;
+        return response.data; 
     }catch(error){
-        console.error(error)
+        console.error("Erro ao criar o carrinho:", error);
+        return null; 
 
     }
     
 }
+export async function getItemsCart() {
+    const authStore = useAuthenticateStore(); 
+    const token = authStore.token; 
+    console.log(token)    
+    try{
+        const response = await apiUrl.get('/cart/items',{
+            headers: {
+                'Authorization': `Bearer ${token}`, 
+                'Content-Type': 'application/json'
+            }
+        })
+        return response.data; 
+    }catch(error){
+        console.error("Erro ao criar o carrinho:", error);
+        return null; 
+
+    }
+    
+}
+
 
 

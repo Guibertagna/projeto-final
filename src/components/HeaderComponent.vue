@@ -28,7 +28,7 @@
                             
                         </div>
                     </div>
-                    <img src="@/assets/icons/search.svg">
+                    <img @click="getitens()" src="@/assets/icons/search.svg">
                 </nav>
             </div>
         </div>
@@ -39,7 +39,8 @@
 import { ref, computed } from "vue";
 import { useRouter } from 'vue-router';
 import { useAuthenticateStore } from "@/stores/authenticate";
-
+import { useCartProducts } from "@/stores/cartStore";
+const useCart = useCartProducts()
 const router = useRouter()
 const isLoginPage = computed(() => router.path === "/userlogin");
 const showDropdown = ref(false);
@@ -47,7 +48,9 @@ const userStore = useAuthenticateStore()
 const toggleDropdown = () => {
     showDropdown.value = !showDropdown.value;
 };
-
+function getitens(){
+    useCart.getItemsCartStore()
+}
 function gotoCreateProducts(){
     showDropdown.value = !showDropdown.value;
     router.push('/createproducts')

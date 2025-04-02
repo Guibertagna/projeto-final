@@ -1,31 +1,44 @@
-import { computed, ref} from 'vue';
-
+import { computed, ref } from 'vue';
 import { defineStore } from 'pinia';
-import { addItemCart, createCart } from '@/service/HttService';
-export const useCartProducts = defineStore('cart', ()=>{
-    const productId = ref()
-    const quantity = ref()
-    const unitPrice = ref()
-    const prodcstInformation= computed(()=>({
+import { addItemCart, getItemsCart } from '@/service/HttService';
+
+export const useCartProducts = defineStore('cart', () => {
+    const productId = ref();
+    const quantity = ref();
+    const unitPrice = ref();
+    const itemsCart = ref([]);
+
+    const productInformation = computed(() => ({
         product_id: productId.value,
         quantity: quantity.value,
         unit_price: unitPrice.value
-    }))
-    async function addProducs() {
-        createCart()
-        try{
-            const response = await addItemCart(prodcstInformation.valueprodcstInformation)
+    }));
+
+    async function addProducts() {
+        try {
+            const response = await addItemCart(productInformation.value);
             return response;
-        }catch(error){
-            console.error(error)
-            
+        } catch (error) {
+            console.error("Erro ao adicionar produto ao carrinho:", error);
         }
     }
-    return{
-        addProducs,
+
+    async function getItemsCartStore() {
+        try {
+            const response = await getItemsCart();
+            itemsCart.value = response; 
+            return response;
+        } catch (error) {
+            console.error("Não foi possível pegar itens do carrinho:", error);
+        }
+    }
+
+    return {
+        addProducts,
+        getItemsCartStore,
+        itemsCart,
         productId,
         quantity,
         unitPrice,
-
-    }
-})
+    };
+});

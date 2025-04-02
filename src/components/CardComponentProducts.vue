@@ -45,6 +45,8 @@ function goToDetails (id_product){
   router.push(`/products/${id_product}`);
 }
 
+
+
 onMounted(async () => {
   await getStoreProducts.getProducts();
   allProducts.value = getStoreProducts.products.data;
