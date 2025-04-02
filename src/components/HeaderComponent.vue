@@ -28,7 +28,9 @@
                             
                         </div>
                     </div>
-                    <img @click="getitens()" src="@/assets/icons/search.svg">
+                    <router-link to="/usercart" class="back-button">
+                        <img  src="@/assets/icons/search.svg">
+                    </router-link>
                 </nav>
             </div>
         </div>

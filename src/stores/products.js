@@ -30,8 +30,8 @@ export const useCreateProducts = defineStore('products', ()=>{
         formData.forEach((value, key) => {
             console.log("Enviando:", key, value);
         });
-           const data = await createProduct(formData);
-           console.log(data)
+            const data = await createProduct(formData);
+            console.log(data)
             return data;
         } catch (error) {
             console.error("Erro ao criar produto:", JSON.stringify(error.response?.data, null, 2));
@@ -48,8 +48,6 @@ return {
     productCategory_id,
     productImg,
     createProductStore
-
-
 }
 
     

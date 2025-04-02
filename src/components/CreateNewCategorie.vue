@@ -151,15 +151,7 @@ async function startEditCategory(id) {
         console.error("Erro ao buscar categoria para edição:", error);
     }
 }
-async function getCtegoryId(id) {
-    try {
-        const response = await categoriesStore.getCategoryId(id);
-        categoriesStore.nameCategorie = response.data.name 
-        categoriesStore.descriptionCategorie = response.data.description
-    } catch (error) {
-        console.error("Erro ao excluir categoria: " + error);
-    }
-}
+
 function cancelEdit (){
     categoriesStore.nameCategorie = '';
         categoriesStore.descriptionCategorie = '';

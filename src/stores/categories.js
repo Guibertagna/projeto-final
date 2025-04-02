@@ -59,7 +59,7 @@ const categoryData = computed(() => ({
     }
     async function editCategoryEdit(idCategory) {
         try {
-            const data = await editCategoryService(idCategory, categoryData.value); // Agora o id vai corretamente
+            const data = await editCategoryService(idCategory, categoryData.value); 
             return data;
         } catch(error) {
             console.error("Erro ao editar categorias:", error);

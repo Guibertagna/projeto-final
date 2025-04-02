@@ -85,18 +85,17 @@ export async function createCategorie (categoryData) {
 
 export async function editCategoryService (category_id, categoryData) {
     try{
-        const authStore = useAuthenticateStore(); 
+            const authStore = useAuthenticateStore(); 
             const token = authStore.token; 
             const response = await apiUrl.put(`/categories/${category_id}`, categoryData,{
                 headers: {
                     'Authorization': `Bearer ${token}`, 
-                    'Content-Type': 'application/json' // Garantindo que o backend entenda o JSON
+                    'Content-Type': 'application/json' 
                 }
                 });
                 console.log('Categoria editada com sucesso ', response.data);
                 alert("Categoria editada com sucesso!");
         return response;
-   
         
     }catch(error){
         console.error('Erro ao EDITAR categoria:', JSON.stringify(error.response?.data, null, 2));
@@ -236,5 +235,22 @@ export async function getItemsCart() {
     
 }
 
+export async function deleteProductcart(product_id) {
+    try{
+        const authStore = useAuthenticateStore(); 
+        const token = authStore.token; 
+        console.log(product_id)
+        const response = await apiUrl.delete('/cart/items',{
+            headers: {
+                'Authorization': `Bearer ${token}`, 
+                'Content-Type': 'application/json'
+            },
+            data: product_id
+        })
+        return response
+    }catch(error){
+        console.log("erro ao deletar produto da categoria" + error)
+    }
+}
 
 

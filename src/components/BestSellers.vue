@@ -3,9 +3,10 @@
     <h1 class="best">Best sellers</h1>
     <div class="all-cards">
       <div
-        class="products-card"
-        v-for="product in allProducts"
-        :key="product.id"
+      class="products-card"
+    v-for="product in allProducts"
+    :key="product.id"
+    @click="setProductId(product.id)"
       >
         <div class="img-product">
           <img :src="getImg(product.image_path)" alt="product image" />
@@ -16,8 +17,8 @@
           <h5>R$ {{ product.price }}</h5>
         </div>
 
-        <div class="button-product">
-          <button>Add to cart</button>
+        <div class="button-product"  @click="setProductId(product.id)">
+          <AddCard/>
         </div>
 
         <div class="rating">
@@ -35,12 +36,14 @@
   <script setup>
 import { ref, onMounted } from "vue";
 import { useGetProducts } from "@/stores/getProducts";
+import AddCard from "./AddCard.vue";
 const allProducts = ref([]);
 const getStoreProducts = useGetProducts();
 function getImg(imagePath) {
   const baseUrl = "http://35.196.79.227:8000";
   return `${baseUrl}${imagePath}`;
 }
+
 async function getBestSellers() {
   await getStoreProducts.getProductsCategory(39);
 

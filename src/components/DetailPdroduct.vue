@@ -21,7 +21,7 @@
                     <h4 class="stock">Stock: {{ useProducts.productId.data?.stock }}</h4>
                 </div>
                 <div class="button-container">
-                    <button @click="addToCart()" class="add">Add to cart </button>
+                    <AddCard/>
                     <button class="buy-now">Buy Now</button>
                 </div>
             </div>
@@ -34,12 +34,11 @@
     import { useGetProducts } from "@/stores/getProducts";
     import { onMounted, ref } from "vue";
     import { useRoute } from "vue-router";
+import AddCard from "./AddCard.vue";
 
     const useProducts = useGetProducts();
     const route = useRoute();
     const loading = ref(true);
-    const useCart = useCartProducts()
-    const infoProduct = ref([])
     
     onMounted(() => {
         const id = route.params.id;
@@ -51,13 +50,6 @@
             console.log("Product not found");
         }
     });
-
-    async function addToCart(){
-        useCart.productId = useProducts.productId.data.id
-        useCart.quantity = 1
-        useCart.unitPrice =  Number(useProducts.productId.data.price);
-        await useCart.addProducts()
-    }
     function getImg(imagePath) {
         const baseUrl = "http://35.196.79.227:8000";
         return `${baseUrl}${imagePath}`;
@@ -155,7 +147,7 @@
     margin-top: 20px;
 }
 
-.add, .buy-now {
+.buy-now {
     padding: 10px 20px;
     border: none;
     font-size: 16px;
@@ -164,14 +156,6 @@
     transition: 0.3s ease;
 } 
 
-.add {
-    background-color: #4CAF50;
-    color: white;
-}
-
-.add:hover {
-    background-color: #45a049;
-}
 
 .buy-now {
     background-color: var(--secondary-color-orange);
