@@ -16,27 +16,38 @@ export const useCartProducts = defineStore('cart', () => {
     async function addProducts() {
         try {
             const response = await addItemCart(productInformation.value);
+            if(response.status === 204){
+                itemsCart.value.items = [...itemsCart.value.items, { ...productInformation.value }];
+            }
             return response;
         } catch (error) {
             console.error("Erro ao adicionar produto ao carrinho:", error);
         }
     }
+
+
     async function deleteProductfromcart() {
         const idDelete = { product_id: productId.value }; 
         try{
             const response = await deleteProductcart (idDelete)
-            getItemsCartStore()
+            console.log (itemsCart.items)
+            if (response.status === 204) {
+                const index = itemsCart.value.items.findIndex(item => item.product_id === productId.value);
+                if (index !== -1) {
+                    itemsCart.value.items.splice(index, 1);
+                    itemsCart.value = { ...itemsCart.value };
+                }
+            }
             return response
         }catch (error) {
             console.error("Erro ao excluir produto do carrinho:", error);
         }
-        
     }
+
     async function getItemsCartStore() {
         try {
             const response = await getItemsCart();
-            itemsCart.value = response; 
-            return response;
+            itemsCart.value = response;
         } catch (error) {
             console.error("Não foi possível pegar itens do carrinho:", error);
         }
@@ -50,6 +61,7 @@ export const useCartProducts = defineStore('cart', () => {
             console.log(error)
         }
     }
+
     return {
         addProducts,
         getCartStore,

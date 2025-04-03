@@ -28,9 +28,12 @@
                             
                         </div>
                     </div>
-                    <router-link to="/usercart" class="back-button">
-                        <img  src="@/assets/icons/search.svg">
-                    </router-link>
+                    <img class="carrinho-icon" src="@/assets/icons/search.svg"  @click="toggleCart()">
+                    <CartDropdown
+            v-if="isCartOpen" 
+            :isCartOpen="isCartOpen"
+            @close-cart="isCartOpen = false"
+        />
                 </nav>
             </div>
         </div>
@@ -41,18 +44,20 @@
 import { ref, computed } from "vue";
 import { useRouter } from 'vue-router';
 import { useAuthenticateStore } from "@/stores/authenticate";
-import { useCartProducts } from "@/stores/cartStore";
-const useCart = useCartProducts()
+import CartDropdown from "./CartDropdown.vue";
+
 const router = useRouter()
 const isLoginPage = computed(() => router.path === "/userlogin");
 const showDropdown = ref(false);
+const isCartOpen = ref(false);
 const userStore = useAuthenticateStore()
 const toggleDropdown = () => {
     showDropdown.value = !showDropdown.value;
 };
-function getitens(){
-    useCart.getItemsCartStore()
-}
+const toggleCart = () => {
+    isCartOpen.value = !isCartOpen.value;
+};
+
 function gotoCreateProducts(){
     showDropdown.value = !showDropdown.value;
     router.push('/createproducts')

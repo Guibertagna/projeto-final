@@ -55,13 +55,11 @@ async function addToCart(id, unity_price) {
   useCart.quantity = 1;
   useCart.unitPrice = Number(unity_price);
   await useCart.addProducts();
-  getitens();
 }
 function removeItemCart(id) {
   useCart.productId = id;
   console.log(useCart.productId);
   useCart.deleteProductfromcart();
-  getitens();
 }
 const groupitems = computed(() => {
   const groupedProducts = {};
