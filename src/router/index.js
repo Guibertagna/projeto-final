@@ -8,6 +8,8 @@ import CreateProduct from '@/components/CreateProduct.vue';
 import ProfileComponent from '@/components/ProfileComponent.vue';
 import DetailPdroduct from '@/components/DetailPdroduct.vue';
 import CartUser from '@/components/CartUser.vue';
+import AddressesComponent from '@/components/AddressesComponent.vue';
+import OrderComponent from '@/components/OrderComponent.vue';
 
 const routes = [
   { path: '/userlogin', name: 'login', component: LoginView },
@@ -37,16 +39,28 @@ const routes = [
   },
   {
     path: '/products/:id',
-     name: 'Details', 
-     component: DetailPdroduct, 
-     props: true, 
-     meta: {title: 'Details'}
+    name: 'Details', 
+    component: DetailPdroduct, 
+    props: true, 
+    meta: {title: 'Details'}
   },
   {
     path: '/usercart',
     name: 'cart',
     component: CartUser,
     maeta: {title: 'Cart'}
+  },
+  {
+    path: '/addresses',
+    name: 'addresses',
+    component: AddressesComponent,
+    maeta: {title: 'Addresses'}
+  },
+  {
+    path: '/order',
+    name: 'order',
+    component: OrderComponent,
+    maeta: {title: 'order'}
   }
 ];
 

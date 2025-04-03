@@ -1,22 +1,18 @@
 import { computed, ref } from 'vue';
 import { defineStore } from 'pinia';
-import { addItemCart, deleteProductcart, getItemsCart } from '@/service/HttService';
+import { addItemCart, deleteProductcart, getAllCart, getItemsCart } from '@/service/HttService';
 
 export const useCartProducts = defineStore('cart', () => {
     const productId = ref();
     const quantity = ref();
     const unitPrice = ref();
     const itemsCart = ref([]);
-
+    const cart = ref()
     const productInformation = computed(() => ({
         product_id: productId.value,
         quantity: quantity.value,
         unit_price: unitPrice.value
     }));
-   
-    
-   
-    
     async function addProducts() {
         try {
             const response = await addItemCart(productInformation.value);
@@ -45,11 +41,21 @@ export const useCartProducts = defineStore('cart', () => {
             console.error("Não foi possível pegar itens do carrinho:", error);
         }
     }
-
+    async function getCartStore() {
+        try{
+            const response = await getAllCart();
+            cart.value = response
+            return response
+        }catch(error){
+            console.log(error)
+        }
+    }
     return {
         addProducts,
+        getCartStore,
         getItemsCartStore,
         deleteProductfromcart,
+        cart,
         itemsCart,
         productId,
         quantity,

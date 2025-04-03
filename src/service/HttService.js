@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { useAuthenticateStore } from '@/stores/authenticate';
-import { useRouter } from 'vue-router';
 export const apiUrl = axios.create({
     baseURL: 'http://35.196.79.227:8000', 
 });
@@ -16,6 +15,7 @@ export async function login(credentials) {
     throw error;
     }
 }
+
 export async function register(credentialsRegister) {
     try {
         const response = await apiUrl.post('/register', credentialsRegister); 
@@ -26,19 +26,18 @@ export async function register(credentialsRegister) {
     throw error;
     }
 }
+
 export async function getCategories() {
     
     try{
         const response = await apiUrl.get(`/categories/user/10`);
         return response;
-  
     }catch(error){
         console.error('Error ao pegar categorias', error)
     }
-    
 }
+
 export async function createProduct(productsinfo) {
-   
     console.log(productsinfo)
     const authStore = useAuthenticateStore(); 
     const token = authStore.token; 
@@ -75,7 +74,6 @@ export async function createCategorie (categoryData) {
     }else{
         alert("campo nome invalido")
     }
-        
     }catch(error){
         console.error('Erro ao criar categoria:', JSON.stringify(error.response?.data, null, 2));
     }
@@ -85,28 +83,21 @@ export async function createCategorie (categoryData) {
 
 export async function editCategoryService (category_id, categoryData) {
     try{
-            const authStore = useAuthenticateStore(); 
-            const token = authStore.token; 
-            const response = await apiUrl.put(`/categories/${category_id}`, categoryData,{
-                headers: {
-                    'Authorization': `Bearer ${token}`, 
-                    'Content-Type': 'application/json' 
+        const authStore = useAuthenticateStore(); 
+        const token = authStore.token; 
+        const response = await apiUrl.put(`/categories/${category_id}`, categoryData,{
+            headers: {
+                'Authorization': `Bearer ${token}`, 
+                'Content-Type': 'application/json' 
                 }
                 });
-                console.log('Categoria editada com sucesso ', response.data);
                 alert("Categoria editada com sucesso!");
         return response;
         
     }catch(error){
         console.error('Erro ao EDITAR categoria:', JSON.stringify(error.response?.data, null, 2));
     }
-    
 }
-
-
-
-
-
 
 export async function deleteCategorieService(category_id) {
     try{
@@ -122,6 +113,7 @@ export async function deleteCategorieService(category_id) {
         console.log("erro ao deletar categoria")
     }
 }
+
 export async function getProductsService() {
     try{
         const response = await apiUrl.get(`/products/user/10`)
@@ -131,6 +123,7 @@ export async function getProductsService() {
         console.log("erro a buscar produtos com id 1" + error)
     }
 }
+
 export async function getProductsById(product_id) {
     try{
         const response = await apiUrl.get(`/products/${product_id}`)
@@ -140,8 +133,6 @@ export async function getProductsById(product_id) {
         console.log("erro a buscar produtos com id 1" + error)
     }
 }
-
-
 
 export async function getProductsServiceCategory(category_id) {
     const authStore = useAuthenticateStore(); 
@@ -159,6 +150,7 @@ export async function getProductsServiceCategory(category_id) {
         console.log("erro a buscar produtos com id 1" + error)
     }
 }
+
 export async function getCategoryById(category_id) {
     try{
         const authStore = useAuthenticateStore(); 
@@ -187,11 +179,9 @@ export async function addItemCart(item) {
             }
         })
         console.log('Categoria editada com sucesso ', response.data);
-        alert("Categoria editada com sucesso!");
         return response;
     }catch(error){
         console.error(error)
-
     }
     
 }
@@ -211,10 +201,10 @@ export async function createCart() {
     }catch(error){
         console.error("Erro ao criar o carrinho:", error);
         return null; 
-
     }
     
 }
+
 export async function getItemsCart() {
     const authStore = useAuthenticateStore(); 
     const token = authStore.token; 
@@ -230,11 +220,27 @@ export async function getItemsCart() {
     }catch(error){
         console.error("Erro ao criar o carrinho:", error);
         return null; 
-
     }
     
 }
-
+export async function getAllCart() {
+    const authStore = useAuthenticateStore(); 
+    const token = authStore.token; 
+    console.log(token)    
+    try{
+        const response = await apiUrl.get('/cart',{
+            headers: {
+                'Authorization': `Bearer ${token}`, 
+                'Content-Type': 'application/json'
+            }
+        })
+        return response.data; 
+    }catch(error){
+        console.error("Erro ao obter o carrinho:", error);
+        return null; 
+    }
+    
+}
 export async function deleteProductcart(product_id) {
     try{
         const authStore = useAuthenticateStore(); 
@@ -253,4 +259,51 @@ export async function deleteProductcart(product_id) {
     }
 }
 
+export async function addAddresses(address) {
+    const authStore = useAuthenticateStore(); 
+    const token = authStore.token; 
+    try{
+        const response = await apiUrl.post('/addresses', address,{
+            headers: {
+                'Authorization': `Bearer ${token}`, 
+                'Content-Type': 'application/json' 
+            }
+        })
+        console.log('Endereço cadastrado com sucesso!', response.data);
+        return response;
+    }catch(error){
+        console.log("erro ao criar Endereço" + error)
+    }
+}
+export async function getAllAddresses() {
+    try{
+        const authStore = useAuthenticateStore(); 
+        const token = authStore.token; 
+        const response = await apiUrl.get('addresses',{
+            headers: {
+                'Authorization': `Bearer ${token}`, 
+                
+            }
+        })
+        return response
+    }catch(error){
+        console.log("erro ao deletar categoria")
+    }
+}
 
+
+export async function  sendOrders(order) {
+    const authStore = useAuthenticateStore(); 
+    const token = authStore.token; 
+    try{
+        const reponse = await apiUrl.post('/orders', order,{
+            headers:{
+                    'Authorization': `Bearer ${token}`, 
+                    'Content-Type': 'application/json' 
+            }
+        })
+    }catch(error){
+        console.log(error)
+    }
+    
+}

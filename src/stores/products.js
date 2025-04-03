@@ -8,21 +8,16 @@ export const useCreateProducts = defineStore('products', ()=>{
     const productStock = ref(0)
     const productCategory_id = ref(0)
     const productImg = ref('')
-  
-
-
- function getFormData(){
-    const formData = new FormData();
-    formData.append('name', productName.value)
-    formData.append('description', productDescription.value);
-    formData.append('price', productPrice.value);
-    formData.append('stock', productStock.value);
-    formData.append('category_id', productCategory_id.value);
-    formData.append('image', productImg.value);
-    return formData;
-}
-    
-    
+    function getFormData(){
+        const formData = new FormData();
+        formData.append('name', productName.value)
+        formData.append('description', productDescription.value);
+        formData.append('price', productPrice.value);
+        formData.append('stock', productStock.value);
+        formData.append('category_id', productCategory_id.value);
+        formData.append('image', productImg.value);
+        return formData;
+    }
     async function createProductStore() {
         try {
             
@@ -37,9 +32,6 @@ export const useCreateProducts = defineStore('products', ()=>{
             console.error("Erro ao criar produto:", JSON.stringify(error.response?.data, null, 2));
         }
     }
-    
-    
-   
 return {
     productName,
     productDescription,
@@ -49,6 +41,4 @@ return {
     productImg,
     createProductStore
 }
-
-    
 })
