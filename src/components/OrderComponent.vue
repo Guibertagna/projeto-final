@@ -20,8 +20,7 @@ import { onMounted } from 'vue';
 const useAddress = useAddresses()
 const useCart = useCartProducts()
 onMounted(async () => {
-    await useCart.getCartStore()
-    await useCart.getItemsCartStore()
+
     await useAddress.getAddress();
     console.log("Endereços carregados:", useAddress.userAddresses);
     console.log("CArrinho do usuário", useCart.cart)
