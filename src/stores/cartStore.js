@@ -7,6 +7,7 @@ export const useCartProducts = defineStore('cart', () => {
     const quantity = ref();
     const unitPrice = ref();
     const itemsCart = ref([]);
+    const isCheckout = ref (false)
     const cart = ref()
     const productInformation = computed(() => ({
         product_id: productId.value,
@@ -68,9 +69,13 @@ export const useCartProducts = defineStore('cart', () => {
         getItemsCartStore,
         deleteProductfromcart,
         cart,
+        isCheckout,
         itemsCart,
         productId,
         quantity,
         unitPrice,
     };
+    
+},{
+    persist: true
 });

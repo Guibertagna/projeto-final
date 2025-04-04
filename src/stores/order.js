@@ -1,21 +1,29 @@
 import { computed, ref} from 'vue';
-
 import { defineStore } from 'pinia';
 import { sendOrders } from '@/service/HttService';
-import { useAuthenticateStore } from './authenticate';
+import { useCartProducts } from './cartStore';
 export const useOrder = defineStore('order', ()=>{
     const address = ref()
     const cupom = ref()
-    const informationOrder = computed(()=>({
-        address_id: address.value,
-        coupon_id: cupom.value
-    }))
+    const useCart = useCartProducts()
+    const informationOrder = computed(() => ({
+        address_id: address.value, 
+        coupon_id: null
+    }));
     
     async function addOrder() {
         try{
-            const data = await sendOrders(informationOrder)
-
-            return data
+            console.log(informationOrder.value)
+            const response = await sendOrders(informationOrder.value)
+            if(response.status === 201 ){
+                useCart.itemsCart = {
+                    items: [],
+                    total_amount: 0
+                };
+                
+                useCart.isCheckout = false
+            }
+            return response
         }catch(error){
             console.log("não foi possivel criar endereço store" + error )
         }

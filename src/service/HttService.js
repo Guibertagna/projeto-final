@@ -301,7 +301,9 @@ export async function  sendOrders(order) {
                     'Authorization': `Bearer ${token}`, 
                     'Content-Type': 'application/json' 
             }
+          
         })
+        return reponse
     }catch(error){
         console.log(error)
     }

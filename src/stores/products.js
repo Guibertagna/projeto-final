@@ -22,7 +22,7 @@ export const useCreateProducts = defineStore('products', ()=>{
         try {
             
             const formData = getFormData()
-        formData.forEach((value, key) => {
+            formData.forEach((value, key) => {
             console.log("Enviando:", key, value);
         });
             const data = await createProduct(formData);

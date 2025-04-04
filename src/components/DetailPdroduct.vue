@@ -62,7 +62,7 @@ import AddCard from "./AddCard.vue";
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     padding: 20px;
 }
 
@@ -140,7 +140,6 @@ import AddCard from "./AddCard.vue";
 }
 
 
-  /* Botões */
 .button-container {
     display: flex;
     gap: 15px;
@@ -165,4 +164,40 @@ import AddCard from "./AddCard.vue";
 .buy-now:hover {
     background-color: #e64a19;
 }
+
+@media (max-width: 768px) {
+  .all-card {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .image-product {
+    width: 100%;
+    max-width: 400px;
+    animation: moveImageUp 0.5s ease-in-out;
+  }
+
+  .information {
+    width: 100%;
+    max-width: 100%;
+    animation: moveImageUp 0.5s ease-in-out;
+  }
+
+  .price-stock {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .button-container {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .buy-now {
+    width: 100%;
+    text-align: center;
+  }
+}
+
 </style>

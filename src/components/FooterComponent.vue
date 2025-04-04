@@ -102,4 +102,41 @@
   .social-icons a:hover {
     color: var(--secondary-color-orange);
   }
+  @media (max-width: 768px) {
+  .footer {
+    height: auto;
+    padding: 20px;
+  }
+
+  .upside {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .upside-right {
+    width: 100%;
+  }
+
+  .links {
+    flex-direction: column;
+    gap: 10px;
+    padding-left: 0;
+  }
+
+  .underside {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .underside-left {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .social-icons {
+    align-self: flex-start;
+  }
+}
   </style>

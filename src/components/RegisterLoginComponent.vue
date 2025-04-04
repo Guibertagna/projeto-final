@@ -98,6 +98,7 @@ import { ref, computed } from 'vue';
 import { createCart, login, register } from '@/service/HttService';
 import { useAuthenticateStore } from '@/stores/authenticate';
 import { useRouter } from 'vue-router';
+import { useCartProducts } from "@/stores/cartStore";
 const router = useRouter()
 const loginStore = useAuthenticateStore()
 const emailUser = ref('');
@@ -112,7 +113,7 @@ const emailTouchedRegister = ref(false)
 const passwordTouchedRegister = ref (false)
 const passwordTouched = ref(false);
 const isLoginMode = ref(true);
-
+const useCart = useCartProducts();
 const emailError = computed(() => {
     if (!emailUser.value) return 'O e-mail é obrigatório.';
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailUser.value)) return 'E-mail inválido.';
@@ -156,6 +157,7 @@ async function handleLogin() {
       loginStore.saveUser(result.data);
       router.push('/');
       alert('Login sucesso');
+      getitens()
     } else {
       throw new Error('Credenciais inválidas.');
     }
@@ -200,7 +202,9 @@ async function handleRegister() {
     console.log("erro ao criar carrinho")
   }
 }
-
+function getitens() {
+  useCart.getItemsCartStore();
+}
 
 function toggleMode() {
   isLoginMode.value = !isLoginMode.value;

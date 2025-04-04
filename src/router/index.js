@@ -10,6 +10,7 @@ import DetailPdroduct from '@/components/DetailPdroduct.vue';
 import CartUser from '@/components/CartUser.vue';
 import AddressesComponent from '@/components/AddressesComponent.vue';
 import OrderComponent from '@/components/OrderComponent.vue';
+import CheckoutView from '@/views/CheckoutView.vue';
 
 const routes = [
   { path: '/userlogin', name: 'login', component: LoginView },
@@ -45,9 +46,9 @@ const routes = [
     meta: {title: 'Details'}
   },
   {
-    path: '/usercart',
+    path: '/cart',
     name: 'cart',
-    component: CartUser,
+    component: CheckoutView,
     maeta: {title: 'Cart'}
   },
   {

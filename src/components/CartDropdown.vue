@@ -5,7 +5,7 @@
           <h2>Shopping Cart</h2>
           <div class="cart-items">
             <div
-         v-for="(item, index) in useCart.groupedProducts"
+             
               :key="item.product_id"
               class="cart-item"
             >

@@ -32,9 +32,7 @@
 <script setup >
     import { useAddresses } from '@/stores/addresses';
     const useAddress = useAddresses()
-    function sendAddresses(){
-        useAddress.addAddress
-    }
+    
 </script>
 <style>
     .input {

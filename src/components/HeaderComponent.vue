@@ -28,12 +28,9 @@
                             
                         </div>
                     </div>
-                    <img class="carrinho-icon" src="@/assets/icons/search.svg"  @click="toggleCart()">
-                    <CartDropdown
-            v-if="isCartOpen" 
-            :isCartOpen="isCartOpen"
-            @close-cart="isCartOpen = false"
-        />
+                    <router-link to="/cart">
+                        <img class="carrinho-icon" src="@/assets/icons/search.svg"  @click="toggleCart()">
+                    </router-link>
                 </nav>
             </div>
         </div>
@@ -154,4 +151,52 @@ function gotoCreateCategories(){
 .dropdown-menu p:hover {
     background: #f0f0f0;
 }
+@media (max-width: 768px) {
+    .promotion {
+    flex-direction: column;
+    text-align: center;
+    gap: 4px;
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .promotion img.ticket,
+  .promotion img.arrow-right {
+    display: none;
+  }
+
+  .shop-now {
+    display: none;
+
+    font-weight: bold;
+  }
+
+  .all-content {
+    padding: 10px;
+  }
+
+  .content-intern {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .links {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    padding-left: 0;
+  }
+
+  .icons-header {
+    gap: 15px;
+  }
+
+  .dropdown-menu {
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
 </style>
