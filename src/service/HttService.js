@@ -197,6 +197,7 @@ export async function createCart() {
                 'Content-Type': 'application/json'
             }
         })
+        console.log(response.data)
         return response.data; 
     }catch(error){
         console.error("Erro ao criar o carrinho:", error);

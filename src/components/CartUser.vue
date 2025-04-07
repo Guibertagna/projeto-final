@@ -2,60 +2,114 @@
   <div class="allCart">
     <div class="card">
       <h2>Shopping Cart</h2>
+      <div class="cart-header">
+        <div>Product</div>
+        <div>Quantity</div>
+        <div>Price</div>
+        <div>Subtotal</div>
+      </div>
       <div class="cart-items">
         <div
-          v-for="(item, index) in groupitems"
+          v-for="item in groupitems"
           :key="item.product_id"
-          class="cart-item"
+          class="cart-item-row"
         >
-          <div class="productd">
-            <div class="img">
-              <img :src="getImg(item.image_path)" alt="Product Image" />
-            </div>
-            <div class="information">
-              <div class="name">{{ item.name }}</div>
-              <div class="price">
-                Unit Price: <span>R$ {{ item.unit_price.toFixed(2) }}</span>
-              </div>
-              <div class="total">
-                Total: <span>R$ {{ item.total_price.toFixed(2) }}</span>
-              </div>
-            </div>
-            <div class="quantity-container">
-              <button class="quantity-btn" :disabled="useCart.isCheckout" @click="removeItemCart(item.product_id)">-</button>
-              <div class="quantity">
-                <span>{{ item.quantity }}</span>
-              </div>
-              <button class="quantity-btn" :disabled="useCart.isCheckout" @click="addToCart(item.product_id, item.unit_price)">+</button>
+          <!-- Coluna 1: Produto -->
+          <div class="product-cell">
+            <img :src="getImg(item.image_path)" alt="Product Image" />
+            <p class="product-name"></p>
+          </div>
+
+          <!-- Coluna 2: Quantidade -->
+          <div class="quantity-cell">
+            <div class="border">
+              <button
+                class="quantity-btn"
+                :disabled="useCart.isCheckout"
+                @click="removeItemCart(item.product_id)"
+              >
+                -
+              </button>
+              <span class="quantity">{{ item.quantity }}</span>
+              <button
+                class="quantity-btn"
+                :disabled="useCart.isCheckout"
+                @click="addToCart(item.product_id, item.unit_price)"
+              >
+                +
+              </button>
             </div>
           </div>
-          <hr v-if="index < groupitems.length - 1" class="divider" />
+
+          <!-- Coluna 3: Preço unitário -->
+          <div class="price-cell">
+            {{ formatCurrency(item.unit_price) }}
+          </div>
+
+          <!-- Coluna 4: Subtotal -->
+          <div class="subtotal-cell">
+            {{ formatCurrency(item.total_price) }}
+          </div>
         </div>
       </div>
-      <div class="cart-summary">
-        <strong>Cart Total:</strong> R$ {{ useCart.itemsCart.total_amount.toFixed(2) }}
-      </div>
-      <button class="checkout-btn" :disabled="groupitems.length === 0 || useCart.isCheckout" @click="proceedToCheckout">
-        Proceed to Checkout
-      </button>
+
+
       <div v-if="groupitems.length === 0" class="empty-cart">
         Your cart is empty
+      </div>
+    </div>
+    <div class="all-frete" v-if="groupitems.length > 0">
+      <div>
+        <div class="radio-options">
+          <h2>Select Shipping</h2>
+          <label>
+            <input type="radio" v-model="useCart.shipping" value= 0 />
+            Free Shipping (R$ 00,00)
+          </label>
+          <label>
+            <input type="radio" v-model="useCart.shipping" value= 10 />
+            Standard Shipping (R$ 10,00)
+          </label>
+          <label>
+            <input type="radio" v-model="useCart.shipping" value= 20 />
+            Express Shipping (R$ 20,00)
+          </label>
+          <label>
+            <input type="radio" v-model="useCart.shipping" value= 30  />
+            Next Day Shipping (R$ 30,00)
+          </label>
+          <br />
+          <div class="cart-summary">
+            <strong
+              >Subtotal:
+              {{ formatCurrency(useCart.finalPrice) }}</strong
+            >
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
+
 <script setup>
 import { computed, onMounted } from "vue";
 import { useCartProducts } from "@/stores/cartStore";
-
+import { useRouter } from "vue-router";
+const route = useRouter();
 const useCart = useCartProducts();
 
 function getImg(imagePath) {
   const baseUrl = "http://35.196.79.227:8000";
   return `${baseUrl}${imagePath}`;
 }
-
+const formatCurrency = (value) => {
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+    minimumFractionDigits: 2,
+  }).format(value);
+};
 async function addToCart(id, unit_price) {
   useCart.productId = id;
   useCart.quantity = 1;
@@ -82,21 +136,21 @@ const groupitems = computed(() => {
       };
     }
     groupedProducts[product.product_id].quantity += product.quantity;
-    groupedProducts[product.product_id].total_price += product.unit_price * product.quantity;
+    groupedProducts[product.product_id].total_price +=
+      product.unit_price * product.quantity;
   });
   return Object.values(groupedProducts);
 });
+
 
 function getitens() {
   useCart.getItemsCartStore();
 }
 
-function proceedToCheckout() {
-  useCart.isCheckout =  true
-}
+function proceedToCheckout() {}
 
 onMounted(() => {
-  useCart.isCheckout = false
+  useCart.isCheckout = false;
   getitens();
 });
 </script>
@@ -105,209 +159,108 @@ onMounted(() => {
 .allCart {
   display: flex;
   justify-content: center;
-  padding: 2rem 1rem;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  gap: 40px;
+  padding: 40px;
+  flex-wrap: wrap;
+  background-color: #f9f9f9;
 }
 
 .card {
-  width: 100%;
-  max-width: 700px;
+    flex: 1 1 auto;;
+  background-color: #fff;
   border-radius: 12px;
-  background-color: white;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-  padding: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  padding: 40px;
 }
 
-.card h2 {
-  text-align: center;
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: #333;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 2px solid #f0f0f0;
-}
-
-.cart-items {
-  display: flex;
-  flex-direction: column;
-}
-
-.cart-item {
-  padding: 0.5rem 0;
-}
-
-.productd {
-  display: flex;
+.cart-header,
+.cart-item-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
   align-items: center;
-  gap: 1.5rem;
-  padding: 1rem 0;
+  text-align: center;
+  padding: 12px 0;
 }
 
-.img {
-  flex-shrink: 0;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+.cart-header {
+  font-weight: bold;
+  font-size: 18px;
+  border-bottom: 2px solid #ddd;
+  color: #333;
 }
 
-.img img {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 8px;
-  display: block;
-  transition: transform 0.2s ease;
+.cart-item-row {
+  border-bottom: 1px solid #e0e0e0;
 }
 
-.img img:hover {
-  transform: scale(1.05);
-}
-
-.information {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  flex-grow: 1;
-}
-
-.information div {
-  font-size: 1rem;
-  color: #444;
-}
-
-.information span {
-  font-weight: 600;
-  color: #222;
-}
-
-.price,
-.total {
-  font-size: 1rem;
-}
-
-.total span {
-  color: #e63946;
-  font-size: 1.1rem;
-}
-
-.quantity-container {
+.product-cell {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.quantity {
-  font-size: 1.1rem;
-  font-weight: 600;
-  padding: 0.5rem 1rem;
-  background: #f5f5f5;
-  border-radius: 8px;
-  text-align: center;
-  min-width: 40px;
+.product-cell img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
 }
 
+
+
 .quantity-btn {
-  background: #e63946;
-  color: white;
-  font-size: 1.2rem;
-  font-weight: 700;
+  background-color: #f0f0f0;
   border: none;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
+  padding: 6px 12px;
+  font-size: 16px;
   cursor: pointer;
   transition: background 0.2s;
 }
 
-.quantity-btn:hover {
-  background: #c32f3a;
+
+.quantity {
+  padding: 0 10px;
+  min-width: 20px;
 }
 
-.quantity-btn:disabled {
-  background: #ddd;
-  cursor: not-allowed;
+.radio-options {
+  flex: 1 1 300px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.divider {
-  border: none;
-  height: 1px;
-  background: #f0f0f0;
-  margin: 0.5rem 0;
-  width: 100%;
+.radio-options h2 {
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.radio-options label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.radio-options label:hover {
+  background-color: #f5f5f5;
 }
 
 .cart-summary {
-  font-size: 1.2rem;
-  font-weight: 600;
-  text-align: center;
-  padding: 1rem;
-  background: #f8f9fa;
-  border-radius: 8px;
-  margin-top: 1rem;
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: right;
+  border-top: 1px solid #ddd;
+  padding-top: 15px;
 }
 
-.checkout-btn {
-  width: 100%;
-  padding: 12px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  text-align: center;
-  background: #28a745;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.2s;
-  margin-top: 1rem;
-}
-
-.checkout-btn:hover {
-  background: #218838;
-}
-
-.checkout-btn:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
-
-.empty-cart {
-  text-align: center;
-  padding: 2rem;
-  color: #888;
-  font-style: italic;
-}
-
-@media (max-width: 600px) {
-  .card {
-    padding: 1rem;
-  }
-
-  .productd {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-
-  .img {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
-
-  .img img {
-    width: 150px;
-    height: 150px;
-  }
-
-  .information {
-    width: 100%;
-  }
-
-  .quantity-container {
-    justify-content: space-between;
-    width: 100%;
-  }
-}
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div class="checkout-section" v-if="useCart.isCheckout">
+    <div class="checkout-section" >
       <h3>Finalizar Pedido</h3>
       <label for="addresses">Selecione um Endereço</label>
       <select v-model="userorder.address" id="addresses" class="address-select">

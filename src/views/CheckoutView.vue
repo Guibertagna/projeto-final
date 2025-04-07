@@ -1,20 +1,24 @@
 <template>
-    <div class="checkout-container">
-        <div class="cart-items">
+    <div class="checkout-container">  
+        <div>
             <CartUser/>
         </div>
-        <div v-if="useCart.isCheckout" class="order">
-            <CheckoutComponent/>
+
+        <div>
+            <CheckoutPayment/>
         </div>
+        <div >
+            <CheckoutAddress/>
+        </div> 
+
     </div>
 </template>
 
 <script setup>
 import CartUser from '@/components/CartUser.vue';
-import CheckoutComponent from '@/components/CheckoutComponent.vue'
-import { useCartProducts } from "@/stores/cartStore";
-
-const useCart = useCartProducts();
+import CheckoutAddress from '@/components/CheckoutAddress.vue'
+import CheckoutPayment from '@/components/CheckoutPayment.vue';
+import { useCartProducts } from '@/stores/cartStore';
 
 </script>
 

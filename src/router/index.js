@@ -48,8 +48,9 @@ const routes = [
   {
     path: '/cart',
     name: 'cart',
-    component: CheckoutView,
-    maeta: {title: 'Cart'}
+    component: CartUser,
+    props: true,
+    meta: {title: 'Cart'}
   },
   {
     path: '/addresses',
@@ -62,7 +63,15 @@ const routes = [
     name: 'order',
     component: OrderComponent,
     maeta: {title: 'order'}
-  }
+  },
+  {
+    path: '/checkout',
+    name: 'Checkout',
+    component: CheckoutView,
+    props: true,
+    meta: {title: 'Checkout'}
+  },
+
 ];
 
 const router = createRouter({
