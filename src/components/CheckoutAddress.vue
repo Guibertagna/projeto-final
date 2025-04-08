@@ -1,101 +1,121 @@
 <template>
+  <div class="all-content">
     <div class="checkout-section" >
-      <h3>Finalizar Pedido</h3>
-      <label for="addresses">Selecione um Endereço</label>
-      <select v-model="userorder.address" id="addresses" class="address-select">
-        <option v-for="address in useAddress.userAddresses" :key="address.id" :value="address.id">
-          {{ address.number }}, {{ address.zip }} - {{ address.city }}, {{ address.state }}, {{ address.country }}
-        </option>
-      </select>
-  
-      <div class="checkout-buttons">
-        <button class="cancel-btn" @click="useCart.isCheckout = false">Cancelar Pedido</button>
-        <button class="send-btn" @click="sendOrder()">Enviar Pedido</button>
-      </div>
+      <h3>Shipping Address</h3>
+      <div class="address-options">
+        <label class="label-title">Selecione um Endereço</label>
+      <div 
+        v-for="address in useAddress.userAddresses" 
+        :key="address.id" 
+        class="radio-option">
+        <input
+          type="radio"
+          :id="'address-' + address.id"
+          :value="address.id"
+          v-model="userorder.address"
+          name="address-options"
+        />
+        <label :for="'address-' + address.id">
+          {{ address.street }}, {{ address.number }}, {{ address.zip }} - {{ address.city }}, {{ address.state }}, {{ address.country }}
+        </label>
+  </div>
     </div>
-  </template>
-  
-  <script setup>
-  import { useAddresses } from '@/stores/addresses';
-  import { useCartProducts } from '@/stores/cartStore';
-  import { useOrder } from '@/stores/order';
-  import { onMounted } from 'vue';
-  
-  const userorder = useOrder();
-  const useAddress = useAddresses();
-  const useCart = useCartProducts();
-  
-  function sendOrder() {
-        userorder.addOrder();
+    <button class="create-button" @click="creatAdress()">Or create a new address</button>
+    </div>
+  <div v-if="useAddress.isCreateAddress">
+    <AddressesComponent />
+  </div>
+  </div>
+</template>
+
+<script setup>
+import { useAddresses } from '@/stores/addresses';
+import { useCartProducts } from '@/stores/cartStore';
+import { useOrder } from '@/stores/order';
+import { onMounted } from 'vue';
+import { ref } from 'vue';
+import AddressesComponent from './AddressesComponent.vue';
+
+const userorder = useOrder();
+const useAddress = useAddresses();
+const useCart = useCartProducts();
+
+function sendOrder() {
+      userorder.addOrder();
+}
+function creatAdress() {
+  useAddress.isCreateAddress = true;
+  console.log(useAddress.userAddresses.length != 0);
+}
+
+
+onMounted(async () => {
+
+  await useAddress.getAddress();
+  if (useAddress.userAddresses.length == 0) {
+    useAddress.isCreateAddress = true;
   }
-  
-  onMounted(async () => {
- 
-    await useAddress.getAddress();
-  });
-  </script>
-  
-  <style scoped>
-  .checkout-section {
-    margin-top: 2rem;
-    padding: 1rem;
-    background: #fdfdfd;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-  }
-  
-  .checkout-section h3 {
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    text-align: center;
-    color: #333;
-  }
-  
-  .address-select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
-    font-size: 1rem;
-  }
-  
-  .checkout-buttons {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-  
-  .cancel-btn,
-  .send-btn {
-    flex: 1;
-    padding: 12px;
-    font-size: 1rem;
-    font-weight: 600;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    transition: 0.2s ease;
-  }
-  
-  .cancel-btn {
-    background: #dc3545;
-    color: white;
-  }
-  
-  .cancel-btn:hover {
-    background: #c82333;
-  }
-  
-  .send-btn {
-    background: #007bff;
-    color: white;
-  }
-  
-  .send-btn:hover {
-    background: #0069d9;
-  }
-  </style>
-  
+});
+</script>
+
+<style scoped>
+.checkout-section {
+  padding: 1rem;
+  background: #fdfdfd;
+  border-radius: 8px;
+  border: 2px solid #eaeaea;
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+.create-button{
+  background: var(--secondary-color-orange);
+  padding:0.5rem;
+  border-radius: 8px;
+  border: none;
+
+  font-size: 1rem;
+  color: var(--neutral-color-02);
+}
+.checkout-section h3 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-align: center;
+  color: #333;
+}
+.address-options {
+  display: flex;
+  flex-direction: column;
+  gap:10px;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.label-title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.radio-option input[type="radio"] {
+  accent-color: var(--primary-color);
+  width: 16px;
+  height: 16px;
+}
+
+.radio-option label {
+  font-size: 1rem;
+  cursor: pointer;
+}
+</style>

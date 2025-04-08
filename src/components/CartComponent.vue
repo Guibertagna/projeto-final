@@ -1,104 +1,81 @@
 <template>
-  <div class="allCart">
-    <div class="card">
-      <h2>Shopping Cart</h2>
-      <div class="cart-header">
-        <div>Product</div>
-        <div>Quantity</div>
-        <div>Price</div>
-        <div>Subtotal</div>
-      </div>
-      <div class="cart-items">
-        <div
-          v-for="item in groupitems"
-          :key="item.product_id"
-          class="cart-item-row"
-        >
-          <!-- Coluna 1: Produto -->
-          <div class="product-cell">
-            <img :src="getImg(item.image_path)" alt="Product Image" />
-            <p class="product-name"></p>
-          </div>
-
-          <!-- Coluna 2: Quantidade -->
-          <div class="quantity-cell">
-            <div class="border">
-              <button
-                class="quantity-btn"
-                :disabled="useCart.isCheckout"
-                @click="removeItemCart(item.product_id)"
-              >
-                -
-              </button>
-              <span class="quantity">{{ item.quantity }}</span>
-              <button
-                class="quantity-btn"
-                :disabled="useCart.isCheckout"
-                @click="addToCart(item.product_id, item.unit_price)"
-              >
-                +
-              </button>
-            </div>
-          </div>
-
-          <!-- Coluna 3: Preço unitário -->
-          <div class="price-cell">
-            {{ formatCurrency(item.unit_price) }}
-          </div>
-
-          <!-- Coluna 4: Subtotal -->
-          <div class="subtotal-cell">
-            {{ formatCurrency(item.total_price) }}
-          </div>
-        </div>
-      </div>
-
-
-      <div v-if="groupitems.length === 0" class="empty-cart">
-        Your cart is empty
-      </div>
+  <div :class="useCart.isCheckout ? 'cart-checkout' : 'card'">
+    <h2>Shopping Cart</h2>
+    
+    <!-- Cabeçalho -->
+    <div :class="useCart.isCheckout ? 'cart-header-checkout' : 'cart-header'">
+      <div>Product</div>
+      <div>Quantity</div>
+      <div>Price</div>
+      <div>Subtotal</div>
     </div>
-    <div class="all-frete" v-if="groupitems.length > 0">
-      <div>
-        <div class="radio-options">
-          <h2>Select Shipping</h2>
-          <label>
-            <input type="radio" v-model="useCart.shipping" value= 0 />
-            Free Shipping (R$ 00,00)
-          </label>
-          <label>
-            <input type="radio" v-model="useCart.shipping" value= 10 />
-            Standard Shipping (R$ 10,00)
-          </label>
-          <label>
-            <input type="radio" v-model="useCart.shipping" value= 20 />
-            Express Shipping (R$ 20,00)
-          </label>
-          <label>
-            <input type="radio" v-model="useCart.shipping" value= 30  />
-            Next Day Shipping (R$ 30,00)
-          </label>
-          <br />
-          <div class="cart-summary">
-            <strong
-              >Subtotal:
-              {{ formatCurrency(useCart.finalPrice) }}</strong
+
+    <!-- Itens do Carrinho -->
+    <div v-if="groupitems.length > 0">
+      <div
+        v-for="item in groupitems"
+        :key="item.product_id"
+        :class="useCart.isCheckout ? 'cart-item-checkout' : 'cart-item-row'"
+      >
+        <!-- Produto -->
+        <div class="product-cell">
+          <img :src="getImg(item.image_path)" alt="Product Image" />
+          <p class="product-name">{{ item.name }}</p>
+        </div>
+
+        <!-- Quantidade -->
+        <div class="quantity-cell">
+          <div  :class="useCart.isCheckout ? 'quantity-checkout' : 'border'">
+            <button
+              v-if="!useCart.isCheckout"
+              class="quantity-btn"
+              @click="removeItemCart(item.product_id)"
             >
+              -
+            </button>
+            <span class="quantity">{{ item.quantity }}</span>
+            <button
+              v-if="!useCart.isCheckout"
+              class="quantity-btn"
+              @click="addToCart(item.product_id, item.unit_price)"
+            >
+              +
+            </button>
           </div>
         </div>
+
+        <!-- Preço -->
+        <div class="price-cell">
+          {{ formatCurrency(item.unit_price) }}
+        </div>
+
+        <!-- Subtotal -->
+        <div class="subtotal-cell">
+          {{ formatCurrency(item.total_price) }}
+        </div>
       </div>
+
+      <button 
+        v-if="!useCart.isCheckout"
+        class="button-checkout" 
+        @click="proceedCheckout()"
+      >
+        Proceed to Checkout
+      </button>
+    </div>
+
+    <div v-else class="empty-cart">
+      Your cart is empty
     </div>
   </div>
 </template>
 
-
 <script setup>
 import { computed, onMounted } from "vue";
 import { useCartProducts } from "@/stores/cartStore";
-import { useRouter } from "vue-router";
-const route = useRouter();
 const useCart = useCartProducts();
-
+import { useRouter } from "vue-router";
+const router = useRouter();
 function getImg(imagePath) {
   const baseUrl = "http://35.196.79.227:8000";
   return `${baseUrl}${imagePath}`;
@@ -121,7 +98,12 @@ function removeItemCart(id) {
   useCart.productId = id;
   useCart.deleteProductfromcart();
 }
-
+function proceedCheckout() {
+  useCart.isCheckout = true;
+  router.push({
+    name: "Checkout",
+  });
+}
 const groupitems = computed(() => {
   const groupedProducts = {};
   useCart.itemsCart.items?.forEach((product) => {
@@ -142,20 +124,72 @@ const groupitems = computed(() => {
   return Object.values(groupedProducts);
 });
 
-
 function getitens() {
   useCart.getItemsCartStore();
 }
 
-function proceedToCheckout() {}
-
 onMounted(() => {
-  useCart.isCheckout = false;
   getitens();
 });
 </script>
 
+
 <style scoped>
+
+
+/* Layout de checkout (vertical) */
+.cart-checkout {
+  margin: auto;
+  background-color: #fff;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+}
+
+.cart-header-checkout {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  flex-direction: row;
+  gap: 15px;
+  padding: 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.cart-item-checkout {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 15px;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.cart-item-checkout > div {
+  display: flex;
+  justify-content: space-between;
+}
+
+
+
+.cart-item-checkout .product-cell {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.cart-item-checkout .product-cell img {
+  width: 60%;
+  height: auto;
+  max-width: 200px;
+}
+
+/* Estilos compartilhados */
+
+
+
 .allCart {
   display: flex;
   justify-content: center;
@@ -261,6 +295,14 @@ onMounted(() => {
   text-align: right;
   border-top: 1px solid #ddd;
   padding-top: 15px;
+}
+
+.button-checkout{
+  background-color: var(--secondary-color-orange);
+  color: white; 
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 20px;
 }
 
 </style>

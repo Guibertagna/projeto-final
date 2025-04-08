@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="address-section">
         <div class="all-contet">
             <div class="space-y-4">
                 <label for="streetStore">Rua</label>
@@ -22,8 +22,11 @@
             </div>
         </div>
         <div class="buttons" >
-            <button @click="useAddress.addAddress()">
+            <button class="button" @click="useAddress.addAddress()">
                 Add
+            </button>
+            <button v-if="useAddress.userAddresses.length != 0" class="button-cancel" @click="useAddress.isCreateAddress = false">
+                Cancel
             </button>
         </div>
     </div>
@@ -35,6 +38,15 @@
     
 </script>
 <style>
+.address-section{
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px; 
+    
+    display: flex;
+    flex-direction: column;
+}
     .input {
         width: 100%;
         padding: 8px;
@@ -44,7 +56,29 @@
         display: block;
         margin-top: 4px;
     }
-
+    .buttons{
+        margin: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .button{
+        background-color: green;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    .button-cancel{
+        background-color: red;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
     label {
         display: block;
         font-weight: bold;
