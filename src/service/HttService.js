@@ -302,11 +302,40 @@ export async function  sendOrders(order) {
                     'Authorization': `Bearer ${token}`, 
                     'Content-Type': 'application/json' 
             }
-          
         })
         return reponse
     }catch(error){
         console.log(error)
     }
     
+}
+export async function createCoupom(coupon) {
+    const authStore = useAuthenticateStore();
+    const token = authStore.token;
+    try{
+        const response = await apiUrl.post('/coupons', coupon, {
+            headers:{
+                'authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        })
+        return response;
+    }catch(error){
+        console.log("erro ao criar cupom" + error)
+    }
+}
+export async function getAllCoupons() {
+    const authStore = useAuthenticateStore();
+    const token = authStore.token;
+    try{
+        const response = await apiUrl.get('/coupons', {
+            headers:{
+                'authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        })
+        return response;
+    }catch(error){
+        console.log("erro ao obter cupom" + error)
+    }
 }

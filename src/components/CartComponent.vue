@@ -1,7 +1,7 @@
 <template>
   <div :class="useCart.isCheckout ? 'cart-checkout' : 'card'">
-    <h2>Shopping Cart</h2>
-    
+    <h2 v-if="!useCart.isCheckout">Shopping Cart</h2>
+    <h2 v-if="useCart.isCheckout">Products</h2>
     <!-- Cabeçalho -->
     <div :class="useCart.isCheckout ? 'cart-header-checkout' : 'cart-header'">
       <div>Product</div>
@@ -11,7 +11,7 @@
     </div>
 
     <!-- Itens do Carrinho -->
-    <div v-if="groupitems.length > 0">
+    <div v-if="groupitems.length > 0" class="cart-items">
       <div
         v-for="item in groupitems"
         :key="item.product_id"
@@ -54,7 +54,39 @@
           {{ formatCurrency(item.total_price) }}
         </div>
       </div>
-
+      <div class="input-coupons">
+        <label for="coupon">Coupon:</label>
+        <input type="text" id="coupon" v-model="useCart.cuponCart" />
+        <button @click="useCart.applyCoupon(), useCart.addProducts.value = true ">Apply</button>
+      </div>
+      <div v-if="useCart.isCheckout" class="prices">
+        <div class="coupon-used" v-if="useCart.isApplyCupon" >
+          <div class="cupon-name">
+            <label for="coupon-name"><img class="ticket" src="@/assets/icons/ticket-percent.svg"></label>
+            <h6 id="coupon-name"> {{ useCart.discountCouponView }}</h6>
+          </div>
+          <div class="percentage">
+            <h6 id="discounted-percentage">- %{{ useCart.discountCoupon }} </h6>
+          </div>
+        </div>
+        <div class="cart-summary" style="font-size: small;">
+          <label  for="subtotal">Subtotal</label>
+          <h5 class="final-price" id="subtotal" style="font-size: small;">  {{ formatCurrency(useCart.finalPrice) }}</h5>
+        </div>
+      
+        <div class="cart-summary"  style="font-size: small;" >
+        <label for="shipping" > shipping value</label>
+        <h5 class="final-price" id="shipping" style="font-size: small;" > {{ formatCurrency(useCart.shipping) }} </h5>
+      </div>
+      <div class="cart-summary" style="font-size: small;" v-if="useCart.isApplyCupon">
+            <label for="discounted-value"> Discounted Value:</label>
+            <h6 id="discounted-value" style="font-size: small;color: red;">- {{ formatCurrency(useCart.discount) }}</h6>
+          </div>
+      <div class="cart-summary">
+        <label for="final">Total</label>
+        <h5 class="final-price" id="final" style="font-weight: bold;"> {{ formatCurrency(useCart.finalPriceShipping) }} </h5>
+      </div>
+      </div>
       <button 
         v-if="!useCart.isCheckout"
         class="button-checkout" 
@@ -73,9 +105,11 @@
 <script setup>
 import { computed, onMounted } from "vue";
 import { useCartProducts } from "@/stores/cartStore";
-const useCart = useCartProducts();
+import { useCoupons } from "@/stores/cupons";
 import { useRouter } from "vue-router";
+const useCart = useCartProducts();
 const router = useRouter();
+const useCouponsStore = useCoupons();
 function getImg(imagePath) {
   const baseUrl = "http://35.196.79.227:8000";
   return `${baseUrl}${imagePath}`;
@@ -129,6 +163,8 @@ function getitens() {
 }
 
 onMounted(() => {
+  useCart.isApplyCupon = false;
+  console.log(useCart.applyCoupon.value)
   getitens();
 });
 </script>
@@ -187,9 +223,24 @@ onMounted(() => {
 }
 
 /* Estilos compartilhados */
+.input-coupons button{
+  background-color: var(--primary-color);
+  color: white; 
+  border-radius: 10px;
+  padding: 10px;
+}
+.input-coupons input{
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
 
-
-
+.input-coupons{ 
+  justify-content: center;
+  display: flex;
+  gap: 10px;
+  
+}
 .allCart {
   display: flex;
   justify-content: center;
@@ -256,7 +307,11 @@ onMounted(() => {
   padding: 0 10px;
   min-width: 20px;
 }
-
+.cart-items{
+  gap: 40px;
+  display: flex;
+  flex-direction: column;
+}
 .radio-options {
   flex: 1 1 300px;
   background-color: #fff;
@@ -267,12 +322,25 @@ onMounted(() => {
   flex-direction: column;
   gap: 20px;
 }
+.final-price{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  font-size: 18px;
 
+}
+.prices{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
 .radio-options h2 {
   margin-bottom: 10px;
   font-size: 20px;
   font-weight: 600;
 }
+
 
 .radio-options label {
   display: flex;
@@ -289,12 +357,34 @@ onMounted(() => {
 }
 
 .cart-summary {
-  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-size: 18px;
-  font-weight: bold;
+  
   text-align: right;
   border-top: 1px solid #ddd;
   padding-top: 15px;
+}
+.coupon-used {
+  align-items: center;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+
+}
+
+.cupon-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: green;
+}
+
+.ticket {
+  width: 20px;
+  margin-bottom: 10px;
+  height: 30px;
 }
 
 .button-checkout{

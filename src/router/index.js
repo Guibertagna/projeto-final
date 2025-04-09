@@ -11,6 +11,7 @@ import AddressesComponent from '@/components/AddressesComponent.vue';
 import OrderComponent from '@/components/OrderComponent.vue';
 import CheckoutView from '@/views/CheckoutView.vue';
 import CartUserView from '@/views/CartUserView.vue';
+import CreateCoupons from '@/components/CreateCoupons.vue';
 
 const routes = [
   { path: '/userlogin', name: 'login', component: LoginView },
@@ -69,7 +70,14 @@ const routes = [
     name: 'Checkout',
     component: CheckoutView,
     props: true,
-    meta: {title: 'Checkout'}
+    meta: {title: 'Checkout', requiresAuth: true}
+    
+  },
+  { 
+    path: '/coupons', 
+    name: 'Coupons', 
+    component: CreateCoupons,
+    meta: { title: 'Coupons' }
   },
 
 ];

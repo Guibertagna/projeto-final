@@ -1,30 +1,39 @@
 import { computed, ref } from "vue";
 import { defineStore } from "pinia";
-import {
-  addItemCart,
-  deleteProductcart,
-  getAllCart,
-  getItemsCart,
-} from "@/service/HttService";
+import {addItemCart, deleteProductcart,getAllCart,getItemsCart,} from "@/service/HttService";
+import { useCoupons } from "@/stores/cupons";
 
-export const useCartProducts = defineStore(
-  "cart",
-  () => {
+export const useCartProducts = defineStore("cart",() => {
     const productId = ref();
     const quantity = ref();
+    const cuponCart = ref();
     const unitPrice = ref();
+    const discountCoupon = ref(0);
+    const discountCouponView = ref(0);
     const itemsCart = ref([]);
     const isCheckout = ref(false);
     const shipping = ref(0);
     const cart = ref(0);
-
+    const isApplyCupon = ref(false);
+    const useCouponsStore = useCoupons();
+    const discount = ref(0)
+    const finalPriceShipping = computed(() => {
+      if(isApplyCupon.value === false){
+        const total = Number(finalPrice.value) + Number(shipping.value);
+        return total
+      }if(isApplyCupon.value === true){
+        discount.value = (Number(discountCoupon.value) / 100 * Number(finalPrice.value));
+        const total = (Number(finalPrice.value) + Number(shipping.value)) - Number(discount.value) ;
+        return total
+      }
+      
+    });
     const finalPrice = computed(() => {
       const total = itemsCart.value.items.reduce((acc, item) => {
         return acc + item.unit_price * item.quantity;
       }, 0);
-      return total + Number(shipping.value);
+      return total ;
     });
-
     const productInformation = computed(() => ({
       product_id: productId.value,
       quantity: quantity.value,
@@ -85,20 +94,37 @@ export const useCartProducts = defineStore(
         console.log(error);
       }
     }
+     function applyCoupon() {
+      const couponFound = useCouponsStore.couponStore.find(coupon => coupon.code === cuponCart.value);
+      if(couponFound){
+        console.log(isApplyCupon.value)
+        isApplyCupon.value = true;
+        discountCouponView.value = couponFound.code;
+        console.log(discountCouponView.value)
+        discountCoupon.value = couponFound.discount_percentage;
 
+      } 
+    }
     return {
       addProducts,
+      applyCoupon,
       getCartStore,
       getItemsCartStore,
       deleteProductfromcart,
+      isApplyCupon,
+      discountCoupon,
+      discount,
+      cuponCart,
       finalPrice,
       shipping,
       cart,
+      finalPriceShipping,
       isCheckout,
       itemsCart,
       productId,
       quantity,
       unitPrice,
+      discountCouponView,
     };
   },
   {

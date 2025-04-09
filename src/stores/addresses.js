@@ -4,7 +4,7 @@ import { defineStore } from "pinia";
 import { addAddresses, getAllAddresses } from "@/service/HttService";
 import { useAuthenticateStore } from "./authenticate";
 export const useAddresses = defineStore("addresses", () => {
-  const streetStore = ref();
+  const streetStore = ref([]);
   const isCreateAddress = ref(false);
   const numberStore = ref();
   const zipStore = ref();
