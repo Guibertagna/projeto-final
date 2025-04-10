@@ -1,21 +1,23 @@
 <template>
   <div class="all-content">
+    
     <div class="checkout-section" >
-      <h3>Shipping Address</h3>
+      <h2 class="tittle">Shipping Address</h2>
       <div class="address-options">
-        <label class="label-title">Selecione um Endereço</label>
+        <label class="label-title">Select your address</label>
       <div 
         v-for="address in useAddress.userAddresses" 
         :key="address.id" 
         class="radio-option">
         <input
+      
           type="radio"
           :id="'address-' + address.id"
           :value="address.id"
           v-model="userorder.address"
           name="address-options"
         />
-        <label :for="'address-' + address.id">
+        <label :for="'address-' + address.id" >
           {{ address.street }}, {{ address.number }}, {{ address.zip }} - {{ address.city }}, {{ address.state }}, {{ address.country }}
         </label>
   </div>
@@ -33,7 +35,7 @@ import { useAddresses } from '@/stores/addresses';
 import { useCartProducts } from '@/stores/cartStore';
 import { useOrder } from '@/stores/order';
 import { onMounted } from 'vue';
-import { ref } from 'vue';
+
 import AddressesComponent from './AddressesComponent.vue';
 
 const userorder = useOrder();
@@ -60,16 +62,16 @@ onMounted(async () => {
 
 <style scoped>
 .checkout-section {
+  text-align: start;
   padding: 1rem;
   background: #fdfdfd;
-  border-radius: 8px;
-  border: 2px solid #eaeaea;
+  border-radius: 5px;
+  border: 1px solid var(--primary-color);
   box-sizing: border-box;
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-
+  align-items: flex-start;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 .create-button{
@@ -77,7 +79,6 @@ onMounted(async () => {
   padding:0.5rem;
   border-radius: 8px;
   border: none;
-
   font-size: 1rem;
   color: var(--neutral-color-02);
 }
@@ -95,7 +96,9 @@ onMounted(async () => {
   width: 100%;
   margin-bottom: 1rem;
 }
-
+.tittle{
+  
+}
 .label-title {
   font-weight: 600;
   margin-bottom: 0.5rem;
@@ -117,5 +120,11 @@ onMounted(async () => {
 .radio-option label {
   font-size: 1rem;
   cursor: pointer;
+}
+.tittle {
+  text-align: start;
+  font-weight: bold;
+  font-size: 28px;
+  margin-bottom: 1rem; /* Adiciona espaçamento inferior */
 }
 </style>

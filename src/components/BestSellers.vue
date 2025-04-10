@@ -17,8 +17,8 @@
           <h5>R$ {{ product.price }}</h5>
         </div>
 
-        <div class="button-product"  @click="setProductId(product.id)">
-          <AddCard/>
+        <div class="button-product" >
+          <AddCard :productId="product.id" :unit-price="product.price" />
         </div>
 
         <div class="rating">
@@ -43,6 +43,9 @@ function getImg(imagePath) {
   const baseUrl = "http://35.196.79.227:8000";
   return `${baseUrl}${imagePath}`;
 }
+
+const useProducts = useGetProducts();
+
 
 async function getBestSellers() {
   await getStoreProducts.getProductsCategory(39);

@@ -2,14 +2,14 @@ import { computed, ref } from "vue";
 import { defineStore } from "pinia";
 import {addItemCart, deleteProductcart,getAllCart,getItemsCart,} from "@/service/HttService";
 import { useCoupons } from "@/stores/cupons";
-
+import { useOrder } from "./order";
 export const useCartProducts = defineStore("cart",() => {
     const productId = ref();
     const quantity = ref();
     const cuponCart = ref();
     const unitPrice = ref();
     const discountCoupon = ref(0);
-    const discountCouponView = ref(0);
+    const discountCouponView = ref(null);
     const itemsCart = ref([]);
     const isCheckout = ref(false);
     const shipping = ref(0);
@@ -17,6 +17,7 @@ export const useCartProducts = defineStore("cart",() => {
     const isApplyCupon = ref(false);
     const useCouponsStore = useCoupons();
     const discount = ref(0)
+    const orderStore = useOrder();
     const finalPriceShipping = computed(() => {
       if(isApplyCupon.value === false){
         const total = Number(finalPrice.value) + Number(shipping.value);
@@ -42,12 +43,12 @@ export const useCartProducts = defineStore("cart",() => {
     async function addProducts() {
       try {
         const response = await addItemCart(productInformation.value);
-    console.log(response.data + "RESPONSEEEE");
         if (response.status === 204) {
           itemsCart.value.items = [
             ...itemsCart.value.items,
             { ...productInformation.value },
           ];
+          itemsCart.value.total_amount = finalPrice.value;
         }
         console.log(response);
         console.log(itemsCart.value.items);
@@ -102,6 +103,7 @@ export const useCartProducts = defineStore("cart",() => {
         discountCouponView.value = couponFound.code;
         console.log(discountCouponView.value)
         discountCoupon.value = couponFound.discount_percentage;
+        orderStore.coupom = couponFound.id;
 
       } 
     }

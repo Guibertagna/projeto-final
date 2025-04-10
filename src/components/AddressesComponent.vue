@@ -2,23 +2,23 @@
     <div class="address-section">
         <div class="all-contet">
             <div class="space-y-4">
-                <label for="streetStore">Rua</label>
-                <input id="streetStore" v-model="useAddress.streetStore" type="text" placeholder="Rua" class="input" />
+                <label for="streetStore">Street</label>
+                <input id="streetStore" v-model="useAddress.streetStore" type="text" placeholder="Street" class="input" />
                 
-                <label for="numberStore">Número</label>
-                <input id="numberStore" v-model="useAddress.numberStore" type="text" placeholder="Número" class="input" />
+                <label for="numberStore">Number</label>
+                <input id="numberStore" v-model="useAddress.numberStore" type="text" placeholder="Number" class="input" />
                 
-                <label for="zipStore">CEP</label>
-                <input id="zipStore" v-model="useAddress.zipStore" type="text" placeholder="CEP" class="input" />
+                <label for="zipStore">Zip Code</label>
+                <input id="zipStore" v-model="useAddress.zipStore" type="text" placeholder="Zip Code" class="input" />
                 
-                <label for="cityStore">Cidade</label>
-                <input id="cityStore" v-model="useAddress.cityStore" type="text" placeholder="Cidade" class="input" />
+                <label for="cityStore">City</label>
+                <input id="cityStore" v-model="useAddress.cityStore" type="text" placeholder="City" class="input" />
                 
-                <label for="stateStore">Estado</label>
-                <input id="stateStore" v-model="useAddress.stateStore" type="text" placeholder="Estado" class="input" />
+                <label for="stateStore">State</label>
+                <input id="stateStore" v-model="useAddress.stateStore" type="text" placeholder="State" class="input" />
                 
-                <label for="countryStore">País</label>
-                <input id="countryStore" v-model="useAddress.countryStore" type="text" placeholder="País" class="input" />
+                <label for="countryStore">Country</label>
+                <input id="countryStore" v-model="useAddress.countryStore" type="text" placeholder="Country" class="input" />
             </div>
         </div>
         <div class="buttons" >
@@ -37,10 +37,10 @@
     const useAddress = useAddresses()
     
 </script>
-<style>
+<style scoped>
 .address-section{
-    border: 1px solid #ccc;
-    border-radius: 8px;
+    border-radius: 5px;
+    border: 1px solid var(--primary-color);
     padding: 20px;
     margin-top: 20px; 
     

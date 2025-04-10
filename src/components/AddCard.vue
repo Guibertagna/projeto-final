@@ -9,6 +9,16 @@
     import { useCartProducts } from "@/stores/cartStore";
     import { useGetProducts } from "@/stores/getProducts";
 
+    const props = defineProps({
+    productId: {
+        type: Number,
+        required: true,
+    },
+    unitPrice: {
+        type: Number,
+        required: true,
+    },
+});
 
 
     const useProducts = useGetProducts();
@@ -17,9 +27,9 @@
     const useCart = useCartProducts()
 
     async function addToCart(){
-        useCart.productId = useProducts.productId.data.id
+        useCart.productId = props.productId;
         useCart.quantity = 1
-        useCart.unitPrice =  Number(useProducts.productId.data.price);
+        useCart.unitPrice =  props.unitPrice;
         await useCart.addProducts()
     }
 
@@ -42,12 +52,14 @@
 } 
 
 .add {
-    background-color: #4CAF50;
+    height: auto;
+    width: 150px;
+    background-color:var(--primary-color);
     color: white;
 }
 
 .add:hover {
-    background-color: #45a049;
+    background-color: var(--neutral-color-05);
 }
 
 </style>

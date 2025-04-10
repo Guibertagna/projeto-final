@@ -1,7 +1,7 @@
 <template>
   <div :class="useCart.isCheckout ? 'cart-checkout' : 'card'">
     <h2 v-if="!useCart.isCheckout">Shopping Cart</h2>
-    <h2 v-if="useCart.isCheckout">Products</h2>
+    <h2 v-if="useCart.isCheckout" style="font-weight: bold; font-size: 28px;">Products</h2>
     <!-- Cabeçalho -->
     <div :class="useCart.isCheckout ? 'cart-header-checkout' : 'cart-header'">
       <div>Product</div>
@@ -54,7 +54,7 @@
           {{ formatCurrency(item.total_price) }}
         </div>
       </div>
-      <div class="input-coupons">
+      <div class="input-coupons" v-if="useCart.isCheckout">
         <label for="coupon">Coupon:</label>
         <input type="text" id="coupon" v-model="useCart.cuponCart" />
         <button @click="useCart.applyCoupon(), useCart.addProducts.value = true ">Apply</button>
@@ -62,29 +62,29 @@
       <div v-if="useCart.isCheckout" class="prices">
         <div class="coupon-used" v-if="useCart.isApplyCupon" >
           <div class="cupon-name">
-            <label for="coupon-name"><img class="ticket" src="@/assets/icons/ticket-percent.svg"></label>
-            <h6 id="coupon-name"> {{ useCart.discountCouponView }}</h6>
+            <label ><img class="ticket" src="@/assets/icons/ticket-percent.svg"></label>
+            <h6 > {{ useCart.discountCouponView }}</h6>
           </div>
           <div class="percentage">
             <h6 id="discounted-percentage">- %{{ useCart.discountCoupon }} </h6>
           </div>
         </div>
         <div class="cart-summary" style="font-size: small;">
-          <label  for="subtotal">Subtotal</label>
-          <h5 class="final-price" id="subtotal" style="font-size: small;">  {{ formatCurrency(useCart.finalPrice) }}</h5>
+          <label  >Subtotal</label>
+          <h5 class="final-price"  style="font-size: small;">  {{ formatCurrency(useCart.finalPrice) }}</h5>
         </div>
       
         <div class="cart-summary"  style="font-size: small;" >
-        <label for="shipping" > shipping value</label>
-        <h5 class="final-price" id="shipping" style="font-size: small;" > {{ formatCurrency(useCart.shipping) }} </h5>
+        <label  > shipping value</label>
+        <h5 class="final-price"  style="font-size: small;" > {{ formatCurrency(useCart.shipping) }} </h5>
       </div>
       <div class="cart-summary" style="font-size: small;" v-if="useCart.isApplyCupon">
-            <label for="discounted-value"> Discounted Value:</label>
-            <h6 id="discounted-value" style="font-size: small;color: red;">- {{ formatCurrency(useCart.discount) }}</h6>
+            <label > Discounted Value:</label>
+            <h6  style="font-size: small;color: red;">- {{ formatCurrency(useCart.discount) }}</h6>
           </div>
       <div class="cart-summary">
-        <label for="final">Total</label>
-        <h5 class="final-price" id="final" style="font-weight: bold;"> {{ formatCurrency(useCart.finalPriceShipping) }} </h5>
+        <label >Total</label>
+        <h5 class="final-price" style="font-weight: bold;"> {{ formatCurrency(useCart.finalPriceShipping) }} </h5>
       </div>
       </div>
       <button 
@@ -164,6 +164,9 @@ function getitens() {
 
 onMounted(() => {
   useCart.isApplyCupon = false;
+  useCart.cuponCart = "";
+  useCart.discountCoupon = 0;
+  useCart.discount = 0;
   console.log(useCart.applyCoupon.value)
   getitens();
 });
@@ -177,8 +180,8 @@ onMounted(() => {
 .cart-checkout {
   margin: auto;
   background-color: #fff;
-  border-radius: 12px;
-  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  border: 1px solid var(--primary-color);
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -195,11 +198,11 @@ onMounted(() => {
 }
 
 .cart-item-checkout {
+  border-bottom: 2px solid #ddd;
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
   gap: 15px;
   padding: 15px;
-  border-radius: 8px;
   margin-bottom: 15px;
 }
 
@@ -211,6 +214,7 @@ onMounted(() => {
 
 
 .cart-item-checkout .product-cell {
+
   flex-direction: column;
   align-items: flex-start;
   gap: 8px;
@@ -361,7 +365,6 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   font-size: 18px;
-  
   text-align: right;
   border-top: 1px solid #ddd;
   padding-top: 15px;

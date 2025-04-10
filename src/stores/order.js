@@ -4,11 +4,11 @@ import { sendOrders } from '@/service/HttService';
 import { useCartProducts } from './cartStore';
 export const useOrder = defineStore('order', ()=>{
     const address = ref()
-    const cupom = ref()
+    const coupom = ref(null)
     const useCart = useCartProducts()
     const informationOrder = computed(() => ({
         address_id: address.value, 
-        coupon_id: null
+        coupon_id: coupom.value
     }));
     
     async function addOrder() {
@@ -20,17 +20,18 @@ export const useOrder = defineStore('order', ()=>{
                     items: [],
                     total_amount: 0
                 };
-                
+                useCart.isApplyCupon = false
+                useCart.discountCouponView = null
                 useCart.isCheckout = false
             }
             return response
         }catch(error){
-            console.log("não foi possivel criar endereço store" + error )
+            console.log("não foi possivel realizat o pedido" + error )
         }
     }
     return{
         address,
-        cupom,
+        coupom,
         addOrder,
     }
     

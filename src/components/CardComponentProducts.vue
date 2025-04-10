@@ -1,7 +1,7 @@
 <template>
   <div class="all-cards">
     <div class="products-card" v-for="products in allProducts" :key="products.id" @click="goToDetails(products.id)">
-      
+      <div>
       <div class="img-product">
          <img :src="getImg(products.image_path)" alt="prodct image">
       </div>
@@ -11,7 +11,7 @@
         
         <h5>R$ {{ products.price }}</h5>
     </div>
-
+</div>
       <div class="button-product">
         <button>Add to cart</button>
       </div>

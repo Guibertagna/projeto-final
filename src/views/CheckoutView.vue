@@ -2,6 +2,7 @@
     <div class="checkout-container">  
         <div class="checkout-address">
             <CheckoutAddress/>
+            <CheckoutPayment/>
         </div>
         <div class="chekcout-cart" >
             <CartComponent/>
