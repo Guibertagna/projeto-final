@@ -12,9 +12,9 @@
         <h5>R$ {{ products.price }}</h5>
     </div>
 </div>
-      <div class="button-product">
-        <button>Add to cart</button>
-      </div>
+<div class="button-product" >
+          <AddCard :productId="products.id" :unit-price="products.price" />
+        </div>
 
       <div class="rating">
         <span class="filled">★</span>
@@ -32,6 +32,7 @@
 <script setup>
 import { useGetProducts } from '@/stores/getProducts';
 import { onMounted, ref } from 'vue';
+import AddCard from './AddCard.vue';
 import { useRouter } from 'vue-router';
 
 const getStoreProducts = useGetProducts()
