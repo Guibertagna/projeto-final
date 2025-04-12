@@ -11,9 +11,15 @@
 </template>
 
 <script setup>
-import CartComponent from '@/components/CartComponent.vue';
-import CheckoutAddress from '@/components/CheckoutAddress.vue'
-import CheckoutPayment from '@/components/CheckoutPayment.vue';
+import CartComponent from '@/components/Checkout/CartComponent.vue';
+import CheckoutAddress from '@/components/Checkout/CheckoutAddress.vue'
+import CheckoutPayment from '@/components/Checkout/CheckoutPayment.vue';
+import { useCartProducts } from '@/stores/cartStore';
+import { onMounted } from 'vue';
+const usecart = useCartProducts()
+onMounted(()=>{
+    usecart.isCheckout = true
+})
 </script>
 
 <style setup>

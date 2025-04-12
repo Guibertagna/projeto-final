@@ -8,7 +8,10 @@
 <script setup>
     import { useCartProducts } from "@/stores/cartStore";
     import { useGetProducts } from "@/stores/getProducts";
-
+    import { useAuthenticateStore } from "@/stores/authenticate";
+    import { useRouter } from "vue-router";
+    const useAuthenticate = useAuthenticateStore();
+    const route = useRouter();
     const props = defineProps({
     productId: {
         type: Number,
@@ -27,10 +30,17 @@
     const useCart = useCartProducts()
 
     async function addToCart(){
-        useCart.productId = props.productId;
-        useCart.quantity = 1
-        useCart.unitPrice =  props.unitPrice;
-        await useCart.addProducts()
+        if(useAuthenticate.isAuthenticated == false){
+            console
+           route.push('/userlogin')
+           
+        }else{
+            useCart.productId = props.productId;
+            useCart.quantity = 1
+            useCart.unitPrice =  props.unitPrice;
+            await useCart.addProducts()
+        }
+        
     }
 
 </script>

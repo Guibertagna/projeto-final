@@ -7,8 +7,8 @@
   
   
   <script setup>
-  import CartComponent from "@/components/CartComponent.vue";
-  import SelectShipping from "@/components/SelectShipping.vue";
+  import CartComponent from "@/components/Checkout/CartComponent.vue";
+  import SelectShipping from "@/components/Checkout/SelectShipping.vue";
   import { useCartProducts } from "@/stores/cartStore";
 import { onMounted } from "vue";
 const useCart = useCartProducts();

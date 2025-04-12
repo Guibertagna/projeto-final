@@ -9,8 +9,11 @@
         <div class="all-content">
             <div class="content-intern">
                 <img class="logo" src="@/assets/loginho.png">
+                
                 <nav class="links">
-                    <li>Home</li>
+                    <router-link to="/" class="back-button">
+                        <li >Home</li>
+                    </router-link>
                     <li>Shop</li>
                     <li>Product</li>
                     <li>Contact Us</li>
@@ -22,7 +25,7 @@
                         <div v-if="showDropdown" class="dropdown-menu">
                             <p>Profile</p>
                             <p>Settings</p>
-                            <p>Logout</p>
+                            <p @click="userStore.logout()">Logout</p>
                             <p v-if="userStore.user.role == 'ADMIN'"  @click="gotoCreateProducts()"> Create new product</p>
                             <p v-if="userStore.user.role == 'ADMIN'" @click="gotoCreateCategories()">  Create new categorie</p>
                             

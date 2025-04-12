@@ -79,6 +79,7 @@ function submitPayment() {
   padding: 30px;
   background-color: var(--neutral-color-01);
   border-radius: 5px;
+  height: 100%;
   border: 1px solid var(--primary-color);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }

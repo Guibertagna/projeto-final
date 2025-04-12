@@ -2,5 +2,5 @@
     <CreateNewCategorie/>
 </template>
 <script setup>
-import CreateNewCategorie from '@/components/CreateNewCategorie.vue';
+import CreateNewCategorie from '@/components/Moderator/CreateNewCategorie.vue';
 </script>

@@ -185,6 +185,9 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  width: 100%;
+
+  height: 100%;
   padding: 20px;
 }
 
@@ -255,7 +258,7 @@ onMounted(() => {
 }
 
 .card {
-    flex: 1 1 auto;;
+  flex: 1 1 auto;;
   background-color: #fff;
   border-radius: 12px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);

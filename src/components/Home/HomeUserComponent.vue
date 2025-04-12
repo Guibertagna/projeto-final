@@ -19,13 +19,18 @@
                     <h1 class="best">New Arrivals</h1>
                 </div>
             </div>
-            <div class="Products">
-                <CardComponentProducts/>
+            <div class="products">
+                <NewArrivals/>
             </div>
             <div class="morecategories">
                 <CategoriresCard/>
             </div>
-            <div class="bestsellers">
+            <div class="categories">
+                <div class="category-conetnt">
+                    <h1 class="best">New Arrivals</h1>
+                </div>
+            </div>
+            <div  class="products">
                 <BestSellers/>
             </div>
             <div class="promotion-card">
@@ -40,25 +45,11 @@
 
 <script setup>
 import bannerImage from '@/assets/bannerImage.png';
-import { useCategoriesStore } from '@/stores/categories';
-import { useGetProducts } from '@/stores/getProducts';
-
-import { onMounted, ref } from 'vue';
-import CardComponentProducts from './CardComponentProducts.vue';
 import CategoriresCard from './CategoriresCard.vue';
 import BestSellers from './BestSellers.vue';
 import PromotionCard from './PromotionCard.vue';
 import InformationComponents from './InformationComponents.vue';
-
-const getStoreProducts = useGetProducts()
-const categoriesStore = useCategoriesStore();
-const categoriesComponent = ref([]);  
-const allProducts = ref([]);  
-onMounted(async () => {
-    await categoriesStore.getCategoriesStores()
-    categoriesComponent.value = categoriesStore.categories.data; 
-});
-
+import NewArrivals from './NewArrivals.vue';
 
 </script>
 
@@ -108,6 +99,9 @@ onMounted(async () => {
 .productsContainer{
     display: flex;
     flex-direction: row;
+}
+.products{
+    margin-bottom: 40px;
 }
 .category-conetnt{
     padding-top: 40px;

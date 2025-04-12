@@ -23,7 +23,7 @@
           <div class="cart-summary">
             <strong
               >Subtotal:
-              {{ formatCurrency(useCart.finalPrice) }}</strong
+              {{ formatCurrency(useCart.finalPriceShipping) }}</strong
             >
           </div>
         </div>
@@ -48,9 +48,10 @@ const formatCurrency = (value) => {
 
 .all-frete {
   display: flex;
+  height: 100%;
   justify-content: center;
   align-items: center;
-    flex-direction: column;
+  flex-direction: column;
 }
 .radio-options {
   flex: 1 1 300px;

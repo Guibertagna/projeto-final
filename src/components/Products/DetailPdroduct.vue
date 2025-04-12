@@ -21,7 +21,7 @@
                     <h4 class="stock">Stock: {{ useProducts.productId.data?.stock }}</h4>
                 </div>
                 <div class="button-container">
-                    <AddCard/>
+                    <AddCard :productId=" useProducts.productId.data?.id" :unit-price="Number( useProducts.productId.data?.price)" />
                     <button class="buy-now">Buy Now</button>
                 </div>
             </div>

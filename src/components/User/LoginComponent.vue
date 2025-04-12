@@ -8,8 +8,7 @@
 </template>
 <script setup>
 
-import RegisterLoginComponent from '../components/RegisterLoginComponent.vue'
-
+import RegisterLoginComponent from './RegisterLoginComponent.vue';
 </script>
 
 <style scoped>

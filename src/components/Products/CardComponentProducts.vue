@@ -1,21 +1,20 @@
 <template>
   <div class="all-cards">
-    <div class="products-card" v-for="products in allProducts" :key="products.id" @click="goToDetails(products.id)">
-      <div>
-      <div class="img-product">
-         <img :src="getImg(products.image_path)" alt="prodct image">
-      </div>
-      
-      <div class="name-discription">
-        <h4>{{ products.name }}</h4>
-        
+    <div class="products-card" v-for="products in productsProps" :key="products.id">
+      <div  @click="goToDetails(products.id)">
+        <div class="img-product">
+          <div v-if="isNew" class="flag-new">New</div>
+          <img :src="getImg(products.image_path)" :alt="products.name" :title="products.name">
+        </div>
+      <div class="name-discription"  alt="products.name">
+        <h4 alt="products.name">{{ products.name.slice(0, 50) }}{{ products.name.length > 50 ? '...' : '' }}</h4>
         <h5>R$ {{ products.price }}</h5>
     </div>
 </div>
 <div class="button-product" >
-          <AddCard :productId="products.id" :unit-price="products.price" />
+  <AddCard :productId="products.id" :unit-price="Number(products.price)" />
         </div>
-
+ 
       <div class="rating">
         <span class="filled">★</span>
         <span class="filled">★</span>
@@ -30,13 +29,10 @@
 </template>
 
 <script setup>
-import { useGetProducts } from '@/stores/getProducts';
-import { onMounted, ref } from 'vue';
+
 import AddCard from './AddCard.vue';
 import { useRouter } from 'vue-router';
 
-const getStoreProducts = useGetProducts()
-const allProducts = ref([]);  
 const router = useRouter();
 function getImg(imagePath) {
   const baseUrl = 'http://35.196.79.227:8000';
@@ -45,13 +41,17 @@ function getImg(imagePath) {
 function goToDetails (id_product){
   router.push(`/products/${id_product}`);
 }
-
-
-
-onMounted(async () => {
-  await getStoreProducts.getProducts();
-  allProducts.value = getStoreProducts.products.data;
+const props = defineProps({
+  productsProps: {
+    type: Array,
+    required: true
+  },
+  isNew: {
+    type: Boolean,
+    required: false
+  }
 });
+
 </script>
 
 <style scoped>
@@ -68,20 +68,30 @@ onMounted(async () => {
     text-align: start;
     display: grid;
     padding-top: 30px;
+
+    max-height:500px;
     padding-left:30px;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
     justify-items: center;
-    width: 100%;
+    
   }
 
 .products-card {
   display: flex;
+  border: 1px solid var(--neutral-color-03);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  background-color: var(--neutral-color-01);
+  padding: 10px;
+  margin: 10px;
+ 
+  border-radius: 5px;
   flex-direction: column;
   justify-content: space-between;
   width: 300px; 
-  height: 450px;
-  padding: 20px;
+  max-height:500px;
+  min-height: 300px;
+  padding-top:10px ;
   text-align: center;
   
 }
@@ -115,12 +125,32 @@ onMounted(async () => {
 .rating span.filled {
   color: gold;
 }
+.flag-new {
+  position: absolute;
+  background-color: var(--secondary-color-orange);
+  color: white;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: bold;
+    top: 10px;
+    left: 10px;
+  border-radius: 4px;
+}
+.img-product {
+  position: relative; 
+  width: 100%;
+  height: 200px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ 
+}
 .img-product img {
   width: 100%;
   height: 100%;
-  object-fit: contain; 
-}
+  object-fit: contain;
 
+}
 .name-discription {
   width: 100%;
   text-align: start;

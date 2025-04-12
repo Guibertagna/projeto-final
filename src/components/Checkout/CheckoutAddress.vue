@@ -96,9 +96,7 @@ onMounted(async () => {
   width: 100%;
   margin-bottom: 1rem;
 }
-.tittle{
-  
-}
+
 .label-title {
   font-weight: 600;
   margin-bottom: 0.5rem;

@@ -2,5 +2,5 @@
     <HomeUserComponent/>
 </template>
 <script setup>
-import HomeUserComponent from '@/components/HomeUserComponent.vue';
+import HomeUserComponent from '@/components/Home/HomeUserComponent.vue';
 </script>

@@ -16,6 +16,38 @@ export async function login(credentials) {
     }
 }
 
+export async function getUser() {
+    try {
+        const authStore = useAuthenticateStore(); 
+        const token = authStore.token; 
+        const response = await apiUrl.get('/verify-token', {
+            headers: {
+                'Authorization': `Bearer ${token}`, 
+            }
+        }); 
+        
+        return response;
+    }catch (error) {
+    throw error;
+    }
+}
+export async function renewToken() {
+    try {
+        const authStore = useAuthenticateStore(); 
+        const token = authStore.token; 
+        const response = await apiUrl.post('/renew-token', null, {
+            headers: {
+                'Authorization': `Bearer ${token}`, 
+            }
+        }); 
+        
+        return response;
+    }catch (error) {
+    throw error;
+    }
+}
+
+
 export async function register(credentialsRegister) {
     try {
         const response = await apiUrl.post('/register', credentialsRegister); 
