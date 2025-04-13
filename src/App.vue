@@ -8,7 +8,7 @@ const useCoupon = useCoupons();
 const useAuthenticate = useAuthenticateStore();
 onMounted(() => {
     useCoupon.getCouponsStore();
-    useAuthenticate.getMe();
+    useAuthenticate.ferifyMe();
 });
 </script>
 

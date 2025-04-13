@@ -16,7 +16,7 @@ export async function login(credentials) {
     }
 }
 
-export async function getUser() {
+export async function ferify() {
     try {
         const authStore = useAuthenticateStore(); 
         const token = authStore.token; 
