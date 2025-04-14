@@ -371,3 +371,35 @@ export async function getAllCoupons() {
         console.log("erro ao obter cupom" + error)
     }
 }
+export async function getAllCouponByid(coupon_id) {
+    const authStore = useAuthenticateStore();
+    const token = authStore.token;
+    try{
+        const response = await apiUrl.get(`/coupons/${coupon_id}`, {
+            headers:{
+                'authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        })
+        return response;
+    }catch(error){
+        console.log("erro ao obter cupom" + error)
+    }
+}
+export async function editCoupon (coupon_id, couponData) {
+    try{
+        const authStore = useAuthenticateStore(); 
+        const token = authStore.token; 
+        const response = await apiUrl.put(`/coupons/${coupon_id}`, couponData,{
+            headers: {
+                'Authorization': `Bearer ${token}`, 
+                'Content-Type': 'application/json' 
+                }
+                });
+                alert("Coupons editada com sucesso!");
+        return response;
+        
+    }catch(error){
+        console.error('Erro ao EDITAR coupons:', JSON.stringify(error.response?.data, null, 2));
+    }
+}

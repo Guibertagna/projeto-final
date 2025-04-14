@@ -1,6 +1,6 @@
 import { computed, ref } from "vue";
 import { defineStore } from "pinia";
-import { createCoupom, getAllCoupons} from "@/service/HttService";
+import { createCoupom, getAllCoupons, getAllCouponByid, editCoupon} from "@/service/HttService";
 
 export const useCoupons = defineStore("coupon", () => {
     const couponPercentage = ref(0);
@@ -31,6 +31,14 @@ export const useCoupons = defineStore("coupon", () => {
         }
         
     } 
+        async function editCouponStore(idCoupon) {
+            try {
+                const data = await editCoupon(idCoupon, couponInformation.value); 
+                return data;
+            } catch(error) {
+                console.error("Erro ao editar coupon:", error);
+            }
+        }
     async function  getCouponsStore() {
         try{
             const response = await getAllCoupons();
@@ -41,12 +49,22 @@ export const useCoupons = defineStore("coupon", () => {
             console.log(error);
         }
     }
+        async function getCouponsId(idCoupon) {
+            try{
+                const data = await getAllCouponByid(idCoupon);
+                return data
+            }catch(error){
+                console.error(error);
+            }
+        }
     return{
         couponStore,
         couponCode,
         couponPercentage,
         couponEndDate,
         couponStartDate,
+        getCouponsId,
+        editCouponStore,
         getCouponsStore,
         createCouponsStore,
     }

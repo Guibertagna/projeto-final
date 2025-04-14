@@ -2,6 +2,7 @@
 import FooterComponent from './components/Header-Footer/FooterComponent.vue';
 import HeaderComponent from './components/Header-Footer/HeaderComponent.vue';
 import { onMounted } from 'vue';
+import "@/service/socket"
 import { useAuthenticateStore } from './stores/authenticate';
 import { useCoupons } from '@/stores/cupons';
 const useCoupon = useCoupons();

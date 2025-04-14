@@ -5,6 +5,7 @@ import { useCartProducts } from './cartStore';
 export const useOrder = defineStore('order', ()=>{
     const address = ref()
     const coupom = ref(null)
+    const order_socket = ref([])
     const useCart = useCartProducts()
     const informationOrder = computed(() => ({
         address_id: address.value, 
@@ -32,7 +33,8 @@ export const useOrder = defineStore('order', ()=>{
     return{
         address,
         coupom,
+        order_socket,
         addOrder,
     }
     
-})
+},{persist: true})

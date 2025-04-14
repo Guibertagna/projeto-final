@@ -7,6 +7,8 @@
         <div class="chekcout-cart" >
             <CartComponent/>
         </div> 
+   
+
     </div>
 </template>
 
@@ -14,6 +16,7 @@
 import CartComponent from '@/components/Checkout/CartComponent.vue';
 import CheckoutAddress from '@/components/Checkout/CheckoutAddress.vue'
 import CheckoutPayment from '@/components/Checkout/CheckoutPayment.vue';
+import Orders from '@/components/Moderator/Orders.vue';
 import { useCartProducts } from '@/stores/cartStore';
 import { onMounted } from 'vue';
 const usecart = useCartProducts()

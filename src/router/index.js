@@ -7,11 +7,9 @@ import { useAuthenticateStore } from '@/stores/authenticate';
 import CreateProduct from '@/components/Moderator/CreateProduct.vue';
 import ProfileComponent from '@/components/User/ProfileComponent.vue';
 import DetailPdroduct from '@/components/Products/DetailPdroduct.vue';
-import AddressesComponent from '@/components/Checkout/AddressesComponent.vue';
-
+import ModeratorView from '@/views/ModeratorView.vue';
 import CheckoutView from '@/views/CheckoutView.vue';
 import CartUserView from '@/views/CartUserView.vue';
-import CreateCoupons from '@/components/Moderator/CreateCoupons.vue';
 
 const routes = [
   { path: '/userlogin', name: 'login', component: LoginView },
@@ -61,11 +59,13 @@ const routes = [
     meta: {title: 'Checkout', requiresAuth: true}
     
   },
+  
   { 
-    path: '/coupons', 
-    name: 'Coupons', 
-    component: CreateCoupons,
-    meta: {title: 'Create Coupons', requiresAuth: true}
+    path: '/moderator', 
+    name: 'Moderator', 
+    component: ModeratorView,
+    meta: {title: 'Moderator', requiresAuth: true}
+
   },
 
 ];

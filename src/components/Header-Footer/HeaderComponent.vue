@@ -26,8 +26,7 @@
                             <p>Profile</p>
                             <p>Settings</p>
                             <p @click="userStore.logout()">Logout</p>
-                            <p v-if="userStore.user.role == 'ADMIN'"  @click="gotoCreateProducts()"> Create new product</p>
-                            <p v-if="userStore.user.role == 'ADMIN'" @click="gotoCreateCategories()">  Create new categorie</p>
+                            <p v-if="userStore.user.role == 'ADMIN' || 'MODERATOR'"  @click="gotoModerator()"> Moderator Area</p>
                             
                         </div>
                     </div>
@@ -58,9 +57,9 @@ const toggleCart = () => {
     isCartOpen.value = !isCartOpen.value;
 };
 
-function gotoCreateProducts(){
+function gotoModerator(){
     showDropdown.value = !showDropdown.value;
-    router.push('/createproducts')
+    router.push('/moderator')
 }
 
 
