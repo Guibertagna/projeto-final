@@ -57,7 +57,7 @@
       <div class="input-coupons" v-if="useCart.isCheckout">
         <label for="coupon">Coupon:</label>
         <input type="text" id="coupon" v-model="useCart.cuponCart" />
-        <button @click="useCart.applyCoupon(), useCart.addProducts.value = true ">Apply</button>
+        <button @click="useCart.applyCoupon() ">Apply</button>
       </div>
       <div v-if="useCart.isCheckout" class="prices">
         <div class="coupon-used" v-if="useCart.isApplyCupon" >

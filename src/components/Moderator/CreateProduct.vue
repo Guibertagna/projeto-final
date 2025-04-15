@@ -28,7 +28,7 @@
             <div class="form">
                 <label for="category">Category of product</label>
                 <select placeholder="category name" v-model="products.productCategory_id" id="category">
-                    <option v-for="category in allCategories " :key="category.id" :value="category.id">
+                    <option v-for="category in category.categories.data " :key="category.id" :value="category.id">
                         {{ category.name }}
                     </option>
                 </select>
@@ -71,11 +71,6 @@ const allCategories = ref([])
 async function sendProduct(){
     await products.createProductStore()
 }
-onMounted(async () => {
-    await category.getCategoriesStores()
-    allCategories.value = category.categories.data
-    console.log(allCategories.value)
-});
 function handleFileUpload(event) {
     const file = event.target.files[0];
     if (file) {

@@ -357,18 +357,17 @@ export async function editCoupon (coupon_id, couponData) {
         console.error('Erro ao EDITAR coupons:'+ error);
     }
 }
-/* export async function deleteCategorieService(category_id) {
+ export async function deleteCouponService(coupon_id) {
     try{
-        const authStore = useAuthenticateStore(); 
-        const token = authStore.token; 
-        const response = await apiUrl.delete(`/categories/${category_id}`,{
+    
+        const response = await apiUrl.delete(`/coupons/${coupon_id}`,{
             headers: {
-                'Authorization': `Bearer ${token}`, 
-                
+                ...authHeaders(),   
             }
         })
+        alert("Cupom deletado com sucesso!"+ response.data)
+        return response
     }catch(error){
-        console.log("erro ao deletar categoria")
+        console.log("erro ao deletar coupon" + error)   
     }
 }
- */

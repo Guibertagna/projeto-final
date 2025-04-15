@@ -1,6 +1,6 @@
 import { computed, ref } from "vue";
 import { defineStore } from "pinia";
-import { createCoupom, getAllCoupons, getAllCouponByid, editCoupon} from "@/service/HttService";
+import { createCoupom, getAllCoupons, getAllCouponByid, editCoupon, deleteCouponService} from "@/service/HttService";
 
 export const useCoupons = defineStore("coupon", () => {
     const couponPercentage = ref(0);
@@ -58,12 +58,28 @@ export const useCoupons = defineStore("coupon", () => {
                 console.error(error);
             }
         }
+        async function deleteCoupons(idCoupon) {
+            try{
+                const data = await deleteCouponService(idCoupon);
+                if(data.status === 204){
+                    const index = couponStore.value.findIndex(coupon => coupon.id === idCoupon);
+                    if(index !== -1){
+                        couponStore.value.splice(index, 1);
+                        couponStore.value = [...couponStore.value];
+                    }
+                }
+                return data
+            }catch(error){
+                console.error(error);
+            }
+        }
     return{
         couponStore,
         couponCode,
         couponPercentage,
         couponEndDate,
         couponStartDate,
+        deleteCoupons,
         getCouponsId,
         editCouponStore,
         getCouponsStore,

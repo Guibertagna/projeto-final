@@ -43,10 +43,10 @@
             </button>
         </div>
 
-        <div class="categories" v-if="showCategories && categoriesComponent.length > 0">
+        <div class="categories" v-if="showCategories && categoriesStore.categories.data?.length > 0">
         <h1>All Categories</h1>
     <div class="category-content" >
-        <div v-for="category in categoriesComponent" :key="category.id" class="category-card"  >
+        <div v-for="category in categoriesStore.categories.data" :key="category.id" class="category-card"  >
             <div class="category-info" >
                 <h4>{{ category.name }}</h4>
                 <p class="category-description">{{ category.description || "No description available" }}</p>
@@ -82,9 +82,6 @@ const categoriesComponent = computed(() => categoriesStore.categories.data);
 const selectedCategoryId = ref(null);
 const isButtonDisabled = computed(() => !categoriesStore.nameCategorie.trim());
 
-onMounted(async () => {
-    await categoriesStore.getCategoriesStores();
-});
 
 const toggleCategories = () => {
     showCategories.value = !showCategories.value;
