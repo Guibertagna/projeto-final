@@ -51,7 +51,7 @@
                         </div>
                         <div class="coupons-actions">
                             <button class="edit-btn" @click="starteditCoupon(coupons), isEdit=true" >Edit</button>
-                            <button  class="delete-btn" @click="deleteCategorie()">Delete</button>
+                            <button  class="delete-btn" @click="useCoupon.deleteCoupons(coupons.id)">Delete</button>
                         </div>
                     </div>
                     

@@ -144,6 +144,7 @@ const nameErrorRegister = computed(() => {
 });
 const isFormValid = computed(() => !emailError.value && !passwordError.value);
 const isFormValidRegister= computed(() => !emailErrorRegister.value && !passwordErrorRegister.value);
+
 async function handleLogin() {
   emailTouched.value = true;
   passwordTouched.value = true;
@@ -165,6 +166,7 @@ async function handleLogin() {
     loginError.value = 'Falha no login. Verifique suas credenciais.';
   }
 }
+
 
 async function handleRegister() {
   
