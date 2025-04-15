@@ -26,6 +26,7 @@
   .allcontent {
     margin-top: 90px;
     width: 100%;
+    height: auto;
 
   }
   .best {
