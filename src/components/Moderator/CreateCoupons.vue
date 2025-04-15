@@ -9,8 +9,9 @@
         </div>
   
         <div class="form">
-          <label for="code">Code of coupon</label>
-          <input id="code" v-model="useCoupon.couponCode" type="text" placeholder="Enter coupon code" />
+          <label v-if="!isEdit" for="code">Code of coupon</label>
+          <input v-if="!isEdit" id="code" v-model="useCoupon.couponCode" type="text" placeholder="Enter coupon code" />
+          <p v-if="isEdit" style="text-align: center; font-weight: bold; font-size: 20px;"> {{ useCoupon.couponCode }}</p>     
         </div>
         <div class="form">
           <label for="percentage">Discount Percentage</label>
@@ -93,9 +94,8 @@ async function starteditCoupon(coupon) {
           useCoupon.couponStartDate = coupon.start_date.split('T')[0];
           useCoupon.couponEndDate = coupon.end_date.split('T')[0];
           selectedCouponId.value = coupon.id;
+          window.scrollTo({ top: 200, behavior: 'smooth' });
     }
-
-    
 }
 async function sendEditCoupon(id) {
     try {
