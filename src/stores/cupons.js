@@ -14,6 +14,11 @@ export const useCoupons = defineStore("coupon", () => {
         start_date: couponStartDate.value,
         end_date: couponEndDate.value,
     }));
+    const couponInformationEdit = computed(() => ({
+        discount_percentage: couponPercentage.value,
+        start_date: couponStartDate.value,
+        end_date: couponEndDate.value,
+    }));
     async function createCouponsStore() {
         try{
             const data = await createCoupom(couponInformation.value);
@@ -33,7 +38,7 @@ export const useCoupons = defineStore("coupon", () => {
     } 
         async function editCouponStore(idCoupon) {
             try {
-                const data = await editCoupon(idCoupon, couponInformation.value); 
+                const data = await editCoupon(idCoupon, couponInformationEdit.value); 
                 console.log(data);
                 return data;
             } catch(error) {
