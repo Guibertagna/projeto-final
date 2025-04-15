@@ -52,7 +52,7 @@
                 <p class="category-description">{{ category.description || "No description available" }}</p>
             </div>
             <div class="category-actions" v-if="category.name != 'Best Sellers'">
-                <button class="edit-btn" @click="startEditCategory(category.id)">Edit</button>
+                <button class="edit-btn" @click="startEditCategory(category)">Edit</button>
                 <button  class="delete-btn" @click="deleteCategorie(category.id)">Delete</button>
             </div>
             <p v-else class="not-delete">You cannot delete or change this category. </p>
@@ -138,18 +138,16 @@ async function deleteCategorie(id) {
         console.error("Erro ao excluir categoria: " + error);
     }
 }
-async function startEditCategory(id) {
-    try {
-        const response = await categoriesStore.getCategoryId(id);
-        if (response?.data) {
-            categoriesStore.nameCategorie = response.data.name;
-            categoriesStore.descriptionCategorie = response.data.description;
-            selectedCategoryId.value = id;  
+async function startEditCategory(category) {
+ 
+        
+        if (category) {
+            categoriesStore.nameCategorie = category.name;
+            categoriesStore.descriptionCategorie = category.description;
+            selectedCategoryId.value = category.id;  
             isEdit.value = true; 
         }
-    } catch (error) {
-        console.error("Erro ao buscar categoria para edição:", error);
-    }
+   
 }
 
 function cancelEdit (){
@@ -171,7 +169,7 @@ function cancelEdit (){
 .create-category-container {
     justify-content: center;
     border: 1px solid gray;
-    max-width: 500px;
+    width: 500px;
     margin: 0 auto;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);

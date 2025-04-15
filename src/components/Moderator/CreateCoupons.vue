@@ -25,18 +25,18 @@
           <input id="end" v-model="useCoupon.couponEndDate" type="date" />
         </div>
         
-        <div v-if="useCoupon.couponCode && useCoupon.couponPercentage && useCoupon.couponStartDate && useCoupon.couponEndDate">
+        <div class="buttons">
           
-          <button class="create-btn" @click="useCoupon.createCouponsStore">Create coupon</button>
-          <button class="create-btn" @click="sendEditCoupon(selectedCouponId)">Edit coupon</button>
-         
+          <button v-if="!isEdit" class="create-btn" @click="useCoupon.createCouponsStore">Create coupon</button>
+          <button v-if="isEdit" class="create-btn" @click="sendEditCoupon(selectedCouponId)">Edit coupon</button>
+          <button  style="background-color: red;" v-if="isEdit" class="create-btn" @click="cancelEdit()">Cancel Edit</button>
         </div>
       </div>
       <div>
         <button class="showCoupons" @click="isShow = !isShow" > {{ isShow ? 'Hide Coupons' : 'Show Coupons' }}</button>
        
       </div>
-      <div v-if=isShow style="text-align: center;">
+      <div v-if="isShow" style="text-align: center;">
         <h1>All coupons</h1>
             <div class="all-card-coupon">
                 <div v-for="(coupons, index) in useCoupon.couponStore" :key="index">
@@ -49,8 +49,8 @@
                         <p><strong>Start date:</strong> {{ formatDate(coupons.start_date) }}</p>
                         <p><strong>End date:</strong> {{ formatDate(coupons.end_date) }}</p>
                         </div>
-                        <div class="category-actions">
-                            <button class="edit-btn" @click="starteditCoupon(coupons.id)">Edit</button>
+                        <div class="coupons-actions">
+                            <button class="edit-btn" @click="starteditCoupon(coupons), isEdit=true" >Edit</button>
                             <button  class="delete-btn" @click="deleteCategorie()">Delete</button>
                         </div>
                     </div>
@@ -74,52 +74,63 @@
     const dataFormatada = ref()
     onMounted(() => {
         dataFormatada.value = dataAtual.toISOString().split('T')[0] + 'T' + dataAtual.toTimeString().split(' ')[0];
-        console.log(dataFormatada.value)
+     
     });
 
     function formatDate(dateString) {
         const date = new Date(dateString);
         const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // meses começam em 0
+        const month = String(date.getMonth() + 1).padStart(2, '0'); 
         const day = String(date.getDate()).padStart(2, '0');
         return `${year}/${month}/${day}`;
     }
 
-async function starteditCoupon(id) {
-    try {
-        const response = await useCoupon.getCouponsId(id)
-        console.log(response);
-       if (response?.data) {
-          useCoupon.couponCode = response.data.code;
-          useCoupon.couponPercentage = response.data.discount_percentage;
-          useCoupon.couponStartDate = response.data.start_date.split('T')[0];
-          useCoupon.couponEndDate = response.data.end_date.split('T')[0];
-          selectedCouponId.value = response.data.id;
-      }
-    } catch (error) {
-        console.error("Erro ao buscar categoria para edição:", error);
+async function starteditCoupon(coupon) {
+   console.log("Iniciando edição do cupom:", coupon);
+   if (coupon) {
+          useCoupon.couponCode = coupon.code;
+          useCoupon.couponPercentage = coupon.discount_percentage;
+          useCoupon.couponStartDate = coupon.start_date.split('T')[0];
+          useCoupon.couponEndDate = coupon.end_date.split('T')[0];
+          selectedCouponId.value = coupon.id;
     }
+
+    
 }
 async function sendEditCoupon(id) {
-    if (!id || typeof id !== "number") {
-        console.error("ID inválido:", id);
-        return;
-    }
     try {
         const couponEdit = await useCoupon.editCouponStore(id);
-        
-       
+        if(couponEdit){
+          const index = useCoupon.couponStore.findIndex(coupon => coupon.id === id)
+          if (index !== -1) {
+            useCoupon.couponStore[index] = couponEdit.data;
+          } else {
+            console.error("Coupon not found in the store:", id);
+          }
+        }
         cancelEdit()
         console.log("Coupon editada:", couponEdit);
-
-
     } catch (error) {
         console.error("Erro ao editar coupon:", error);
     }
 }
+function cancelEdit(){
+  useCoupon.couponCode = '';
+  useCoupon.couponPercentage = '';
+  useCoupon.couponStartDate = '';
+  useCoupon.couponEndDate = '';
+  selectedCouponId.value = null;
+  isEdit.value = false;
+
+}
 </script>
 
   <style scoped>
+  .buttons{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
   .all-content {
     display: flex;
     gap: 50px;
@@ -171,12 +182,20 @@ async function sendEditCoupon(id) {
     font-size: 14px;
     transition: border-color 0.3s, box-shadow 0.3s;
   }
+  .coupons-actions{ 
+    display: flex;
 
+    justify-content: space-around;
+ 
+    width: 100%;
+
+   
+  }
   .all-card-coupon {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 24px;
+  justify-content: space-around;
+  gap: 40px;
   margin-top: 32px;
   padding: 0 16px;
 }

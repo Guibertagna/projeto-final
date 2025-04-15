@@ -34,6 +34,7 @@ export const useCoupons = defineStore("coupon", () => {
         async function editCouponStore(idCoupon) {
             try {
                 const data = await editCoupon(idCoupon, couponInformation.value); 
+                console.log(data);
                 return data;
             } catch(error) {
                 console.error("Erro ao editar coupon:", error);

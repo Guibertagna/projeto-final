@@ -400,6 +400,6 @@ export async function editCoupon (coupon_id, couponData) {
         return response;
         
     }catch(error){
-        console.error('Erro ao EDITAR coupons:', JSON.stringify(error.response?.data, null, 2));
+        console.error('Erro ao EDITAR coupons:'+ error);
     }
 }

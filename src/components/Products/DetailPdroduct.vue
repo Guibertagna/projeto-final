@@ -61,9 +61,11 @@ import AddCard from "./AddCard.vue";
 .all-content {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    justify-items: center;
     align-items: center;
     min-height: 100vh;
-    padding: 20px;
+    width: 100vh;
 }
 
 
@@ -88,7 +90,7 @@ import AddCard from "./AddCard.vue";
     align-items: center;
     gap: 50px;
     max-width: 1200px;
-    width: 100%;
+    width: 100vh;
     margin-top: 40px;
 }
 
