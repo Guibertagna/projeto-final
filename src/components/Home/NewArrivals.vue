@@ -24,9 +24,10 @@
 </script>
     
 <style scoped>
-    .best {
-        font-weight: bold;
-        padding-left: 40px;
+   .allcontent{
+        width: 100%;
+        height: auto;
     }
+    
 </style>
   

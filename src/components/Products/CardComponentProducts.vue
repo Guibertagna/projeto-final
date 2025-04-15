@@ -68,8 +68,6 @@ const props = defineProps({
     text-align: start;
     display: grid;
     padding-top: 30px;
-
-    max-height:500px;
     padding-left:30px;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
