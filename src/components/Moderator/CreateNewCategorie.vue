@@ -15,7 +15,7 @@
                 <label for="descriptionNewCategory">Description of category</label>
                 <input id="descriptionNewCategory" v-model="categoriesStore.descriptionCategorie" />
             </div>
-            <button 
+            <button class="create-button"
                 @click="sendCategory"  
                 :disabled="isButtonDisabled"
                 :class="{ 'disabled': isButtonDisabled }"
@@ -157,6 +157,8 @@ function cancelEdit (){
 
 <style scoped>
 .all-content {
+    width: 100%;
+    height: auto;
     align-items: center;
     justify-content: center;
     padding-top: 30px;
@@ -188,25 +190,38 @@ function cancelEdit (){
     font-size: 15px;
 }
 .categories {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    height: auto;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     margin-top: 20px;
 }
 
 .category-content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    justify-content: start;
+    align-items: center;
     gap: 20px;
+    width: 100%;
     margin-top: 20px;
 }
 
 .category-card {
-    background: white;
-    border-radius: 8px;
-    padding: 16px;
-    width: 300px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease-in-out;
+    background: #fff;
+    border-radius: 16px;
+    padding: 24px;
+    width: 250px;
+    height: 200px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--primary-color);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .category-card:hover {
@@ -240,12 +255,12 @@ button {
 }
 
 .edit-btn {
-    background-color: #4CAF50;
+    background-color: var(--secondary-color-orange);
     color: white;
 }
 
 .edit-btn:hover {
-    background-color: #45a049;
+    background-color: var(--secondary-color-orange);
 }
 
 .delete-btn {
@@ -269,7 +284,7 @@ input {
 button {
     margin-top: 20px;
     padding: 10px 16px;
-    background-color: var(--secondary-color-orange);
+    background-color: var(--primary-color);
     color: white;
     border: none;
     border-radius: 4px;
@@ -286,6 +301,11 @@ button.disabled {
     border-color: #aaa;
     cursor: not-allowed;
 }
+.create-button{
+    width: 100%;
+   
+
+}
 .empty-categories {
     text-align: center;
     padding: 20px;
@@ -300,6 +320,15 @@ button.disabled {
 .subtext {
     color: #6c757d;
     font-size: 14px;
+}
+.show-category{
+    background-color: var(--secondary-color-orange);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 10px 20px;
+    transition: 0.3s;
 }
 
 </style>
