@@ -8,7 +8,7 @@
       </div>
   
       <!-- Conteúdo das Abas -->
-      <div v-if="activeTab === 1">
+      <div class="categorie" v-if="activeTab === 1">
         <CreateNewCategorie />
       </div>
       <div v-if="activeTab === 2">
@@ -37,8 +37,10 @@
     align-items: center;
     justify-content: center;
     margin-top: 30px;
+    width: 100%;
+    height: auto;
   }
-  
+ 
   .tabs {
     width: 100%;
     display: flex;
@@ -70,6 +72,8 @@
   
   div {
     margin-top: 20px;
+    width: 100%;
+    height: auto;
   }
   </style>
   

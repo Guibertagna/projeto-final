@@ -47,13 +47,15 @@
                         <p class="upload-hint">PNG, JPG ou JPEG</p>
                     </label>
                     <input type="file" @change="handleFileUpload" id="image" style="display: none;" accept=".png, .jpg, .jpeg">
+          
                 </div>
                 <p v-if="products.productImg" class="selected-file">
                     Selected file: {{ products.productImg.name }}
+              
                 </p>
             </div>
 
-            <button @click="sendProduct()" class="submit">Create</button>
+            <button  :disabled="isFormValid" :class="{ 'disabled': isFormValid }" @click="sendProduct()" class="submit">Create Product</button>
         
         </div> 
         
@@ -64,13 +66,21 @@
 <script setup>
 import { useCreateProducts } from '@/stores/products';
 import { useCategoriesStore } from '@/stores/categories';
-import { onMounted, ref } from 'vue';
+import {  computed } from 'vue';
 const category = useCategoriesStore()
 const products = useCreateProducts()
-const allCategories = ref([])
+const isFormValid = computed(() => {
+    return !products.productName.trim() || 
+           !products.productDescription.trim() || 
+           !products.productPrice || 
+           !products.productStock || 
+           !products.productCategory_id;
+});
+
 async function sendProduct(){
     await products.createProductStore()
 }
+
 function handleFileUpload(event) {
     const file = event.target.files[0];
     if (file) {
@@ -87,6 +97,7 @@ function handleFileUpload(event) {
     align-items: center;
     justify-content: center;
     padding-top: 30px;
+    width: 100%;
     margin: 40px;
 }
 
@@ -142,7 +153,7 @@ textarea{
 }
 .submit{
   width: 100%;
-  background-color:var(--secondary-color-orange);
+  background-color:var(--primary-color);
   color: white;
   border: none;
   border-radius: 6px;
@@ -175,4 +186,11 @@ textarea{
   color: #666;
   margin-top: 4px;
 }
+.disabled {
+    background-color: #ccc;
+    color: #666;
+    border-color: #aaa;
+    cursor: not-allowed;
+}
+
 </style>
