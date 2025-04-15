@@ -113,6 +113,7 @@ export const useCartProducts = defineStore("cart",() => {
       getCartStore,
       getItemsCartStore,
       deleteProductfromcart,
+      addProducts,
       isApplyCupon,
       discountCoupon,
       discount,
