@@ -40,13 +40,12 @@ export const useAuthenticateStore = defineStore('authenticate', ()=>{
     logout,
     ferifyMe, 
     logout,
-    saveUser,
     token, 
     user, 
     isAuthenticated,
      
   }
     
-}, {persist: true}
+},{persist: true}
 
 )

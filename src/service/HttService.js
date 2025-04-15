@@ -1,44 +1,46 @@
 import axios from 'axios';
 import { useAuthenticateStore } from '@/stores/authenticate';
+
 export const apiUrl = axios.create({
     baseURL: 'http://35.196.79.227:8000', 
 });
+function authHeaders() {
+    const authStore = useAuthenticateStore();
+    const token = authStore.token;
+
+    return {
+        'Authorization': `Bearer ${token}`
+    };
+}
 
 export async function login(credentials) {
     try {
         const response = await apiUrl.post('/login', credentials); 
-        
         return response;
     }catch (error) {
-    console.log(credentials)
-    console.error('Erro ao fazer login:', error);
-    throw error;
+        console.log(credentials)
+        console.error('Erro ao fazer login:', error);
+        throw error;
     }
 }
 
 export async function ferify() {
     try {
-        const authStore = useAuthenticateStore(); 
-        const token = authStore.token; 
+        console.log(authHeaders())
         const response = await apiUrl.get('/verify-token', {
-            headers: {
-                'Authorization': `Bearer ${token}`, 
-            }
+            headers: {...authHeaders()}
         }); 
-        
+      
         return response;
     }catch (error) {
+
     throw error;
     }
 }
 export async function renewToken() {
     try {
-        const authStore = useAuthenticateStore(); 
-        const token = authStore.token; 
         const response = await apiUrl.post('/renew-token', null, {
-            headers: {
-                'Authorization': `Bearer ${token}`, 
-            }
+            headers: {...authHeaders()}
         }); 
         
         return response;
@@ -46,16 +48,15 @@ export async function renewToken() {
     throw error;
     }
 }
-
 
 export async function register(credentialsRegister) {
     try {
         const response = await apiUrl.post('/register', credentialsRegister); 
         return response;
     }catch (error) {
-    console.log(credentialsRegister)
-    console.error('Erro ao fazer registro:', error);
-    throw error;
+        console.log(credentialsRegister)
+        console.error('Erro ao fazer registro:', error);
+        throw error;
     }
 }
 
@@ -70,37 +71,30 @@ export async function getCategories() {
 }
 
 export async function createProduct(productsinfo) {
-    console.log(productsinfo)
-    const authStore = useAuthenticateStore(); 
-    const token = authStore.token; 
     try {
-        console.log(productsinfo)
         const response = await apiUrl.post('/products', productsinfo, { 
             headers: {
-                'Authorization': `Bearer ${token}`, 
+                ...authHeaders(),
                 'Content-Type': 'multipart/form-data',
             }
         });
-        alert("!!!")
+        alert('Produto criado com sucesso!')
         return response.data; 
     }catch (error) {
-    console.log(productsinfo)
-    console.error('Erro ao criar produtos:', error);
-    throw error;
+        console.error('Erro ao criar produtos:', error);
+        throw error;
     }
 }
 
 export async function createCategorie (categoryData) {
     try{
-        if(categoryData.name != ""){const authStore = useAuthenticateStore(); 
-            const token = authStore.token; 
+        if(categoryData.name != ""){
             const response = await apiUrl.post('/categories', categoryData,{
                 headers: {
-                    'Authorization': `Bearer ${token}`, 
+                    ...authHeaders(),
                     'Content-Type': 'multipart/form-data',
                 }
                 });
-                console.log('Categoria criada com sucesso:', response.data);
                 alert('categoria criada com sucesso!')
         return response;
     }else{
@@ -115,11 +109,9 @@ export async function createCategorie (categoryData) {
 
 export async function editCategoryService (category_id, categoryData) {
     try{
-        const authStore = useAuthenticateStore(); 
-        const token = authStore.token; 
         const response = await apiUrl.put(`/categories/${category_id}`, categoryData,{
             headers: {
-                'Authorization': `Bearer ${token}`, 
+                ...authHeaders(),
                 'Content-Type': 'application/json' 
                 }
                 });
@@ -133,11 +125,9 @@ export async function editCategoryService (category_id, categoryData) {
 
 export async function deleteCategorieService(category_id) {
     try{
-        const authStore = useAuthenticateStore(); 
-        const token = authStore.token; 
         const response = await apiUrl.delete(`/categories/${category_id}`,{
             headers: {
-                'Authorization': `Bearer ${token}`, 
+                ...authHeaders(),
                 
             }
         })
@@ -167,17 +157,13 @@ export async function getProductsById(product_id) {
 }
 
 export async function getProductsServiceCategory(category_id) {
-    const authStore = useAuthenticateStore(); 
-    const token = authStore.token; 
     try{
         const response = await apiUrl.get(`/products/category/${category_id}`,{
             headers: {
-                'Authorization': `Bearer ${token}`, 
-                
+                ...authHeaders(),
             }
         })
         return response
-        
     }catch(error){
         console.log("erro a buscar produtos com id 1" + error)
     }
@@ -185,11 +171,9 @@ export async function getProductsServiceCategory(category_id) {
 
 export async function getCategoryById(category_id) {
     try{
-        const authStore = useAuthenticateStore(); 
-        const token = authStore.token; 
         const response = await apiUrl.get(`/categories/${category_id}`,{
             headers: {
-                'Authorization': `Bearer ${token}`, 
+                ...authHeaders(), 
                 
             }
         })
@@ -200,13 +184,10 @@ export async function getCategoryById(category_id) {
 }
 
 export async function addItemCart(item) {
-    const authStore = useAuthenticateStore(); 
-    const token = authStore.token; 
-    console.log("Dados enviados:", JSON.stringify(item));
     try{
         const response = await apiUrl.post('/cart/items', item,{
             headers: {
-                'Authorization': `Bearer ${token}`, 
+                ...authHeaders(),
                 'Content-Type': 'application/json' 
             }
         })
@@ -218,14 +199,11 @@ export async function addItemCart(item) {
     
 }
 
-export async function createCart() {
-    const authStore = useAuthenticateStore(); 
-    const token = authStore.token; 
-    console.log(token)    
+export async function createCart() { 
     try{
         const response = await apiUrl.post('/cart',null,{
             headers: {
-                'Authorization': `Bearer ${token}`, 
+                ...authHeaders(),
                 'Content-Type': 'application/json'
             }
         })
@@ -238,14 +216,11 @@ export async function createCart() {
     
 }
 
-export async function getItemsCart() {
-    const authStore = useAuthenticateStore(); 
-    const token = authStore.token; 
-    console.log(token)    
+export async function getItemsCart() {  
     try{
         const response = await apiUrl.get('/cart/items',{
             headers: {
-                'Authorization': `Bearer ${token}`, 
+                ...authHeaders(),
                 'Content-Type': 'application/json'
             }
         })
@@ -256,14 +231,11 @@ export async function getItemsCart() {
     }
     
 }
-export async function getAllCart() {
-    const authStore = useAuthenticateStore(); 
-    const token = authStore.token; 
-    console.log(token)    
+export async function getAllCart() {  
     try{
         const response = await apiUrl.get('/cart',{
             headers: {
-                'Authorization': `Bearer ${token}`, 
+                ...authHeaders(),
                 'Content-Type': 'application/json'
             }
         })
@@ -276,12 +248,9 @@ export async function getAllCart() {
 }
 export async function deleteProductcart(product_id) {
     try{
-        const authStore = useAuthenticateStore(); 
-        const token = authStore.token; 
-        console.log(product_id)
         const response = await apiUrl.delete('/cart/items',{
             headers: {
-                'Authorization': `Bearer ${token}`, 
+                ...authHeaders(),
                 'Content-Type': 'application/json'
             },
             data: product_id
@@ -293,12 +262,10 @@ export async function deleteProductcart(product_id) {
 }
 
 export async function addAddresses(address) {
-    const authStore = useAuthenticateStore(); 
-    const token = authStore.token; 
     try{
         const response = await apiUrl.post('/addresses', address,{
             headers: {
-                'Authorization': `Bearer ${token}`, 
+                ...authHeaders(),
                 'Content-Type': 'application/json' 
             }
         })
@@ -310,12 +277,9 @@ export async function addAddresses(address) {
 }
 export async function getAllAddresses() {
     try{
-        const authStore = useAuthenticateStore(); 
-        const token = authStore.token; 
         const response = await apiUrl.get('addresses',{
             headers: {
-                'Authorization': `Bearer ${token}`, 
-                
+                ...authHeaders(),
             }
         })
         return response
@@ -326,13 +290,11 @@ export async function getAllAddresses() {
 
 
 export async function  sendOrders(order) {
-    const authStore = useAuthenticateStore(); 
-    const token = authStore.token; 
     try{
         const reponse = await apiUrl.post('/orders', order,{
             headers:{
-                    'Authorization': `Bearer ${token}`, 
-                    'Content-Type': 'application/json' 
+                ...authHeaders(),
+                'Content-Type': 'application/json' 
             }
         })
         return reponse
@@ -342,12 +304,10 @@ export async function  sendOrders(order) {
     
 }
 export async function createCoupom(coupon) {
-    const authStore = useAuthenticateStore();
-    const token = authStore.token;
     try{
         const response = await apiUrl.post('/coupons', coupon, {
             headers:{
-                'authorization': `Bearer ${token}`,
+                ...authHeaders(),
                 'Content-Type': 'application/json'
             }
         })
@@ -357,12 +317,10 @@ export async function createCoupom(coupon) {
     }
 }
 export async function getAllCoupons() {
-    const authStore = useAuthenticateStore();
-    const token = authStore.token;
     try{
         const response = await apiUrl.get('/coupons', {
             headers:{
-                'authorization': `Bearer ${token}`,
+                ...authHeaders(),
                 'Content-Type': 'application/json'
             }
         })
@@ -372,12 +330,10 @@ export async function getAllCoupons() {
     }
 }
 export async function getAllCouponByid(coupon_id) {
-    const authStore = useAuthenticateStore();
-    const token = authStore.token;
     try{
         const response = await apiUrl.get(`/coupons/${coupon_id}`, {
             headers:{
-                'authorization': `Bearer ${token}`,
+                ...authHeaders(),
                 'Content-Type': 'application/json'
             }
         })
@@ -388,11 +344,9 @@ export async function getAllCouponByid(coupon_id) {
 }
 export async function editCoupon (coupon_id, couponData) {
     try{
-        const authStore = useAuthenticateStore(); 
-        const token = authStore.token; 
         const response = await apiUrl.put(`/coupons/${coupon_id}`, couponData,{
             headers: {
-                'Authorization': `Bearer ${token}`, 
+                ...authHeaders(),
                 'Content-Type': 'application/json' 
                 }
                 });
@@ -403,3 +357,18 @@ export async function editCoupon (coupon_id, couponData) {
         console.error('Erro ao EDITAR coupons:'+ error);
     }
 }
+/* export async function deleteCategorieService(category_id) {
+    try{
+        const authStore = useAuthenticateStore(); 
+        const token = authStore.token; 
+        const response = await apiUrl.delete(`/categories/${category_id}`,{
+            headers: {
+                'Authorization': `Bearer ${token}`, 
+                
+            }
+        })
+    }catch(error){
+        console.log("erro ao deletar categoria")
+    }
+}
+ */

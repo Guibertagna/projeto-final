@@ -10,6 +10,7 @@ const useAuthenticate = useAuthenticateStore();
 onMounted(() => {
     useCoupon.getCouponsStore();
     useAuthenticate.ferifyMe();
+    console.log("Verificando autenticação do usuário...");
 });
 </script>
 
