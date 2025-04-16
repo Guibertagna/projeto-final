@@ -25,10 +25,7 @@ export const useAuthenticateStore = defineStore('authenticate', ()=>{
   try {
     const response = await ferify();
     const expiration = response.data.expires_at;
-
     console.log("Token expira em:", expiration);
-
-   
     
   }catch (error) {  
     logout();

@@ -143,6 +143,7 @@ async function startEditCategory(category) {
             categoriesStore.descriptionCategorie = category.description;
             selectedCategoryId.value = category.id;  
             isEdit.value = true; 
+            window.scrollTo({ top: 200, behavior: "smooth" });
         }
    
 }

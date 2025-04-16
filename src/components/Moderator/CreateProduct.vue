@@ -3,31 +3,31 @@
         <div class="card-create">
            <div class="title">
                 <h3 >Add new product</h3>
-           </div>
+            </div>
             <div class="form">
                 <label for="name">Name of product</label>
-                <input placeholder="name" v-model="products.productName" id="name" type="text">
+                <input placeholder="name" v-model="getProducts.productName" id="name" type="text">
             </div>
             <div class="form" >
                 <label for="description">Descripition of product</label>
-                 <textarea  placeholder=" Describe the product" id="description" v-model="products.productDescription"> </textarea>
+                <textarea  placeholder=" Describe the product" id="description" v-model="getProducts.productDescription"> </textarea>
             </div>
             <div class="form-price" >
                 <div class="price"> 
                     <label for="price">Price of product</label> 
-                    <input type="number" placeholder="Price" v-model="products.productPrice" id="price">
+                    <input type="number" placeholder="Price" v-model="getProducts.productPrice" id="price">
                         
                 </div>
                     
                 <div class="stock">
                     <label for="stock">Stock of product</label>
-                    <input placeholder="stock" v-model="products.productStock" id="stock" type="number">
+                    <input placeholder="stock" v-model="getProducts.productStock" id="stock" type="number">
                 </div>
             </div>
                 
             <div class="form">
                 <label for="category">Category of product</label>
-                <select placeholder="category name" v-model="products.productCategory_id" id="category">
+                <select placeholder="category name" v-model="getProducts.productCategory_id" id="category">
                     <option v-for="category in category.categories.data " :key="category.id" :value="category.id">
                         {{ category.name }}
                     </option>
@@ -47,44 +47,59 @@
                         <p class="upload-hint">PNG, JPG ou JPEG</p>
                     </label>
                     <input type="file" @change="handleFileUpload" id="image" style="display: none;" accept=".png, .jpg, .jpeg">
-          
                 </div>
-                <p v-if="products.productImg" class="selected-file">
-                    Selected file: {{ products.productImg.name }}
-              
+                <p v-if="getProducts.productImg" class="selected-file">
+                    Selected file: {{ getProducts.productImg.name }}
                 </p>
             </div>
-
             <button  :disabled="isFormValid" :class="{ 'disabled': isFormValid }" @click="sendProduct()" class="submit">Create Product</button>
-        
         </div> 
-        
+        <div class="cardPtoducts-content">
+            <div class="title">
+                <h3> All Products</h3>
+            </div>
+            <div class="card-products">
+                {{  }}
+                <div v-for="product in getProducts.products" :key="product.id" class="card-product">
+                    <img :src="product.image" alt="Product Image" />
+                    
+                    <h4>{{ product.name }}</h4>
+                    <p class="description">{{ product.description }}</p>
+                    {{}}
+                    <p class="price">Price: {{ product.price }}</p>
+                    <p class="stock">Stock: {{ product.stock }}</p>
+                    <button @click="getProducts.deleteProduct(product.id)">Delete</button>
+                </div>
+            </div>
+        </div>
     </div>
- 
 </template>
 
 <script setup>
-import { useCreateProducts } from '@/stores/products';
+
 import { useCategoriesStore } from '@/stores/categories';
 import {  computed } from 'vue';
+import { useGetProducts } from '@/stores/getProducts';
 const category = useCategoriesStore()
-const products = useCreateProducts()
+
+const getProducts = useGetProducts()
+
 const isFormValid = computed(() => {
-    return !products.productName.trim() || 
-           !products.productDescription.trim() || 
-           !products.productPrice || 
-           !products.productStock || 
-           !products.productCategory_id;
+    return !getProducts.productName.trim() || 
+           !getProducts.productDescription.trim() || 
+           !getProducts.productPrice || 
+           !getProducts.productStock || 
+           !getProducts.productCategory_id;
 });
 
 async function sendProduct(){
-    await products.createProductStore()
+    await getProducts.createProductStore()
 }
 
 function handleFileUpload(event) {
     const file = event.target.files[0];
     if (file) {
-        products.productImg = file; 
+        getProducts.productImg = file; 
         console.log("Arquivo selecionado:", file);
     }
 }
@@ -191,6 +206,12 @@ textarea{
     color: #666;
     border-color: #aaa;
     cursor: not-allowed;
+}
+.cardPtoducts-content{
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    width: 100%;
 }
 
 </style>

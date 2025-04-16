@@ -6,14 +6,16 @@ import "@/service/socket"
 import { useAuthenticateStore } from './stores/authenticate';
 import { useCoupons } from '@/stores/cupons';
 import { useCategoriesStore } from './stores/categories';
+import { useGetProducts } from '@/stores/getProducts';
 const useCoupon = useCoupons();
 const useCategory = useCategoriesStore();
 const useAuthenticate = useAuthenticateStore();
+const useGet = useGetProducts();
 onMounted(() => {
+    useGet.getProducts()
     useCoupon.getCouponsStore();
     useAuthenticate.ferifyMe(); 
     useCategory.getCategoriesStores();
-
     console.log("Verificando autenticação do usuário...");
 });
 </script>
