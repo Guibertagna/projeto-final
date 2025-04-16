@@ -30,7 +30,6 @@ export async function ferify() {
         const response = await apiUrl.get('/verify-token', {
             headers: {...authHeaders()}
         }); 
-      
         return response;
     }catch (error) {
 
@@ -369,5 +368,20 @@ export async function editCoupon (coupon_id, couponData) {
         return response
     }catch(error){
         console.log("erro ao deletar coupon" + error)   
+    }
+}
+
+export async function deleteProductService(product_id) {
+    try{
+    
+        const response = await apiUrl.delete(`/products/${product_id}`,{
+            headers: {
+                ...authHeaders(),   
+            }
+        })
+        alert("produto deletado com sucesso!"+ response.data)
+        return response
+    }catch(error){
+        console.log("erro ao deletar produto" + error)   
     }
 }
