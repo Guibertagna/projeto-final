@@ -64,8 +64,8 @@ import AddCard from "./AddCard.vue";
     justify-content: center;
     justify-items: center;
     align-items: center;
-    min-height: 100vh;
-    width: 100vh;
+    height: auto;
+    width: 100%;
 }
 
 
@@ -85,12 +85,13 @@ import AddCard from "./AddCard.vue";
         font-size: 24px;
         color: black;
     }
+
 .all-card {
     display: flex;
     align-items: center;
     gap: 50px;
-    max-width: 1200px;
-    width: 100vh;
+    width: 100%;
+    height: auto;
     margin-top: 40px;
 }
 

@@ -58,6 +58,21 @@
             <p v-else class="not-delete">You cannot delete or change this category. </p>
         </div>
     </div>
+    <div v-if="isEdit" class="modal-overlay">
+  <div class="modal-content">
+    <h2>Edit Category</h2>
+    <label>Name</label>
+    <input v-model="categoriesStore.nameCategorie" type="text" />
+
+    <label>Description</label>
+    <textarea v-model="categoriesStore.descriptionCategorie" rows="4"></textarea>
+
+    <div class="modal-buttons">
+      <button @click="saveCategoryChanges">Save</button>
+      <button @click="cancelEdit">Cancel</button>
+    </div>
+  </div>
+</div>
     
 </div>
 <div v-if="Array.isArray(categoriesComponent) && categoriesComponent.length === 0 && !showCategories" class="empty-categories">
@@ -136,7 +151,6 @@ async function deleteCategorie(id) {
     }
 }
 async function startEditCategory(category) {
- 
         
         if (category) {
             categoriesStore.nameCategorie = category.name;
@@ -331,5 +345,34 @@ button.disabled {
     padding: 10px 20px;
     transition: 0.3s;
 }
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.modal-buttons button {
+  margin-left: 0.5rem;
+}
 </style>

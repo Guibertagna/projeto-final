@@ -9,7 +9,7 @@
                 <input placeholder="name" v-model="getProducts.productName" id="name" type="text">
             </div>
             <div class="form" >
-                <label for="description">Descripition of product</label>
+                <label for="description">Description of product</label>
                 <textarea  placeholder=" Describe the product" id="description" v-model="getProducts.productDescription"> </textarea>
             </div>
             <div class="form-price" >
@@ -54,24 +54,32 @@
             </div>
             <button  :disabled="isFormValid" :class="{ 'disabled': isFormValid }" @click="sendProduct()" class="submit">Create Product</button>
         </div> 
-        <div class="cardPtoducts-content">
-            <div class="title">
-                <h3> All Products</h3>
-            </div>
-            <div class="card-products">
-                {{  }}
-                <div v-for="product in getProducts.products" :key="product.id" class="card-product">
-                    <img :src="product.image" alt="Product Image" />
-                    
-                    <h4>{{ product.name }}</h4>
-                    <p class="description">{{ product.description }}</p>
-                    {{}}
-                    <p class="price">Price: {{ product.price }}</p>
-                    <p class="stock">Stock: {{ product.stock }}</p>
-                    <button @click="getProducts.deleteProduct(product.id)">Delete</button>
-                </div>
-            </div>
-        </div>
+        <div class="card-products-container">
+  <div class="title">
+    <h1>All Products</h1>
+  </div>
+  <div class="card-products-grid">
+    <div v-for="product in getProducts.products" :key="product.id" class="card-product">
+      <img :src="getImg(product.image_path)" alt="Product Image" class="product-image" />
+      <div class="card-body">
+        <h4>{{ product.name.slice(0, 50) }}{{ product.name.length > 50 ? '...' : '' }}</h4>
+        <p class="description">{{ product.description.slice(0, 50) }}{{ product.description.length > 50 ? '...' : '' }}</p>
+
+        <p class="price"><strong>Price:</strong> ${{ product.price }}</p>
+        <p class="stock"><strong>Stock:</strong> {{ product.stock }}</p>
+      </div>
+      <div class="buttons"> 
+      <button class="delete-btn" @click="startEditProduct(product.id)">
+        Edit
+      </button>
+      <button class="delete-btn" style="background-color: red;" @click="getProducts.deleteProduct(product.id)">
+        Delete
+      </button>
+    </div>
+    
+    </div>
+  </div>
+</div>
     </div>
 </template>
 
@@ -83,7 +91,10 @@ import { useGetProducts } from '@/stores/getProducts';
 const category = useCategoriesStore()
 
 const getProducts = useGetProducts()
-
+function getImg(imagePath) {
+  const baseUrl = 'http://35.196.79.227:8000';
+  return `${baseUrl}${imagePath}`;
+}
 const isFormValid = computed(() => {
     return !getProducts.productName.trim() || 
            !getProducts.productDescription.trim() || 
@@ -179,6 +190,7 @@ textarea{
  
 }
 .image{
+    
     border: 2px dashed var(--neutral-color-04);
     margin-top: 10px;
     border-radius: 9px;
@@ -213,5 +225,90 @@ textarea{
     height: auto;
     width: 100%;
 }
+.card-products-container {
+    display: grid;
+    flex-direction: column;
+ 
+    
+    align-content: center;
+    padding: 20px;
+    width: 100%;
+}
+
+.title h3 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.card-products-grid {
+    align-items: center;
+    align-self: center;
+    align-content: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+.card-product {
+    width: 300px ;
+    background-color: #fff;
+    border-radius: 12px;
+    border: 1px var(--primary-color) solid;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease;
+}
+
+    .card-product:hover {
+    transform: translateY(-5px);
+    }
+
+.product-image {
+    margin-top: 25px;
+  width: 100%;
+  height: 180px;
+  object-fit:contain;
+}
+
+.card-body {
+  padding: 15px;
+  flex-grow: 1;
+}
+
+.card-body h4 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.description {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.price, .stock {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.delete-btn {
+    margin-top: 20px;
+  padding: 10px 16px;
+  background-color: var(--secondary-color-orange);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.buttons {
+margin-bottom:30px ;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
 
 </style>
