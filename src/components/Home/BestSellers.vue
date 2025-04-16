@@ -5,21 +5,14 @@
 </template>
 <script setup>
   import CardComponentProducts from '@/components/Products/CardComponentProducts.vue';
-  import { ref, onMounted } from "vue";
+  import { ref, onMounted, computed } from "vue";
   import { useGetProducts } from "@/stores/getProducts";
- 
-  const allProducts = ref([]);
+  
+  const allProducts = computed(() => getStoreProducts.products.filter(
+    product => product.category.id === 39
+  ));
   const getStoreProducts = useGetProducts();
 
-  async function getBestSellers() {
-    await getStoreProducts.getProductsCategory(39);
-    allProducts.value = getStoreProducts.filtredProcducts.data;
-    console.log(allProducts.value);
-  }
-
-  onMounted(async () => {
-    getBestSellers();
-  });
 </script>
   
 <style scoped>

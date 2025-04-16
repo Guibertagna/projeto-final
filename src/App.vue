@@ -12,10 +12,10 @@ const useCategory = useCategoriesStore();
 const useAuthenticate = useAuthenticateStore();
 const useGet = useGetProducts();
 onMounted(() => {
+    useGet.getProducts()
     useCoupon.getCouponsStore();
     useAuthenticate.ferifyMe(); 
     useCategory.getCategoriesStores();
-    useGet.getProducts()
     console.log("Verificando autenticação do usuário...");
 });
 </script>
