@@ -86,17 +86,21 @@
               <div
                 class="status-flag valid"
                 style="text-align: center"
-                v-if="coupons.end_date > dataFormatada"
+                v-if="coupons.end_date > dataFormatada && coupons.start_date < dataFormatada"
               >
                 VALID
+           
               </div>
-              <div
-                style="text-align: center"
-                class="status-flag invalid"
-                v-else
-              >
-                INVALID
+              <div style="text-align: center" class="status-flag invalid" v-else>
+                <div v-if="coupons.end_date < dataFormatada" >
+                  EXPIRED IN {{ formatDate(coupons.end_date) }}
+                </div>
+                <div v-if="coupons.start_date > dataFormatada"> 
+                    STARTING  IN {{ formatDate(coupons.start_date) }}
+                </div>
               </div>
+
+              
               <h3 style="text-align: center">{{ coupons.code }}</h3>
               <p>
                 <strong>Discount percentage:</strong>
@@ -105,9 +109,11 @@
               <p>
                 <strong>Start date:</strong>
                 {{ formatDate(coupons.start_date) }}
+           
               </p>
               <p>
                 <strong>End date:</strong> {{ formatDate(coupons.end_date) }}
+              
               </p>
             </div>
             <div class="coupons-actions">
@@ -286,20 +292,21 @@ input {
 .all-card-coupon {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
   justify-content: center;
   align-items: center;
   gap: 30px;
+  
   margin-top: 32px;
-  padding: 0 16px;
+
 }
 
 .card-coupon {
   background: #fff;
   border-radius: 16px;
   padding: 24px;
-  width: 350px;
-  height: 300px;
+  width: 300px;
+  height: 260px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   border: 1px solid var(--primary-color);
   display: flex;

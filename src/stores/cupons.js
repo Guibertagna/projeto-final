@@ -9,6 +9,7 @@ export const useCoupons = defineStore("coupon", () => {
     const couponStartDate = ref('');
     const couponStore = ref([]);
     const couponInformation = computed(() => ({
+        
         code: couponCode.value,
         discount_percentage: couponPercentage.value,
         start_date: couponStartDate.value,
