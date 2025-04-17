@@ -52,7 +52,7 @@
                     Selected file: {{ getProducts.productImg.name }}
                 </p>
             </div>
-            <button  :disabled="isFormValid" :class="{ 'disabled': isFormValid }" @click="sendProduct()" class="submit">Create Product</button>
+            <button  :disabled="isFormValid " :class="{ 'disabled': isFormValid }" @click="sendProduct()" class="submit">Create Product</button>
         </div> 
         <div class="card-products-container">
   <div class="title">
@@ -69,7 +69,7 @@
         <p class="stock"><strong>Stock:</strong> {{ product.stock }}</p>
       </div>
       <div class="buttons"> 
-      <button class="delete-btn" @click="startEditProduct(product.id)">
+      <button class="delete-btn" @click="startEditProduct(product) ">
         Edit
       </button>
       <button class="delete-btn" style="background-color: red;" @click="getProducts.deleteProduct(product.id)">
@@ -80,16 +80,53 @@
     </div>
   </div>
 </div>
+<div class="modal-products" v-if="isEdit">
+         <div class="modal-content">
+            <div class="title">
+                <h3 >Edit product</h3>
+            </div>
+            <div class="form">
+                <label for="name">Name of product</label>
+                <input placeholder="name" v-model="getProducts.productName" id="name" type="text">
+            </div>
+            
+            <div class="form-price" >
+                <div class="price"> 
+                    <label for="price">Price of product</label> 
+                    <input type="number" placeholder="Price" v-model="getProducts.productPrice" id="price">
+                        
+                </div>
+                    
+                
+            </div>
+                
+            <div class="form">
+                <label for="category">Category of product</label>
+                <select placeholder="category name" v-model="getProducts.productCategory_id" id="category">
+                    <option v-for="category in category.categories.data " :key="category.id" :value="category.id">
+                        {{ category.name }}
+                    </option>
+                </select>
+            </div>
+                
+            
+            <div class="modal-buttons">
+                <button @click="sendEditProduct(getProducts.productId)">Save</button>
+                <button @click="cancelEdit">Cancel</button>
+            </div>
+        </div> 
+        </div>
     </div>
+    
 </template>
 
 <script setup>
 
 import { useCategoriesStore } from '@/stores/categories';
-import {  computed } from 'vue';
+import {  computed, ref } from 'vue';
 import { useGetProducts } from '@/stores/getProducts';
 const category = useCategoriesStore()
-
+const isEdit = ref(false)
 const getProducts = useGetProducts()
 function getImg(imagePath) {
   const baseUrl = 'http://35.196.79.227:8000';
@@ -103,8 +140,54 @@ const isFormValid = computed(() => {
            !getProducts.productCategory_id;
 });
 
+async function startEditProduct(product) {
+  console.log("Iniciando edição do prdoduto:", product);
+  if (product) {
+    isEdit.value = true;
+    getProducts.productId = product.id;
+    getProducts.productName = product.name;
+    getProducts.productDescription = product.description;
+    getProducts.productPrice = product.price;
+    getProducts.productStock = product.stock;
+    getProducts.productCategory_id = product.category_id;
+    getProducts.productImg = product.image_path;
+
+}
+}
+async function sendEditProduct(product_id) {
+    if (!product_id || typeof product_id !== "number") {
+        console.error("ID inválido:", product_id);
+        return;
+    }
+    try {
+        const response = await getProducts.updateProduct(product_id);
+        
+        if (response?.status === 200) {
+            const index = getProducts.products.findIndex(product => product.id === product_id);
+            
+            if (index !== -1) {
+                getProducts.products[index] = response.data;
+                console.log("Produto atualizado no estado local.");
+                cancelEdit()
+            } else {
+                console.warn("Produto com o ID não encontrado na lista local.");
+            }
+        }
+    } catch (error) {
+        console.error("Erro ao editar produto:", error);
+    }
+}
 async function sendProduct(){
     await getProducts.createProductStore()
+} 
+function cancelEdit (){
+    isEdit.value = false;
+    getProducts.productName = '';
+    getProducts.productDescription = '';
+    getProducts.productPrice = '';
+    getProducts.productStock = '';
+    getProducts.productCategory_id = '';
+    getProducts.productImg = null;
 }
 
 function handleFileUpload(event) {
@@ -171,26 +254,24 @@ input{
 textarea{
     min-width: 100%;
     max-width: 100%;
-    height:  100px;
+    height:  40px;
     border: 1px solid var(--neutral-color-04);
     border-radius: 6px;
     font-size: 14px;
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 .submit{
-  width: 100%;
-  background-color:var(--primary-color);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 12px;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
- 
+    width: 100%;
+    background-color:var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
 }
 .image{
-    
     border: 2px dashed var(--neutral-color-04);
     margin-top: 10px;
     border-radius: 9px;
@@ -209,9 +290,9 @@ textarea{
     width: 100%;
 }
 .selected-file {
-  font-size: 13px;
-  color: #666;
-  margin-top: 4px;
+    font-size: 13px;
+    color: #666;
+    margin-top: 4px;
 }
 .disabled {
     background-color: #ccc;
@@ -228,8 +309,6 @@ textarea{
 .card-products-container {
     display: grid;
     flex-direction: column;
- 
-    
     align-content: center;
     padding: 20px;
     width: 100%;
@@ -237,15 +316,14 @@ textarea{
 
 .title h3 {
   font-size: 24px;
+
   margin-bottom: 20px;
 }
 
 .card-products-grid {
-    align-items: center;
-    align-self: center;
-    align-content: center;
+    padding-top: 40px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
 }
 
@@ -260,55 +338,86 @@ textarea{
     transition: transform 0.2s ease;
 }
 
-    .card-product:hover {
+.card-product:hover {
     transform: translateY(-5px);
-    }
+}
 
 .product-image {
     margin-top: 25px;
-  width: 100%;
-  height: 180px;
-  object-fit:contain;
+    width: 100%;
+    height: 180px;
+    object-fit:contain;
 }
 
 .card-body {
-  padding: 15px;
-  flex-grow: 1;
+    padding: 15px;
+    flex-grow: 1;
 }
 
 .card-body h4 {
-  font-size: 18px;
-  margin-bottom: 10px;
+    font-size: 18px;
+    margin-bottom: 10px;
 }
 
 .description {
-  font-size: 14px;
-  color: #555;
-  margin-bottom: 10px;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 10px;
 }
 
 .price, .stock {
-  font-size: 14px;
-  margin-bottom: 5px;
+    font-size: 14px;
+    margin-bottom: 5px;
 }
 
 .delete-btn {
     margin-top: 20px;
-  padding: 10px 16px;
-  background-color: var(--secondary-color-orange);
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: 0.3s;
+    padding: 10px 16px;
+    background-color: var(--secondary-color-orange);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
 .buttons {
-margin-bottom:30px ;
+    margin-bottom:30px ;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+.modal-products {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4); /* fundo escuro */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.modal-content{
+    
+    overflow-y: auto; /* adiciona o scroll vertical */
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 400px;
+    max-height: 90vh; /* limite máximo de altura */
+}
+.modal-buttons {
   display: flex;
-  justify-content: space-around;
-  width: 100%;
+  justify-content: flex-end;
+  margin-top: 1rem;
 }
 
+.modal-buttons button {
+  margin-left: 0.5rem;
+}
 
 </style>

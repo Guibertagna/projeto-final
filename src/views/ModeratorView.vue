@@ -8,7 +8,8 @@
       </div>
   
       <!-- Conteúdo das Abas -->
-      <div class="categorie" v-if="activeTab === 1">
+      <div class="moderator-area">
+        <div  v-if="activeTab === 1">
         <CreateNewCategorie />
       </div>
       <div v-if="activeTab === 2">
@@ -18,6 +19,8 @@
         <CreateProduct />
       </div>
     </div>
+        
+      </div>
   </template>
   
   <script setup>
@@ -44,6 +47,8 @@
   .tabs {
     width: 100%;
     display: flex;
+    align-items: center;
+    justify-content: center;
     justify-content: space-around;
     border-right: 2px solid #ccc;
   }
@@ -71,9 +76,13 @@
   }
   
   div {
+    display: flex;
     margin-top: 20px;
+    align-content: center;
+    justify-content: center;
     width: 100%;
     height: auto;
   }
+ 
   </style>
   

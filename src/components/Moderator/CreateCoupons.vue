@@ -1,5 +1,5 @@
-<template>
-  <div class="all-content">
+<template >
+  <div  class="all-content">
     <div class="create-coupon">
       <div class="title" v-if="!isEdit">
         <h3>Add new coupon</h3>
@@ -9,7 +9,7 @@
       </div>
 
       <div class="form">
-        <label v-if="!isEdit" for="code">Code of coupon</label>
+        <label  for="code">Code of coupon</label>
         <input
           v-if="!isEdit"
           id="code"
@@ -17,29 +17,33 @@
           type="text"
           placeholder="Enter coupon code"
         />
-        <p
+        <input
           v-if="isEdit"
-          style="text-align: center; font-weight: bold; font-size: 20px"
-        >
-          {{ useCoupon.couponCode }}
-        </p>
+          
+        />
+         
+        
       </div>
       <div class="form">
         <label for="percentage">Discount Percentage</label>
-        <input
+        <input v-if="!isEdit"
           id="percentage"
           v-model="useCoupon.couponPercentage"
           type="number"
           placeholder="Enter discount percentage"
         />
+        <input
+          v-if="isEdit"/>
       </div>
       <div class="form">
         <label for="start">Start date discount</label>
-        <input id="start" v-model="useCoupon.couponStartDate" type="date" />
+        <input v-if="!isEdit" id="start" v-model="useCoupon.couponStartDate" type="date" />
+        <input v-if="isEdit" type="date"/>
       </div>
       <div class="form">
         <label for="end">End date discount</label>
-        <input id="end" v-model="useCoupon.couponEndDate" type="date" />
+        <input v-if="!isEdit" id="end" v-model="useCoupon.couponEndDate" type="date" />
+        <input v-if="isEdit" type="date"/>
       </div>
 
       <div class="buttons">
@@ -52,23 +56,7 @@
         >
           Create coupon
         </button>
-        <button
-          :disabled="isFormValid"
-          :class="{ disabled: isFormValid }"
-          v-if="isEdit"
-          class="send-btn"
-          @click="sendEditCoupon(selectedCouponId)"
-        >
-          Edit coupon
-        </button>
-        <button
-          style="background-color: red"
-          v-if="isEdit"
-          class="delete-btn"
-          @click="cancelEdit()"
-        >
-          Cancel Edit
-        </button>
+
       </div>
     </div>
     <div>
@@ -134,18 +122,70 @@
         </div>
       </div>
     </div>
+    <div v-if="isEdit" class="modal-coupons">
+        <div class="modal-content">
+          <div>
+            <p
+          v-if="isEdit"
+          style="text-align: center; font-weight: bold; font-size: 20px"
+        >
+          {{ useCoupon.couponCode }}
+        </p>
+        <div class="form">
+        <label for="percentage">Discount Percentage</label>
+        <input
+          id="percentage"
+          v-model="useCoupon.couponPercentage"
+          type="number"
+          placeholder="Enter discount percentage"
+        />
+      </div>
+      <div class="form">
+        
+        <label for="start">Start date discount</label>
+        <input id="start" v-model="useCoupon.couponStartDate" type="date" />
+      </div>
+      <div class="form">
+        <label for="end">End date discount</label>
+        <input id="end" v-model="useCoupon.couponEndDate" type="date" />
+      </div>
+      <div class="modal-buttons">
+        <button
+          :disabled="isFormValid"
+          :class="{ disabled: isFormValid }"
+          v-if="isEdit"
+          class="send-btn"
+          @click="sendEditCoupon(selectedCouponId)"
+        >
+          Edit coupon
+        </button>
+        <button
+          style="background-color: red"
+          v-if="isEdit"
+          class="delete-btn"
+          @click="cancelEdit()"
+        >
+          Cancel Edit
+        </button>
+      </div>
+
+      </div>
+    </div>
+        </div>
   </div>
 </template>
 
 <script setup>
 import { useCoupons } from "@/stores/cupons";
 import { onMounted, ref, computed } from "vue";
+
 const useCoupon = useCoupons();
 const dataAtual = new Date();
 const isEdit = ref(false);
 const isShow = ref(false);
 const selectedCouponId = ref(null);
 const dataFormatada = ref();
+
 onMounted(() => {
   dataFormatada.value =
     dataAtual.toISOString().split("T")[0] +
@@ -177,7 +217,6 @@ async function starteditCoupon(coupon) {
     useCoupon.couponStartDate = coupon.start_date.split("T")[0];
     useCoupon.couponEndDate = coupon.end_date.split("T")[0];
     selectedCouponId.value = coupon.id;
-    window.scrollTo({ top: 200, behavior: "smooth" });
   }
 }
 async function sendEditCoupon(id) {
@@ -292,7 +331,7 @@ input {
 .all-card-coupon {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   justify-content: center;
   align-items: center;
   gap: 30px;
@@ -311,6 +350,8 @@ input {
   border: 1px solid var(--primary-color);
   display: flex;
   flex-direction: column;
+
+  justify-content: center;
   align-items: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -385,6 +426,33 @@ input {
     border-color: #aaa;
     cursor: not-allowed;
 }
+.modal-coupons{
+  
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-content{
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+}
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
 
+.modal-buttons button {
+  margin-left: 0.5rem;
+}
 </style>
   

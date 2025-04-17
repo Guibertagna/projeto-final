@@ -1,5 +1,5 @@
 import { ref} from 'vue';
-import { getProductsById, getProductsService, getProductsServiceCategory, createProduct, deleteProductService } from '@/service/HttService';
+import { getProductsById, getProductsService, getProductsServiceCategory, createProduct, deleteProductService, editProduct } from '@/service/HttService';
 import { defineStore } from 'pinia';
 export const useGetProducts = defineStore('allroducts', ()=>{
     const products = ref([])
@@ -76,12 +76,26 @@ export const useGetProducts = defineStore('allroducts', ()=>{
             console.error("erro ao deletar produto " + idProduct + error)
         }
     }
+    async function updateProduct(idProduct){
+    const formData = getFormData()
+
+    // 👇 Mostra todos os dados que estão no FormData
+    
+
+    try {
+        const response = await editProduct(idProduct, formData)
+        return response
+    } catch(error) {
+        console.error("Erro ao editar produto " + idProduct + ":", error)
+    }
+}
     return{
         getProducts,
         getProductsCategory,
         getProductsId,
         createProductStore,
         deleteProduct,
+        updateProduct,
         productName,
         productDescription,
         productPrice,

@@ -9,32 +9,23 @@
             </div>
             <div class="form">
                 <label for="nameNewCategory">Name of category</label>
-                <input id="nameNewCategory" v-model="categoriesStore.nameCategorie" />
+                <input v-if="!isEdit" id="nameNewCategory" v-model="categoriesStore.nameCategorie" />
+                <input v-if="isEdit" id="nameNewCategory" />
             </div>
             <div class="form">
                 <label for="descriptionNewCategory">Description of category</label>
-                <input id="descriptionNewCategory" v-model="categoriesStore.descriptionCategorie" />
+                <textarea v-if="!isEdit" id="descriptionNewCategory" v-model="categoriesStore.descriptionCategorie" />
+                <textarea v-if="isEdit" id="descriptionNewCategory" />
             </div>
             <button class="create-button"
                 @click="sendCategory"  
-                :disabled="isButtonDisabled"
-                :class="{ 'disabled': isButtonDisabled }"
-                v-if="!isEdit"
+                :disabled="isButtonDisabled "
+                :class="{ 'disabled': isButtonDisabled || isEdit}"
+            
             >
                 Create Category
             </button>
-            <div class="buttons">
-                <button 
-                @click="sendEditCategory(selectedCategoryId)"
-                :disabled="isButtonDisabled"
-                :class="{ 'disabled': isButtonDisabled }"
-                v-if="isEdit"
-            >
-                Edit Category
-            </button>
-            <button v-if="isEdit" class="delete-btn" @click="cancelEdit"> Cancel </button>
-            </div>
-        
+    
         </div>
 
         <div style="align-items: center; display: flex; justify-content: center;" > 
@@ -58,21 +49,23 @@
             <p v-else class="not-delete">You cannot delete or change this category. </p>
         </div>
     </div>
+
     <div v-if="isEdit" class="modal-overlay">
   <div class="modal-content">
     <h2>Edit Category</h2>
     <label>Name</label>
-    <input v-model="categoriesStore.nameCategorie" type="text" />
+    <input  v-model="categoriesStore.nameCategorie" type="text" />
 
     <label>Description</label>
     <textarea v-model="categoriesStore.descriptionCategorie" rows="4"></textarea>
 
     <div class="modal-buttons">
-      <button @click="saveCategoryChanges">Save</button>
+      <button @click="sendEditCategory(selectedCategoryId)">Save</button>
       <button @click="cancelEdit">Cancel</button>
     </div>
   </div>
 </div>
+
     
 </div>
 <div v-if="Array.isArray(categoriesComponent) && categoriesComponent.length === 0 && !showCategories" class="empty-categories">
@@ -101,14 +94,14 @@ const isButtonDisabled = computed(() => !categoriesStore.nameCategorie.trim());
 const toggleCategories = () => {
     showCategories.value = !showCategories.value;
 };
+
 async function sendCategory() {
     try {
         const newCategory = await categoriesStore.createCategory();
-        
-        if (newCategory?.data) {
+ 
+        if (newCategory.status === 201) {
             categoriesStore.categories.data.push(newCategory.data);
         }
-
         categoriesStore.nameCategorie = '';
         categoriesStore.descriptionCategorie = '';
     } catch (error) {
@@ -116,6 +109,7 @@ async function sendCategory() {
         alert('Failed to create category!');
     }
 }
+
 async function sendEditCategory(id) {
     if (!id || typeof id !== "number") {
         console.error("ID inválido:", id);
@@ -124,7 +118,7 @@ async function sendEditCategory(id) {
     try {
         const categoryEdit = await categoriesStore.editCategoryEdit(id);
         
-        if (categoryEdit?.data) {
+        if (categoryEdit.status === 200) {
             const index = categoriesStore.categories.data.findIndex(category => category.id === id);
             if (index !== -1) {
                 categoriesStore.categories.data[index] = categoryEdit.data;
@@ -157,9 +151,8 @@ async function startEditCategory(category) {
             categoriesStore.descriptionCategorie = category.description;
             selectedCategoryId.value = category.id;  
             isEdit.value = true; 
-            window.scrollTo({ top: 200, behavior: "smooth" });
+
         }
-   
 }
 
 function cancelEdit (){
@@ -218,7 +211,7 @@ function cancelEdit (){
 
 .category-content {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     justify-content: start;
     align-items: center;
     gap: 20px;
@@ -230,8 +223,8 @@ function cancelEdit (){
     background: #fff;
     border-radius: 16px;
     padding: 24px;
-    width: 250px;
-    height: 200px;
+    width: 300px;
+  height: 260px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     border: 1px solid var(--primary-color);
     display: flex;
@@ -290,6 +283,15 @@ button {
 input {
     width: 100%;
     padding: 10px 12px;
+    border: 1px solid var(--neutral-color-04);
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+textarea{
+    min-width: 100%;
+    max-width: 100%;
+    height:  100px;
     border: 1px solid var(--neutral-color-04);
     border-radius: 6px;
     font-size: 14px;
