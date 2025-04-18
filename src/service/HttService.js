@@ -356,6 +356,29 @@ export async function editCoupon (coupon_id, couponData) {
         console.error('Erro ao EDITAR coupons:'+ error);
     }
 }
+export async function editProduct (product_id, productsinfo) {
+    try{
+        console.log(productsinfo)
+        console.log("Conteúdo do FormData:")
+    for (let [key, value] of productsinfo.entries()) {
+        console.log(`${key}:`, value)
+    }
+        const response = await apiUrl.put(`/products/${product_id}`, productsinfo,{
+            headers: {
+                ...authHeaders(),
+                'Content-Type': 'application/json' 
+                }
+                });
+                alert("produtos editado com sucesso!");
+                console.log(response)
+                console.log(productsinfo.data)
+                return response;
+        
+    }catch(error){
+        console.error('Erro ao EDITAR coupons:'+ error);
+    }
+}
+
  export async function deleteCouponService(coupon_id) {
     try{
     
