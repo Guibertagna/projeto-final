@@ -115,17 +115,11 @@ const router = useRouter();
 const useCouponsStore = useCoupons();
 function getImg(product_id) {
   console.log(useProducts.products);
-  
-  // Corrigido: usa o parâmetro corretamente
-  const imgProduct = useProducts.products.find(p => p.product_id === product_id);
-
+  const imgProduct = useProducts.products.find(p => p.id === product_id);
   if (!imgProduct) {
     console.error("Produto não encontrado para o ID:", product_id);
     return null;
   }
-
-  console.log(imgProduct.image_path);
-
   const baseUrl = "http://35.196.79.227:8000";
   return `${baseUrl}${imgProduct.image_path}`;
 }

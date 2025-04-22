@@ -41,6 +41,7 @@ function getImg(imagePath) {
 function goToDetails (id_product){
   router.push(`/products/${id_product}`);
 }
+
 const props = defineProps({
   productsProps: {
     type: Array,

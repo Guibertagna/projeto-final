@@ -18,7 +18,7 @@
         </div>
       </div>
 
-      <divs
+      <div
         v-if="selectedMethod === 'credit-card'"
         class="form-group"
       >
@@ -30,7 +30,7 @@
           placeholder=" Enter your card number"
           required
         />
-      </divs>
+      </div>
 
       <div v-if="selectedMethod === 'credit-card'" class="form-group">
         <label for="installments">Installments:</label>
