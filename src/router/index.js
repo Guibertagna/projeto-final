@@ -5,11 +5,12 @@ import HomeUserView from '@/views/HomeUserView.vue';
 import CreateCategorieView from '@/views/CreateCategorieView.vue';
 import { useAuthenticateStore } from '@/stores/authenticate';
 import CreateProduct from '@/components/Moderator/CreateProduct.vue';
-import ProfileComponent from '@/components/User/ProfileComponent.vue';
+
 import DetailPdroduct from '@/components/Products/DetailPdroduct.vue';
 import ModeratorView from '@/views/ModeratorView.vue';
 import CheckoutView from '@/views/CheckoutView.vue';
 import CartUserView from '@/views/CartUserView.vue';
+import DetailsProductView from '@/views/DetailsProductView.vue';
 
 const routes = [
   { path: '/userlogin', name: 'login', component: LoginView },
@@ -31,16 +32,11 @@ const routes = [
     component: CreateProduct,
     meta: {title: 'Create Products', requiresAuth: true}
   },
-  { 
-    path: '/userprofile', 
-    name: 'profile', 
-    component: ProfileComponent,
-    meta: {title: 'User Profile', requiresAuth: true}
-  },
+
   {
     path: '/products/:id',
     name: 'Details', 
-    component: DetailPdroduct, 
+    component: DetailsProductView, 
     props: true, 
     meta: {title: 'Details', requiresAuth: false}
   },

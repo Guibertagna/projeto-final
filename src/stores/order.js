@@ -17,6 +17,9 @@ export const useOrder = defineStore('order', ()=>{
             console.log(informationOrder.value)
             const response = await sendOrders(informationOrder.value)
             if(response.status === 201 ){
+                
+                
+                
                 useCart.itemsCart = {
                     items: [],
                     total_amount: 0
@@ -30,6 +33,12 @@ export const useOrder = defineStore('order', ()=>{
             console.log("não foi possivel realizat o pedido" + error )
         }
     }
+
+
+
+
+
+
     return{
         address,
         coupom,

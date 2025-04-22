@@ -1,27 +1,27 @@
 <template>
-    <div class="all-content">
+    <div class="all-content"> 
         <div class="back">
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
             <router-link to="/" class="back-button">
                 <span class="material-icons">arrow_back</span>
             </router-link>
         </div>
-        <div class="all-card">
+        <div class="all-card" v-if="product">
             <div class="image-product">
-                <img :src="getImg(useProducts.productId.data?.image_path)" class="image" alt="Product Image">
+                <img :src="getImg(product.image_path)" class="image" alt="Product Image">
             </div>
             <div class="information">
-                <h1 class="name">{{ useProducts.productId.data?.name }}</h1>
+                <h1 class="name">{{ product.name }}</h1>
                 <div class="description">
                     <h3>Description:</h3> 
-                    <span>{{ useProducts.productId.data?.description }}</span>
+                    <span>{{ product.description }}</span>
                 </div>
                 <div class="price-stock">
-                    <h2 class="price">R$ {{ useProducts.productId.data?.price }}</h2>
-                    <h4 class="stock">Stock: {{ useProducts.productId.data?.stock }}</h4>
+                    <h2 class="price">R$ {{ product.price }}</h2>
+                    <h4 class="stock">Stock: {{ product.stock }}</h4>
                 </div>
                 <div class="button-container">
-                    <AddCard :productId=" useProducts.productId.data?.id" :unit-price="Number( useProducts.productId.data?.price)" />
+                    <AddCard :productId=" product.id" :unit-price="Number(  product.price)" />
                     <button class="buy-now">Buy Now</button>
                 </div>
             </div>
@@ -32,28 +32,34 @@
 <script setup>
     import { useCartProducts } from "@/stores/cartStore";
     import { useGetProducts } from "@/stores/getProducts";
-    import { onMounted, ref } from "vue";
+    import { onMounted, ref, watch } from "vue";
     import { useRoute } from "vue-router";
 import AddCard from "./AddCard.vue";
-
+const props = defineProps({
+  idProps: {
+    required: true
+  },
+});
     const useProducts = useGetProducts();
     const route = useRoute();
     const loading = ref(true);
-    
-    onMounted(() => {
-        const id = route.params.id;
-        if (id) {
-            useProducts.getProductsId(id).finally(() => {
-            loading.value = false;
-            });
-        } else {
-            console.log("Product not found");
-        }
-    });
+    const id = Number(props.idProps.id)
+    const product = ref()
+
     function getImg(imagePath) {
         const baseUrl = "http://35.196.79.227:8000";
         return `${baseUrl}${imagePath}`;
     }
+
+    watch(() => useProducts.products, (newProducts) => {
+  
+        if (newProducts.length > 0) {
+            console.log(id)
+            product.value = newProducts.find(p => p.id === id);
+        }
+    },
+    { immediate: true } 
+);
 </script>
 
 <style scoped>

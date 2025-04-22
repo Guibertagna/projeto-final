@@ -19,7 +19,8 @@
       >
         <!-- Produto -->
         <div class="product-cell">
-          <img :src="getImg(item.image_path)" alt="Product Image" />
+          <img :src="getImg(item.product_id)" alt="Product Image" />
+    
           <p class="product-name">{{ item.name }}</p>
         </div>
 
@@ -107,13 +108,22 @@ import { computed, onMounted } from "vue";
 import { useCartProducts } from "@/stores/cartStore";
 import { useCoupons } from "@/stores/cupons";
 import { useRouter } from "vue-router";
+import { useGetProducts } from "@/stores/getProducts"; 
 const useCart = useCartProducts();
+const useProducts = useGetProducts()
 const router = useRouter();
 const useCouponsStore = useCoupons();
-function getImg(imagePath) {
+function getImg(product_id) {
+  console.log(useProducts.products);
+  const imgProduct = useProducts.products.find(p => p.id === product_id);
+  if (!imgProduct) {
+    console.error("Produto não encontrado para o ID:", product_id);
+    return null;
+  }
   const baseUrl = "http://35.196.79.227:8000";
-  return `${baseUrl}${imagePath}`;
+  return `${baseUrl}${imgProduct.image_path}`;
 }
+
 const formatCurrency = (value) => {
   return new Intl.NumberFormat("pt-BR", {
     style: "currency",
@@ -168,7 +178,7 @@ onMounted(() => {
   useCart.discountCoupon = 0;
   useCart.discount = 0;
   console.log(useCart.applyCoupon.value)
-  getitens();
+
 });
 </script>
 

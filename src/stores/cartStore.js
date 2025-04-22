@@ -95,7 +95,7 @@ export const useCartProducts = defineStore("cart",() => {
         console.log(error);
       }
     }
-     function applyCoupon() {
+      function applyCoupon() {
       const couponFound = useCouponsStore.couponStore.find(coupon => coupon.code === cuponCart.value);
       if(couponFound){
         console.log(isApplyCupon.value)
