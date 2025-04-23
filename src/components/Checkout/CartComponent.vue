@@ -18,10 +18,11 @@
         :class="useCart.isCheckout ? 'cart-item-checkout' : 'cart-item-row'"
       >
         <!-- Produto -->
-        <div class="product-cell">
-          <img :src="getImg(item.product_id)" alt="Product Image" />
-    
-          <p class="product-name">{{ item.name }}</p>
+        <div class="product-cell" @click="goToDetails(item.product_id)">
+          <img :src="getImg(item?.product_id)" alt="Product Image" />
+  
+          <p style="align-items: center; " class="product-name">{{ getName(item?.product_id)?.slice(0, 10) }}...</p>
+
         </div>
 
         <!-- Quantidade -->
@@ -107,21 +108,23 @@
 import { computed, onMounted } from "vue";
 import { useCartProducts } from "@/stores/cartStore";
 import { useCoupons } from "@/stores/cupons";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useGetProducts } from "@/stores/getProducts"; 
 const useCart = useCartProducts();
 const useProducts = useGetProducts()
 const router = useRouter();
+
 const useCouponsStore = useCoupons();
+function getName(product_id){
+  const name = useProducts.products.find(p => p.id === product_id);
+  return name?.name
+}
 function getImg(product_id) {
-  console.log(useProducts.products);
+
   const imgProduct = useProducts.products.find(p => p.id === product_id);
-  if (!imgProduct) {
-    console.error("Produto não encontrado para o ID:", product_id);
-    return null;
-  }
+  
   const baseUrl = "http://35.196.79.227:8000";
-  return `${baseUrl}${imgProduct.image_path}`;
+  return `${baseUrl}${imgProduct?.image_path}`;
 }
 
 const formatCurrency = (value) => {
@@ -167,10 +170,10 @@ const groupitems = computed(() => {
   });
   return Object.values(groupedProducts);
 });
-
-function getitens() {
-  useCart.getItemsCartStore();
+function goToDetails (id_product){
+  router.push(`/products/${id_product}`);
 }
+
 
 onMounted(() => {
   useCart.isApplyCupon = false;
@@ -227,12 +230,15 @@ onMounted(() => {
 
 
 .cart-item-checkout .product-cell {
-
   flex-direction: column;
   align-items: flex-start;
   gap: 8px;
 }
-
+.product-cell{
+  display: flex;
+  justify-content: space-between;
+  justify-content: center;
+}
 .cart-item-checkout .product-cell img {
   width: 60%;
   height: auto;

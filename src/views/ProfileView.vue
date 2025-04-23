@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import ProfileComponent from '@/components/User/profileComponent.vue';
+import ProfileComponent from '@/components/User/ProfileComponent.vue';
 
 
 </script>
