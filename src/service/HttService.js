@@ -381,7 +381,6 @@ export async function editProduct (product_id, productsinfo) {
 
  export async function deleteCouponService(coupon_id) {
     try{
-    
         const response = await apiUrl.delete(`/coupons/${coupon_id}`,{
             headers: {
                 ...authHeaders(),   
@@ -435,4 +434,59 @@ export async function createDiscounts(discount) {
     }catch(error){
         console.log("erro ao criar desconto" + error)
     }
+}
+export async function getAllDiscounts() {
+    try{
+        const response = await apiUrl.get('/discounts', {
+            headers:{
+                ...authHeaders(),
+                'Content-Type': 'application/json'
+            }
+        })
+        return response;
+    }catch(error){
+        console.log("erro ao obter cupom" + error)
+    }
+}
+
+
+export async function editDiscountsService(discounts, discount_id) {
+    try{
+        const response = await apiUrl.put(`/discounts/${discount_id}`,discounts, {
+            headers: {
+                ...authHeaders(),   
+                'Content-Type': 'application/json' 
+            }
+        })
+        alert("Editado!"+ response.data)
+        return response
+    }catch(error){
+        console.log("erro ao editar coupon" + error)   
+    }
+}
+export async function deleteDiscountsService(id) {
+    try{
+        const response = await apiUrl.delete(`/discounts/${id}`,{
+            headers: {
+                ...authHeaders(),   
+            }
+        })
+        alert("discounts deletado com sucesso!"+ response.data)
+        return response
+    }catch(error){
+        console.log("erro ao deletar coupon" + error)   
+    }
+}
+export async function  uploadImage(img) {
+    try{
+        const response = await apiUrl.put('/users/image',img,{
+            headers: {
+                ...authHeaders(),
+                'Content-Type': 'multipart/form-data',
+            }
+        })
+    }catch(error){
+        console.error(error)
+    }
+    
 }

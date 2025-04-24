@@ -11,15 +11,28 @@
         <div class="icon-edit">
           <i @click="startEdit()" class="fas fa-edit edit-icon" ></i>
         </div>
-        <div class="image-prfile">
+        
+        <div v-if="userStore.user.image_path ==='/uploads/defaults/no_profile_image.png'" class="image-prfile">
 
           {{ userStore.user.name.charAt(0) }}
           
         </div>
+        <div v-else class="image-prfile">
+          <img :src="userStore.user.image_path">
+        </div>
         <label for="name"></label>
         <h3 id="name">
           {{ userStore.user.name }}
-   
+          <div class="button" style="">
+            <button  style="font-size: small; padding: 10px; "  class="edit-button" @click="isAdd = true">Add imagem</button>
+          </div>
+          <div class="image">
+                  <label>
+                    add img
+                     <input type="file" @change="handleFileUpload" id="image" style="display: none;" accept=".png, .jpg, .jpeg">
+                  </label>
+                  
+                  </div>
         </h3>
         <div class="card-content">
         <div class="email">
@@ -55,7 +68,7 @@
 <script setup>
 import { useAuthenticateStore } from '@/stores/authenticate';
 import { onMounted, ref } from 'vue';
-
+const isAdd = ref(false)
 const userStore = useAuthenticateStore()
 onMounted(()=>{
     console.log(userStore.user.role)
@@ -64,7 +77,13 @@ onMounted(()=>{
     userStore.isEdit = true 
   }
 
-
+  function handleFileUpload(event) {
+    const file = event.target.files[0];
+    if (file) {
+        userStore.image_user = file; 
+        console.log("Arquivo selecionado:", file);
+    }
+}
 
 </script>
 
@@ -193,7 +212,9 @@ onMounted(()=>{
   cursor: pointer;
   font-size: 16px;
 }
-
+.button{
+  width: 100%; align-items: center; display: flex; justify-content: center;
+}
 .close-button {
   background-color: #e74c3c;
   color: white;

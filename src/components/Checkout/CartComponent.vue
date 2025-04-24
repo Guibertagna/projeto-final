@@ -21,7 +21,7 @@
         <div class="product-cell" @click="goToDetails(item.product_id)">
           <img :src="getImg(item?.product_id)" alt="Product Image" />
   
-          <p style="align-items: center; " class="product-name">{{ getName(item?.product_id)?.slice(0, 10) }}...</p>
+          <p style="align-items: center; " class="product-name">{{ item.name.slice(0, 20) }}...</p>
 
         </div>
 
@@ -115,10 +115,7 @@ const useProducts = useGetProducts()
 const router = useRouter();
 
 const useCouponsStore = useCoupons();
-function getName(product_id){
-  const name = useProducts.products.find(p => p.id === product_id);
-  return name?.name
-}
+
 function getImg(product_id) {
 
   const imgProduct = useProducts.products.find(p => p.id === product_id);

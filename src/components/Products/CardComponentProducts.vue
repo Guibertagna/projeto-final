@@ -60,7 +60,6 @@ function goToDetails (id_product){
 function updateButtonVisibility() {
   const container = cardContainer.value;
   if (!container) return;
-
   showLeftButton.value = container.scrollLeft > 0;
   showRightButton.value = container.scrollLeft + container.clientWidth < container.scrollWidth;
 }
@@ -137,6 +136,7 @@ function scrollRight() {
   
 }
 .scroll-btn.left {
+  
   margin-right: 10px;
 }
 

@@ -78,10 +78,6 @@ export const useGetProducts = defineStore('allroducts', ()=>{
     }
     async function updateProduct(idProduct){
     const formData = getFormData()
-
-    // 👇 Mostra todos os dados que estão no FormData
-    
-
     try {
         const response = await editProduct(idProduct, formData)
         return response

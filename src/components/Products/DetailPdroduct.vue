@@ -48,7 +48,7 @@ import BuyNow from "./BuyNow.vue";
         return useProducts.products.find(p => p.id === id.value);
     });
 function goBack() {
-  router.back(); // Ou router.go(-1) também funciona
+  router.back(); 
 }
 
     

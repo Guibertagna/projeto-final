@@ -7,15 +7,18 @@ import { useAuthenticateStore } from './stores/authenticate';
 import { useCoupons } from '@/stores/cupons';
 import { useCategoriesStore } from './stores/categories';
 import { useGetProducts } from '@/stores/getProducts';
+import { useDiscounts } from './stores/discounts';
 const useCoupon = useCoupons();
 const useCategory = useCategoriesStore();
 const useAuthenticate = useAuthenticateStore();
 const useGet = useGetProducts();
+const usediscounts = useDiscounts()
 onMounted(() => {
     useGet.getProducts()
     useCoupon.getCouponsStore();
     useAuthenticate.ferifyMe(); 
     useCategory.getCategoriesStores();
+    usediscounts.getDiscounts()
     console.log("Verificando autenticação do usuário...");
 });
 </script>
