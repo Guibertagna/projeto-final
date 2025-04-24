@@ -1,6 +1,7 @@
 <template>
     <div class="button-container">
-        <button @click="addToCart()" class="add">Add to cart </button>
+        <button @click="addToCart()" class="add">Buy Now </button>
+    
     </div>
 </template>
 
@@ -20,7 +21,7 @@
         type: Number,
         required: true,
     },
-});
+    });
 
 
     const useProducts = useGetProducts();
@@ -31,44 +32,43 @@
     async function addToCart(){
         if(useAuthenticate.isAuthenticated == false){
             console
-           route.push('/userlogin')
-           
+            route.push('/userlogin')
+
         }else{
             useCart.productId = props.productId;
             useCart.quantity = 1
             useCart.unitPrice =  props.unitPrice;
             await useCart.addProducts()
         }
-        
     }
 
 </script>
 
 <style scoped>
 .button-container {
-    display: flex;
-    gap: 15px;
-    margin-top: 20px;
+display: flex;
+gap: 15px;
+margin-top: 20px;
 }
 
 .add, .buy-now {
-    padding: 10px 20px;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: 0.3s ease;
+padding: 10px 20px;
+border: none;
+font-size: 16px;
+cursor: pointer;
+border-radius: 5px;
+transition: 0.3s ease;
 } 
 
 .add {
-    height: auto;
-    width: 150px;
-    background-color:var(--primary-color);
-    color: white;
+height: auto;
+width: 150px;
+background-color:var(--secondary-color-orange);
+color: white;
 }
 
 .add:hover {
-    background-color: var(--neutral-color-05);
+background-color: var(--neutral-color-05);
 }
 
 </style>

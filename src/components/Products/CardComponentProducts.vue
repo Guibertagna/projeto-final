@@ -1,45 +1,68 @@
 <template>
-  <div class="all-cards">
-    <div class="products-card" v-for="products in productsProps" :key="products.id">
-      <div  @click="goToDetails(products.id)">
-        <div class="img-product">
-          <div v-if="isNew" class="flag-new">New</div>
-          <img :src="getImg(products.image_path)" :alt="products.name" :title="products.name">
-        </div>
-      <div class="name-discription"  alt="products.name">
-        <h4 alt="products.name">{{ products.name.slice(0, 50) }}{{ products.name.length > 50 ? '...' : '' }}</h4>
-        <h5>R$ {{ products.price }}</h5>
-    </div>
-</div>
-<div class="button-product" >
-  <AddCard :productId="products.id" :unit-price="Number(products.price)" />
-        </div>
- 
-      <div class="rating">
-        <span class="filled">★</span>
-        <span class="filled">★</span>
-        <span class="filled">★</span>
-        <span>★</span>
-        <span>★</span>
-      </div>
+  <div class="carousel-wrapper">
+    <button class="scroll-btn left" @click="scrollLeft" ><p v-show="showLeftButton">‹</p></button>
 
+    <div class="all-cards" ref="cardContainer">
+      <div class="products-card" v-for="products in productsProps" :key="products.id">
+        <div @click="goToDetails(products.id)">
+          <div class="img-product">
+            <div v-if="isNew" class="flag-new">New</div>
+            <img :src="getImg(products.image_path)" :alt="products.name" :title="products.name">
+          </div>
+          <div class="name-discription">
+            <h4>{{ products.name.slice(0, 50) }}{{ products.name.length > 50 ? '...' : '' }}</h4>
+            <h5>R$ {{ products.price }}</h5>
+          </div>
+        </div>
+
+        <div class="button-product">
+          <AddCard :productId="products.id" :unit-price="Number(products.price)" />
+        </div>
+
+        <div class="rating">
+          <span class="filled">★</span><span class="filled">★</span>
+          <span class="filled">★</span><span>★</span><span>★</span>
+        </div>
+      </div>
     </div>
+
+    <button class="scroll-btn right" @click="scrollRight"><p  v-show="showRightButton">›</p></button>
   </div>
-  
 </template>
 
 <script setup>
 
 import AddCard from './AddCard.vue';
 import { useRouter } from 'vue-router';
+import { ref, onMounted } from 'vue';
 
+const showLeftButton = ref(false);
+const showRightButton = ref(false);
+const cardContainer = ref(null);
 const router = useRouter();
+onMounted(() => {
+  const container = cardContainer.value;
+  if (!container) return;
+
+  updateButtonVisibility();
+
+  container.addEventListener('scroll', updateButtonVisibility);
+  window.addEventListener('resize', updateButtonVisibility);
+});
+
 function getImg(imagePath) {
   const baseUrl = 'http://35.196.79.227:8000';
   return `${baseUrl}${imagePath}`;
 }
 function goToDetails (id_product){
   router.push(`/products/${id_product}`);
+}
+function updateButtonVisibility() {
+  const container = cardContainer.value;
+  if (!container) return;
+
+  showLeftButton.value = container.scrollLeft > 0;
+  showRightButton.value = container.scrollLeft + container.clientWidth < container.scrollWidth;
 }
 
 const props = defineProps({
@@ -53,10 +76,31 @@ const props = defineProps({
   }
 });
 
+
+
+function scrollLeft() {
+  cardContainer.value.scrollBy({ left: -300, behavior: 'smooth' });
+}
+function scrollRight() {
+  cardContainer.value.scrollBy({ left: 300, behavior: 'smooth' });
+}
 </script>
 
 <style scoped>
+.carousel-wrapper {
+  display: flex;
 
+  align-items: center;
+  position: relative;
+  padding: 30px;
+}
+.all-cards {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 20px;
+  padding-bottom: 10px;
+}
 .img-product {
   width: 100%;
   height: 200px; 
@@ -66,24 +110,22 @@ const props = defineProps({
 }
 
 .all-cards {
-    text-align: start;
-    display: grid;
-    padding-top: 30px;
-    padding-left:30px;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    justify-items: center;
-    
-  }
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 20px;
+  padding-bottom: 10px;
+}
+
 
 .products-card {
   display: flex;
+  flex: 0 0 auto;
   border: 1px solid var(--neutral-color-03);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   background-color: var(--neutral-color-01);
   padding: 10px;
   margin: 10px;
- 
   border-radius: 5px;
   flex-direction: column;
   justify-content: space-between;
@@ -93,6 +135,22 @@ const props = defineProps({
   padding-top:10px ;
   text-align: center;
   
+}
+.scroll-btn.left {
+  margin-right: 10px;
+}
+
+.scroll-btn.right {
+  margin-left: 10px;
+}
+.scroll-btn {
+  color: rgb(0, 0, 0);
+  border: none;
+  font-size: 5rem;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 50%;
+  z-index: 10;
 }
 
 .button-product {

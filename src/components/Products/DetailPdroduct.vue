@@ -22,7 +22,7 @@
                 </div>
                 <div class="button-container">
                     <AddCard :productId=" product.id" :unit-price="Number(  product.price)" />
-                    <button class="buy-now">Buy Now</button>
+                    <BuyNow/>
                 </div>
             </div>
     </div>
@@ -35,6 +35,7 @@
     import { onMounted, ref, watch, computed } from "vue";
     import { useRouter } from "vue-router";
 import AddCard from "./AddCard.vue";
+import BuyNow from "./BuyNow.vue";
     const props = defineProps({
     idProps: {
         required: true
