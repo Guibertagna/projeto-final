@@ -408,3 +408,31 @@ export async function deleteProductService(product_id) {
         console.log("erro ao deletar produto" + error)   
     }
 }
+
+export async function editUser(userData) {
+    try{
+        const response = await apiUrl.put('/users/me',userData,{
+            headers: {
+                ...authHeaders(),   
+                'Content-Type': 'application/json'
+            }
+        })
+        alert("Emaileditado com sucesso"+ response.data)
+        return response
+    }catch(error){
+        console.log("erro ao alte rardados" + error)   
+    }
+}
+export async function createDiscounts(discount) {
+    try{
+        const response = await apiUrl.post('/discounts', discount, {
+            headers:{
+                ...authHeaders(),
+                'Content-Type': 'application/json'
+            }
+        })
+        return response;
+    }catch(error){
+        console.log("erro ao criar desconto" + error)
+    }
+}

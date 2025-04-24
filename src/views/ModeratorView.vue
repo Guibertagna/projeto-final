@@ -5,6 +5,7 @@
         <button :class="{ active: activeTab === 1 }" @click="activeTab = 1">Categories</button>
         <button :class="{ active: activeTab === 2 }" @click="activeTab = 2">Coupons</button>
         <button :class="{ active: activeTab === 3 }" @click="activeTab = 3">Products</button>
+        <button :class="{ active: activeTab === 4 }" @click="activeTab = 4">Disconts</button>
       </div>
   
       <!-- Conteúdo das Abas -->
@@ -18,6 +19,9 @@
       <div v-if="activeTab === 3">
         <CreateProduct />
       </div>
+      <div v-if="activeTab === 4">
+        <CreateDiscounts/>
+      </div>
     </div>
         
       </div>
@@ -25,6 +29,7 @@
   
   <script setup>
   import CreateCoupons from '@/components/Moderator/CreateCoupons.vue';
+import CreateDiscounts from '@/components/Moderator/CreateDiscounts.vue';
   import CreateNewCategorie from '@/components/Moderator/CreateNewCategorie.vue';
   import CreateProduct from '@/components/Moderator/CreateProduct.vue';
   

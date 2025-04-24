@@ -1,19 +1,29 @@
 import { ref} from 'vue';
 import { defineStore } from 'pinia';
-import { ferify } from '@/service/HttService';
+import { editUser, ferify } from '@/service/HttService';
 import { renewToken } from '@/service/HttService';
 
 export const useAuthenticateStore = defineStore('authenticate', ()=>{
   const user = ref({})
   const token = ref(null)
   const isAuthenticated = ref(false)
-  
+  const isEdit = ref(false)
   function logout() {
     token.value = null
     user.value = {}
     isAuthenticated.value = false
   }
 
+  async function editUserStore() {
+    try{
+      const response = await editUser(user.value)
+      isEdit.value = false
+      return response
+    }catch(error){
+      console.log(error)
+
+    }
+  }
   function saveUser(result) {
     user.value = result.user
     isAuthenticated.value = true
@@ -37,6 +47,8 @@ export const useAuthenticateStore = defineStore('authenticate', ()=>{
     logout,
     ferifyMe, 
     logout,
+    editUserStore,
+    isEdit,
     token, 
     user, 
     isAuthenticated,

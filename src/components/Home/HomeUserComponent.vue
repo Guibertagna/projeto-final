@@ -27,7 +27,7 @@
             </div>
             <div class="categories">
                 <div class="category-conetnt">
-                    <h1 class="best">New Arrivals</h1>
+                    <h1 class="best">Best Sellers</h1>
                 </div>
             </div>
             <div  class="products">

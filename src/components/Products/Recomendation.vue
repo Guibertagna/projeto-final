@@ -17,14 +17,9 @@
     
   <style scoped>
     .allcontent {
-      margin-top: 90px;
       width: 100%;
       height: auto;
-  
     }
-    .best {
-      font-weight: bold;
-      padding-left: 40px;
-    } 
+
   </style>
   

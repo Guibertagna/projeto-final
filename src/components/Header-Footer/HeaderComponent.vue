@@ -23,7 +23,9 @@
                     <div class="dropdown-wrapper">
                         <img src="@/assets/icons/user-circle.svg" @click="toggleDropdown" class="user-icon">
                         <div v-if="showDropdown" class="dropdown-menu">
-                            <p>Profile</p>
+                            <router-link to="/profile" class="back-button">
+                        <p>Profile</p>
+                    </router-link>
                             <p>Settings</p>
                             <p @click="userStore.logout()">Logout</p>
                             <p v-if="userStore.user.role == 'ADMIN' || 'MODERATOR'"  @click="gotoModerator()"> Moderator Area</p>

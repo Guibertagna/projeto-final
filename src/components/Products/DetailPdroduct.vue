@@ -1,11 +1,11 @@
 <template>
     <div class="all-content"> 
         <div class="back">
-            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-            <router-link to="/" class="back-button">
-                <span class="material-icons">arrow_back</span>
-            </router-link>
-        </div>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <button @click="goBack" class="back-button">
+        <span class="material-icons">arrow_back</span>
+        </button>
+    </div>
         <div class="all-card" v-if="product">
             <div class="image-product">
                 <img :src="getImg(product.image_path)" class="image" alt="Product Image">
@@ -22,7 +22,7 @@
                 </div>
                 <div class="button-container">
                     <AddCard :productId=" product.id" :unit-price="Number(  product.price)" />
-                    <button class="buy-now">Buy Now</button>
+                    <BuyNow/>
                 </div>
             </div>
     </div>
@@ -32,33 +32,40 @@
 <script setup>
     import { useCartProducts } from "@/stores/cartStore";
     import { useGetProducts } from "@/stores/getProducts";
-    import { onMounted, ref, watch } from "vue";
-    import { useRoute } from "vue-router";
+    import { onMounted, ref, watch, computed } from "vue";
+    import { useRouter } from "vue-router";
 import AddCard from "./AddCard.vue";
-const props = defineProps({
-  idProps: {
-    required: true
-  },
-});
+import BuyNow from "./BuyNow.vue";
+    const props = defineProps({
+    idProps: {
+        required: true
+    },
+    }); 
+    const router = useRouter()
     const useProducts = useGetProducts();
-    const route = useRoute();
-    const loading = ref(true);
-    const id = Number(props.idProps.id)
-    const product = ref()
+    const id = computed(() => Number(props.idProps.id));
+    const product = computed(() => {
+        return useProducts.products.find(p => p.id === id.value);
+    });
+function goBack() {
+  router.back(); // Ou router.go(-1) também funciona
+}
 
+    
     function getImg(imagePath) {
         const baseUrl = "http://35.196.79.227:8000";
         return `${baseUrl}${imagePath}`;
     }
 
-    watch(() => useProducts.products, (newProducts) => {
-  
-        if (newProducts.length > 0) {
-            console.log(id)
-            product.value = newProducts.find(p => p.id === id);
-        }
-    },
-    { immediate: true } 
+    watch(
+  [() => useProducts.products, () => props.idProps.id],
+  ([newProducts, newId]) => {
+    const id = Number(newId);
+    if (newProducts.length > 0) {
+      product.value = newProducts.find(p => p.id === id);
+    }
+  },
+  { immediate: true }
 );
 </script>
 

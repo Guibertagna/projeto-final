@@ -11,6 +11,7 @@ import ModeratorView from '@/views/ModeratorView.vue';
 import CheckoutView from '@/views/CheckoutView.vue';
 import CartUserView from '@/views/CartUserView.vue';
 import DetailsProductView from '@/views/DetailsProductView.vue';
+import ProfileView from '@/views/ProfileView.vue';
 
 const routes = [
   { path: '/userlogin', name: 'login', component: LoginView },
@@ -53,6 +54,13 @@ const routes = [
     component: CheckoutView,
     props: true,
     meta: {title: 'Checkout', requiresAuth: true}
+    
+  },
+  {
+    path: '/profile',
+    name: 'Profie',
+    component: ProfileView,
+    meta: {title: 'Profile', requiresAuth: true}
     
   },
   
