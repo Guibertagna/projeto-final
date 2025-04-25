@@ -44,7 +44,7 @@
             </div>
             <div class="category-actions" v-if="category.name != 'Best Sellers'">
                 <button class="edit-btn" @click="startEditCategory(category)">Edit</button>
-                <button  class="delete-btn" @click="deleteCategorie(category.id)">Delete</button>
+                <button class="delete-btn" @click="confirmDelete(category)">Delete</button>
             </div>
             <p v-else class="not-delete">You cannot delete or change this category. </p>
         </div>
@@ -75,13 +75,27 @@
     <p>No categories available.</p>
     <p class="subtext">Start by adding a new category!</p>
 </div>
-
+<LoaderComponent/>
+<AlertBoxComponent :visible="showAlert" :message="massageOK" @close="showAlert = false"/>
+<ConfirmComponent
+:nameconfirm="confirMessage"
+  :visible="showConfirm"
+  @cancel="showConfirm = false"
+  @confirm="deleteCategorie(), showConfirm = false"
+/>
     </div>
 </template>
 
 <script setup>
 import { useCategoriesStore } from '@/stores/categories';
-import { onMounted, computed, ref } from 'vue';
+import { computed, ref } from 'vue';
+
+import { useLoader } from '@/stores/loader';
+import LoaderComponent from '../Loaders/LoaderComponent.vue';
+import AlertBoxComponent from '../Loaders/AlertBoxComponent.vue';
+import ConfirmComponent from '../Loaders/ConfirmComponent.vue';
+const categoryToDelete = ref(null);
+const confirMessage = ref('')
 
 const categoriesStore = useCategoriesStore();
 const showCategories = ref(false);
@@ -89,23 +103,36 @@ const isEdit = ref(false)
 const categoriesComponent = computed(() => categoriesStore.categories.data);
 const selectedCategoryId = ref(null);
 const isButtonDisabled = computed(() => !categoriesStore.nameCategorie.trim());
-
-
+const loading = useLoader()
+const showConfirm = ref(false)
+const showAlert = ref(false)
+const massageOK = ref('')
 const toggleCategories = () => {
     showCategories.value = !showCategories.value;
 };
-
+function confirmDelete(category) {
+    categoryToDelete.value = category.id;
+    confirMessage.value = category.name;
+    showConfirm.value = true;
+}
 async function sendCategory() {
     try {
+        loading.startLoading()
         const newCategory = await categoriesStore.createCategory();
- 
+        
         if (newCategory.status === 201) {
             categoriesStore.categories.data.push(newCategory.data);
         }
         categoriesStore.nameCategorie = '';
         categoriesStore.descriptionCategorie = '';
+        loading.endLoading()
+        massageOK.value = "Category created successfully!"
+        showAlert.value = true
     } catch (error) {
         console.error('Error creating category:', error);
+        loading.endLoading()
+        massageOK.value = "Error creating category try again"
+        showAlert.value = true
         alert('Failed to create category!');
     }
 }
@@ -116,6 +143,7 @@ async function sendEditCategory(id) {
         return;
     }
     try {
+        loading.startLoading()
         const categoryEdit = await categoriesStore.editCategoryEdit(id);
         
         if (categoryEdit.status === 200) {
@@ -125,8 +153,9 @@ async function sendEditCategory(id) {
             }
         }
         cancelEdit()
-        console.log("Categoria editada:", categoryEdit);
-
+        loading.endLoading()
+        massageOK.value ="Category edited successfully!"
+        showAlert.value = true
         selectedCategoryId.value = null;
 
     } catch (error) {
@@ -134,14 +163,20 @@ async function sendEditCategory(id) {
     }
 }
 
-async function deleteCategorie(id) {
+async function deleteCategorie() {
     try {
-        await categoriesStore.deleteCategorie(id);
+        loading.startLoading()
+        await categoriesStore.deleteCategorie(categoryToDelete.value);
         categoriesStore.categories.data = categoriesStore.categories.data.filter(function(category) {
-            return category.id !== id;
+            loading.endLoading()
+            massageOK.value ="Category deleted successfully!"
+            showAlert.value = true
+            return category.id !== categoryToDelete.value;
         });
+
     } catch (error) {
-        console.error("Erro ao excluir categoria: " + error);
+        loading.endLoading()
+        
     }
 }
 async function startEditCategory(category) {

@@ -94,10 +94,9 @@ export async function createCategorie (categoryData) {
                     'Content-Type': 'multipart/form-data',
                 }
                 });
-                alert('categoria criada com sucesso!')
         return response;
     }else{
-        alert("campo nome invalido")
+
     }
     }catch(error){
         console.error('Erro ao criar categoria:', JSON.stringify(error.response?.data, null, 2));
@@ -114,7 +113,7 @@ export async function editCategoryService (category_id, categoryData) {
                 'Content-Type': 'application/json' 
                 }
                 });
-                alert("Categoria editada com sucesso!");
+                
         return response;
         
     }catch(error){
@@ -458,7 +457,7 @@ export async function editDiscountsService(discounts, discount_id) {
                 'Content-Type': 'application/json' 
             }
         })
-        alert("Editado!"+ response.data)
+   
         return response
     }catch(error){
         console.log("erro ao editar coupon" + error)   
@@ -471,7 +470,7 @@ export async function deleteDiscountsService(id) {
                 ...authHeaders(),   
             }
         })
-        alert("discounts deletado com sucesso!"+ response.data)
+        
         return response
     }catch(error){
         console.log("erro ao deletar coupon" + error)   

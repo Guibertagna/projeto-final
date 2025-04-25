@@ -59,7 +59,7 @@
           :class="{ disabled: isFormValid }"
           v-if="!isEdit"
           class="create-btn"
-          @click="usediscounts.createDiscountsStore"
+          @click="createDiscount()"
         >
           Create discount
         </button>
@@ -123,7 +123,7 @@
               </button>
               <button
                 class="delete-btn"
-                @click="usediscounts.deleteDiscounts(discount.id)"
+                @click="confirmDelete(discount)"
               >
                 Delete
               </button>
@@ -176,7 +176,7 @@
           class="send-btn"
           @click="sendEditDiscounts(selecteddiscount)"
         >
-          Edit coupon
+          Edit Discounts
         </button>
         <button
           style="background-color: red"
@@ -191,6 +191,14 @@
       </div>
     </div>
         </div>
+        <LoaderComponent/>
+<AlertBoxComponent :visible="showAlert" :message="massageOK" @close="showAlert = false"/>
+<ConfirmComponent
+:nameconfirm="confirMessage"
+  :visible="showConfirm"
+  @cancel="showConfirm = false"
+@confirm="() => { deleteDiscounts(discountDelete); showConfirm = false }"
+/>
 </div>
 
 
@@ -200,20 +208,50 @@
   import { useDiscounts } from '@/stores/discounts';
   import { useGetProducts } from '@/stores/getProducts';
   import { ref, onMounted, computed} from 'vue';
+  import { useLoader } from '@/stores/loader';
+  import LoaderComponent from '../Loaders/LoaderComponent.vue';
+  import AlertBoxComponent from '../Loaders/AlertBoxComponent.vue';
+  import ConfirmComponent from '../Loaders/ConfirmComponent.vue';
+  const loading = useLoader()
   const isShow = ref(false)
-
+  const discountDelete = ref()
   const dataAtual = new Date();
   const products = useGetProducts()
   const usediscounts = useDiscounts()
   const isEdit = ref(false)
   const selecteddiscount = ref(null)
   const dataFormatada = ref();
+  const showConfirm = ref(false)
+  const confirMessage = ref()
+  const showAlert = ref(false)
+  const massageOK = ref('')
   function formatDate(dateString) {
     const date = new Date(dateString);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
   return `${year}/${month}/${day}`;
+}
+function confirmDelete(discounts) {
+
+    discountDelete.value = discounts;
+    console.log(discountDelete.value.id)
+    confirMessage.value = discounts.description;
+    showConfirm.value = true;
+}
+async function deleteDiscounts(discountDelete){
+  console.log(discountDelete.id)
+  try{
+    loading.startLoading()
+    const response = await usediscounts.deleteDiscounts(discountDelete.id)
+    loading.endLoading()
+    massageOK.value =`${discountDelete.description} deleted successfully!` 
+    showAlert.value = true
+    return response
+
+  }catch(error){
+    console.log(error)
+  }
 }
 const isFormValid = computed(() => {
   return (
@@ -243,11 +281,29 @@ async function starteditDiscounts(discount) {
     isEdit.value = false;
     selecteddiscount.value = 0;
 }
+async function createDiscount() {
+  try{
+    loading.startLoading()
+    const response = await usediscounts.createDiscountsStore()
+    loading.endLoading()
+    massageOK.value ="Discount created successfully!"
+    showAlert.value = true
+    return response
+  }
+
+  catch(error){
+    loading.endLoading()
+    console.log(error)
+  }
+  
+}
 
 async function sendEditDiscounts(id) {
   try {
+    loading.startLoading()
     const discountsEdit = await usediscounts.editDiscounts(id);
     console.log(discountsEdit)
+    cancel();
     if (discountsEdit) {
       const index = usediscounts.discountStore.findIndex(
         (deiscounts) => deiscounts.id === id
@@ -260,6 +316,9 @@ async function sendEditDiscounts(id) {
       }
     }
     cancel();
+    loading.endLoading()
+    massageOK.value = "Discounts edited successfully!"
+    showAlert.value = true
     console.log("Coupon editado:", discountsEdit);
   } catch (error) {
     console.error("Erro ao editar coupon:", error);
@@ -270,7 +329,7 @@ function getNameProduct(id){
   const index = products.products.findIndex(
     (product)=> product.id == id
   )
-  return products.products[index].name
+  return products.products[index]?.name
 }
 onMounted(() => {
   dataFormatada.value =
