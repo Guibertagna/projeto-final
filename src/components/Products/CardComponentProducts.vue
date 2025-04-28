@@ -128,7 +128,7 @@ function scrollRight() {
   flex-direction: column;
   justify-content: space-between;
   width: 250px; 
-  max-height:500px;
+
   min-height: 300px;
   padding-top:10px ;
   text-align: center;
