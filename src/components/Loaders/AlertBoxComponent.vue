@@ -2,7 +2,7 @@
     <div v-if="visible" class="alert-overlay">
       <div class="alert-box">
         <p class="alert-message">{{ message }}</p>
-        <button class="close-btn" @click="$emit('close')">Fechar</button>
+        <button class="close-btn" @click="$emit('close')">Close</button>
       </div>
     </div>
   </template>

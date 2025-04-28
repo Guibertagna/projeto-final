@@ -225,6 +225,7 @@
   const confirMessage = ref()
   const showAlert = ref(false)
   const massageOK = ref('')
+
   function formatDate(dateString) {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -232,6 +233,7 @@
     const day = String(date.getDate()).padStart(2, "0");
   return `${year}/${month}/${day}`;
 }
+
 function confirmDelete(discounts) {
 
     discountDelete.value = discounts;
@@ -239,6 +241,7 @@ function confirmDelete(discounts) {
     confirMessage.value = discounts.description;
     showConfirm.value = true;
 }
+
 async function deleteDiscounts(discountDelete){
   console.log(discountDelete.id)
   try{
@@ -253,6 +256,7 @@ async function deleteDiscounts(discountDelete){
     console.log(error)
   }
 }
+
 const isFormValid = computed(() => {
   return (
     !usediscounts.discountDescription.trim() ||
@@ -293,6 +297,7 @@ async function createDiscount() {
 
   catch(error){
     loading.endLoading()
+        massageOK.value ="ERROR!"
     console.log(error)
   }
   

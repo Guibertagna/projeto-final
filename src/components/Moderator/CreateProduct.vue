@@ -72,7 +72,7 @@
       <button class="delete-btn" @click="startEditProduct(product) ">
         Edit
       </button>
-      <button class="delete-btn" style="background-color: red;" @click="getProducts.deleteProduct(product.id)">
+      <button class="delete-btn" style="background-color: red;" @click="confirmDelete(product)">
         Delete
       </button>
     </div>
@@ -116,6 +116,17 @@
             </div>
         </div> 
         </div>
+        <LoaderComponent/>
+<AlertBoxComponent :visible="showAlert" :message="massageOK" @close="showAlert = false"/>
+<ConfirmComponent
+  :nameconfirm="confirMessage"
+  :visible="showConfirm"
+  @cancel="showConfirm = false"
+  @confirm="deleProduct(productDelete), showConfirm = false"
+/>
+<ErrorAlert :message="errorMassage" :visible="showErrorAlert" @close="showErrorAlert = false" />
+
+
     </div>
     
 </template>
@@ -125,12 +136,31 @@
 import { useCategoriesStore } from '@/stores/categories';
 import {  computed, ref } from 'vue';
 import { useGetProducts } from '@/stores/getProducts';
+import { useLoader } from "@/stores/loader"; 
+import LoaderComponent from "../Loaders/LoaderComponent.vue"; 
+import AlertBoxComponent from "../Loaders/AlertBoxComponent.vue"; 
+import ConfirmComponent from "../Loaders/ConfirmComponent.vue"; 
+import ErrorAlert from '../Loaders/ErrorAlert.vue';
+const loading = useLoader(); 
+const showAlert = ref(false);
+const massageOK = ref('');
+const showConfirm = ref(false);
+const confirMessage = ref('');
 const category = useCategoriesStore()
 const isEdit = ref(false)
 const getProducts = useGetProducts()
+const productDelete = ref()
+const showErrorAlert = ref(false);
+const errorMassage = ref('');
 function getImg(imagePath) {
   const baseUrl = 'http://35.196.79.227:8000';
   return `${baseUrl}${imagePath}`;
+}
+function confirmDelete(product) {
+    productDelete.value = product;
+  console.log(productDelete.value.id);
+  confirMessage.value = productDelete.value.name; 
+  showConfirm.value = true;
 }
 const isFormValid = computed(() => {
     return !getProducts.productName.trim() || 
@@ -154,11 +184,8 @@ async function startEditProduct(product) {
 
 }
 }
+
 async function sendEditProduct(product_id) {
-    if (!product_id || typeof product_id !== "number") {
-        console.error("ID inválido:", product_id);
-        return;
-    }
     try {
         const response = await getProducts.updateProduct(product_id);
         
@@ -178,7 +205,18 @@ async function sendEditProduct(product_id) {
     }
 }
 async function sendProduct(){
-    await getProducts.createProductStore()
+    try{
+        loading.startLoading()
+      const response = await getProducts.createProductStore()
+      cancelEdit()
+      loading.endLoading()
+      showAlert.value = true
+      massageOK.value = 'Product create sussefully'
+      return response
+    }catch(error){
+
+    }
+
 } 
 function cancelEdit (){
     isEdit.value = false;
@@ -195,6 +233,20 @@ function handleFileUpload(event) {
     if (file) {
         getProducts.productImg = file; 
         console.log("Arquivo selecionado:", file);
+    }
+}
+async function deleProduct(productDelete) {
+    try {
+        loading.startLoading();
+        await getProducts.deleteProduct(productDelete.id);
+        massageOK.value = `${productDelete.name} deleted successfully!`;
+        showAlert.value = true;
+    } catch (error) {
+        errorMassage.value = `Unable to delete this product: ${error.message}`; 
+        showErrorAlert.value = true;
+    } finally {
+        
+        loading.endLoading();
     }
 }
 </script>

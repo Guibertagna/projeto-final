@@ -65,7 +65,8 @@ export async function getCategories() {
         const response = await apiUrl.get(`/categories/user/10`);
         return response;
     }catch(error){
-        console.error('Error ao pegar categorias', error)
+        throw error;
+
     }
 }
 
@@ -77,10 +78,9 @@ export async function createProduct(productsinfo) {
                 'Content-Type': 'multipart/form-data',
             }
         });
-        alert('Produto criado com sucesso!')
         return response.data; 
     }catch (error) {
-        console.error('Erro ao criar produtos:', error);
+        
         throw error;
     }
 }
@@ -100,6 +100,7 @@ export async function createCategorie (categoryData) {
     }
     }catch(error){
         console.error('Erro ao criar categoria:', JSON.stringify(error.response?.data, null, 2));
+        throw error;
     }
     
 }
@@ -118,6 +119,7 @@ export async function editCategoryService (category_id, categoryData) {
         
     }catch(error){
         console.error('Erro ao EDITAR categoria:', JSON.stringify(error.response?.data, null, 2));
+        throw error;
     }
 }
 
@@ -131,6 +133,7 @@ export async function deleteCategorieService(category_id) {
         })
     }catch(error){
         console.log("erro ao deletar categoria")
+        throw error;
     }
 }
 
@@ -141,6 +144,7 @@ export async function getProductsService() {
         
     }catch(error){
         console.log("erro a buscar produtos com id 1" + error)
+        throw error;
     }
 }
 
@@ -151,6 +155,7 @@ export async function getProductsById(product_id) {
         
     }catch(error){
         console.log("erro a buscar produtos com id 1" + error)
+        throw error;
     }
 }
 
@@ -164,6 +169,7 @@ export async function getProductsServiceCategory(category_id) {
         return response
     }catch(error){
         console.log("erro a buscar produtos com id 1" + error)
+        throw error;
     }
 }
 
@@ -178,6 +184,7 @@ export async function getCategoryById(category_id) {
         return response
     }catch(error){
         console.log("erro ao deletar categoria")
+        throw error;
     }
 }
 
@@ -193,6 +200,7 @@ export async function addItemCart(item) {
         return response;
     }catch(error){
         console.error(error)
+        throw error;
     }
     
 }
@@ -209,7 +217,7 @@ export async function createCart() {
         return response.data; 
     }catch(error){
         console.error("Erro ao criar o carrinho:", error);
-        return null; 
+        throw error;
     }
     
 }
@@ -225,7 +233,7 @@ export async function getItemsCart() {
         return response.data; 
     }catch(error){
         console.error("Erro ao criar o carrinho:", error);
-        return null; 
+        throw error;
     }
     
 }
@@ -240,7 +248,7 @@ export async function getAllCart() {
         return response.data; 
     }catch(error){
         console.error("Erro ao obter o carrinho:", error);
-        return null; 
+        throw error;
     }
     
 }
@@ -256,6 +264,7 @@ export async function deleteProductcart(product_id) {
         return response
     }catch(error){
         console.log("erro ao deletar produto da categoria" + error)
+        throw error;
     }
 }
 
@@ -271,6 +280,7 @@ export async function addAddresses(address) {
         return response;
     }catch(error){
         console.log("erro ao criar Endereço" + error)
+        throw error;
     }
 }
 export async function getAllAddresses() {
@@ -283,6 +293,7 @@ export async function getAllAddresses() {
         return response
     }catch(error){
         console.log("erro ao deletar categoria")
+        throw error;
     }
 }
 
@@ -298,6 +309,7 @@ export async function  sendOrders(order) {
         return reponse
     }catch(error){
         console.log(error)
+        throw error;
     }
     
 }
@@ -312,6 +324,7 @@ export async function createCoupom(coupon) {
         return response;
     }catch(error){
         console.log("erro ao criar cupom" + error)
+        throw error;
     }
 }
 export async function getAllCoupons() {
@@ -325,6 +338,7 @@ export async function getAllCoupons() {
         return response;
     }catch(error){
         console.log("erro ao obter cupom" + error)
+        throw error;
     }
 }
 export async function getAllCouponByid(coupon_id) {
@@ -338,6 +352,7 @@ export async function getAllCouponByid(coupon_id) {
         return response;
     }catch(error){
         console.log("erro ao obter cupom" + error)
+        throw error;
     }
 }
 export async function editCoupon (coupon_id, couponData) {
@@ -348,11 +363,11 @@ export async function editCoupon (coupon_id, couponData) {
                 'Content-Type': 'application/json' 
                 }
                 });
-                alert("Coupons editada com sucesso!");
         return response;
         
     }catch(error){
         console.error('Erro ao EDITAR coupons:'+ error);
+        throw error;
     }
 }
 export async function editProduct (product_id, productsinfo) {
@@ -375,6 +390,7 @@ export async function editProduct (product_id, productsinfo) {
         
     }catch(error){
         console.error('Erro ao EDITAR coupons:'+ error);
+        throw error;
     }
 }
 
@@ -385,26 +401,26 @@ export async function editProduct (product_id, productsinfo) {
                 ...authHeaders(),   
             }
         })
-        alert("Cupom deletado com sucesso!"+ response.data)
+ 
         return response
     }catch(error){
         console.log("erro ao deletar coupon" + error)   
+        throw error;
     }
 }
 
 export async function deleteProductService(product_id) {
-    try{
-    
+
         const response = await apiUrl.delete(`/products/${product_id}`,{
             headers: {
                 ...authHeaders(),   
-            }
+            },
+            validateStatus: (status) => true // sempre resolve, nunca lança erro
         })
-        alert("produto deletado com sucesso!"+ response.data)
+
+        console.log(response)
         return response
-    }catch(error){
-        console.log("erro ao deletar produto" + error)   
-    }
+    
 }
 
 export async function editUser(userData) {
@@ -418,6 +434,7 @@ export async function editUser(userData) {
         alert("Emaileditado com sucesso"+ response.data)
         return response
     }catch(error){
+        throw error;
         console.log("erro ao alte rardados" + error)   
     }
 }
@@ -431,6 +448,7 @@ export async function createDiscounts(discount) {
         })
         return response;
     }catch(error){
+        throw error;
         console.log("erro ao criar desconto" + error)
     }
 }
@@ -444,6 +462,7 @@ export async function getAllDiscounts() {
         })
         return response;
     }catch(error){
+        throw error;
         console.log("erro ao obter cupom" + error)
     }
 }
@@ -460,6 +479,7 @@ export async function editDiscountsService(discounts, discount_id) {
    
         return response
     }catch(error){
+        throw error;
         console.log("erro ao editar coupon" + error)   
     }
 }
@@ -473,6 +493,7 @@ export async function deleteDiscountsService(id) {
         
         return response
     }catch(error){
+        throw error;
         console.log("erro ao deletar coupon" + error)   
     }
 }
@@ -485,6 +506,7 @@ export async function  uploadImage(img) {
             }
         })
     }catch(error){
+        throw error;
         console.error(error)
     }
     
@@ -502,5 +524,7 @@ export async function getUser() {
         return response;
     }catch(error){
         console.error('Error ao pegar user', error)
+        throw error;
+
     }
 }

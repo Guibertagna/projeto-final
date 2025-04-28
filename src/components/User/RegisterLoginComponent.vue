@@ -89,16 +89,33 @@
         <p v-if="isLoginMode">Don't have an account? <a href="#" @click.prevent="toggleMode">Register</a></p>
         <p v-else>Already have an account? <a href="#" @click.prevent="toggleMode">Login</a></p>
       </div>
+      <LoaderComponent/>
+<AlertBoxComponent :visible="showAlert" :message="massageOK" @close="showAlert = false"/>
+<ConfirmComponent
+  :nameconfirm="confirMessage"
+  :visible="showConfirm"
+  @cancel="showConfirm = false"
+  @confirm="deleProduct(productDelete), showConfirm = false"
+/>
+<ErrorAlert :message="errorMassage" :visible="showErrorAlert" @close="showErrorAlert = false" />
+
+
     </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
-
 import { createCart, login, register } from '@/service/HttService';
 import { useAuthenticateStore } from '@/stores/authenticate';
 import { useRouter } from 'vue-router';
 import { useCartProducts } from "@/stores/cartStore";
+import LoaderComponent from "../Loaders/LoaderComponent.vue"; 
+import ErrorAlert from '../Loaders/ErrorAlert.vue';
+import { useLoader } from '@/stores/loader';
+const loading = useLoader(); 
+const showErrorAlert = ref(false)
+const showAlert = ref(false);
+const errorMassage = ref('');
 const router = useRouter()
 const loginStore = useAuthenticateStore()
 const emailUser = ref('');
@@ -148,7 +165,7 @@ const isFormValidRegister= computed(() => !emailErrorRegister.value && !password
 async function handleLogin() {
   emailTouched.value = true;
   passwordTouched.value = true;
-
+  loading.startLoading();
   if (!isFormValid.value) return;
 
   try {
@@ -157,24 +174,29 @@ async function handleLogin() {
     if (result?.data) {
       loginStore.saveUser(result.data);
       router.push('/');
-      alert('Login sucesso');
+
       getitens()
+      showAlert.value = true;
+      loading.endLoading()
     } else {
-      throw new Error('Credenciais inválidas.');
     }
   } catch (error) {
-    loginError.value = 'Falha no login. Verifique suas credenciais.';
+    loading.endLoading()
+    showErrorAlert.value = true
+    errorMassage.value = "Failed without login. Please check your credentials."
+  
   }
 }
 
 
 async function handleRegister() {
-  
+
   try {
+    loading.startLoading();
     const result = await register({name: nameUserRegister.value, email: emailUserRegister.value, password: passwordUserRegister.value });
     
     if (result?.data) {
-      alert('Registro sucesso');
+ 
       console.log(result.data)
     } else {
       throw new Error('Credenciais inválidas.');
@@ -186,24 +208,27 @@ async function handleRegister() {
     const resultLogin =  await login ({email:emailUserRegister.value, password: passwordUserRegister.value})
     if(resultLogin?.data){
         loginStore.saveUser(resultLogin.data);
-        alert("login feito com sucesso")
+
 
         console.log(resultLogin.data)
     }else{
         throw new Error('Credenciais inválidas.');
     }
   }catch (error) {
-    loginError.value = 'Falha no registro. Verifique suas credenciais.';
+    loading.endLoading()
+    showErrorAlert.value = true
+    errorMassage.value = "Failed without register. Please check your credentials."
   }
   try{
     const createcartresult = await createCart()
-    console.log("deu boaaa")
+    loading.endLoading();
     router.push('/');
     return createcartresult
   }catch(error){
     console.log("erro ao criar carrinho")
   }
 }
+
 function getitens() {
   useCart.getItemsCartStore();
 }
@@ -211,6 +236,7 @@ function getitens() {
 function toggleMode() {
   isLoginMode.value = !isLoginMode.value;
 }
+
 </script>
 <style>
 .login-container {

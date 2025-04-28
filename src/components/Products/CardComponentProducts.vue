@@ -1,6 +1,6 @@
 <template>
   <div class="carousel-wrapper">
-    <button class="scroll-btn left" @click="scrollLeft" ><p v-show="showLeftButton">‹</p></button>
+    <button class="scroll-btn left" @click="scrollLeft" >‹</button>
 
     <div class="all-cards" ref="cardContainer">
       <div class="products-card" v-for="products in productsProps" :key="products.id">
@@ -26,7 +26,7 @@
       </div>
     </div>
 
-    <button class="scroll-btn right" @click="scrollRight"><p  v-show="showRightButton">›</p></button>
+    <button class="scroll-btn right" @click="scrollRight">›</button>
   </div>
 </template>
 
@@ -78,17 +78,16 @@ const props = defineProps({
 
 
 function scrollLeft() {
-  cardContainer.value.scrollBy({ left: -300, behavior: 'smooth' });
+  cardContainer.value.scrollBy({ left: -250, behavior: 'smooth' });
 }
 function scrollRight() {
-  cardContainer.value.scrollBy({ left: 300, behavior: 'smooth' });
+  cardContainer.value.scrollBy({ left: 250, behavior: 'smooth' });
 }
 </script>
 
 <style scoped>
 .carousel-wrapper {
   display: flex;
-
   align-items: center;
   position: relative;
   padding: 30px;
@@ -128,7 +127,7 @@ function scrollRight() {
   border-radius: 5px;
   flex-direction: column;
   justify-content: space-between;
-  width: 300px; 
+  width: 250px; 
   max-height:500px;
   min-height: 300px;
   padding-top:10px ;
@@ -189,8 +188,8 @@ function scrollRight() {
   padding: 4px 8px;
   font-size: 12px;
   font-weight: bold;
-    top: 10px;
-    left: 10px;
+  top: 10px;
+  left: 10px;
   border-radius: 4px;
 }
 .img-product {

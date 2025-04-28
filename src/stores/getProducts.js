@@ -65,16 +65,18 @@ export const useGetProducts = defineStore('allroducts', ()=>{
         
     }
     async function deleteProduct (idProduct){
-        try{
+       
             const response = await deleteProductService(idProduct)
             if(response.status === 204){
                 products.value = products.value.filter(product => product.id !== idProduct)
-                console.log("Produto deletado do pinia com sucesso")
+            
+                return response
+            }else{
+ 
+                throw new Error(response.data.detail);
             }
             
-        }catch(error){
-            console.error("erro ao deletar produto " + idProduct + error)
-        }
+       
     }
     async function updateProduct(idProduct){
     const formData = getFormData()

@@ -21,7 +21,7 @@
         <div class="product-cell" @click="goToDetails(item.product_id)">
           <img :src="getImg(item?.product_id)" alt="Product Image" />
   
-          <p style="align-items: center; " class="product-name">{{ item.name.slice(0, 20) }}...</p>
+
 
         </div>
 

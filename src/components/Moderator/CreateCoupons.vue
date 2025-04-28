@@ -52,7 +52,7 @@
           :class="{ disabled: isFormValid }"
           v-if="!isEdit"
           class="create-btn"
-          @click="useCoupon.createCouponsStore"
+          @click="createCoupon()"
         >
           Create coupon
         </button>
@@ -113,7 +113,7 @@
               </button>
               <button
                 class="delete-btn"
-                @click="useCoupon.deleteCoupons(coupons.id)"
+                @click="confirmDelete(coupons)"
               >
                 Delete
               </button>
@@ -163,7 +163,7 @@
           style="background-color: red"
           v-if="isEdit"
           class="delete-btn"
-          @click="cancelEdit()"
+          @click="cancelEdit(coupon)"
         >
           Cancel Edit
         </button>
@@ -172,19 +172,46 @@
       </div>
     </div>
         </div>
+        <LoaderComponent/>
+<AlertBoxComponent :visible="showAlert" :message="massageOK" @close="showAlert = false"/>
+<ConfirmComponent
+  :nameconfirm="confirMessage"
+  :visible="showConfirm"
+  @cancel="showConfirm = false"
+  @confirm="deleteCoupons(couponsDelete), showConfirm = false"
+/>
+
   </div>
 </template>
 
 <script setup>
 import { useCoupons } from "@/stores/cupons";
+import { useLoader } from "@/stores/loader"; // IMPORTANTE adicionar o loader
+import LoaderComponent from "../Loaders/LoaderComponent.vue"; // Importa o loader visual
+import AlertBoxComponent from "../Loaders/AlertBoxComponent.vue"; // Importa o alert visual
+import ConfirmComponent from "../Loaders/ConfirmComponent.vue"; // Importa o confirm visual
 import { onMounted, ref, computed } from "vue";
 
 const useCoupon = useCoupons();
+const loading = useLoader(); // INICIALIZA o loader
+
+const showAlert = ref(false);
+const massageOK = ref('');
+const showConfirm = ref(false);
+const confirMessage = ref('');
 const dataAtual = new Date();
 const isEdit = ref(false);
 const isShow = ref(false);
 const selectedCouponId = ref(null);
 const dataFormatada = ref();
+const couponsDelete = ref();
+
+function confirmDelete(coupon) {
+  couponsDelete.value = coupon;
+  console.log(couponsDelete.value.id);
+  confirMessage.value = couponsDelete.value.code; // Corrigido: estava faltando ".value"
+  showConfirm.value = true;
+}
 
 onMounted(() => {
   dataFormatada.value =
@@ -192,11 +219,25 @@ onMounted(() => {
     "T" +
     dataAtual.toTimeString().split(" ")[0];
 });
+async function createCoupon() {
+
+  try{
+    loading.startLoading()
+    const  response = await useCoupon.createCouponsStore()
+    loading.endLoading()
+    massageOK.value ="Coupon created successfully!"
+    showAlert.value = true
+    return response
+    
+  }catch(error){
+    console.log(error)
+  }
+}
 const isFormValid = computed(() => {
   return (
     !useCoupon.couponCode.trim() ||
     !useCoupon.couponPercentage ||
-    !useCoupon.couponStartDate || 
+    !useCoupon.couponStartDate ||
     !useCoupon.couponEndDate
   );
 });
@@ -219,8 +260,10 @@ async function starteditCoupon(coupon) {
     selectedCouponId.value = coupon.id;
   }
 }
+
 async function sendEditCoupon(id) {
   try {
+    loading.startLoading()
     const couponEdit = await useCoupon.editCouponStore(id);
     if (couponEdit) {
       const index = useCoupon.couponStore.findIndex(
@@ -233,11 +276,15 @@ async function sendEditCoupon(id) {
       }
     }
     cancelEdit();
-    console.log("Coupon editada:", couponEdit);
+    loading.endLoading()
+    massageOK.value ="Coupon edited successfully!"
+    showAlert.value = true
   } catch (error) {
+    loading.endLoading()
     console.error("Erro ao editar coupon:", error);
   }
 }
+
 function cancelEdit() {
   useCoupon.couponCode = "";
   useCoupon.couponPercentage = "";
@@ -246,7 +293,23 @@ function cancelEdit() {
   selectedCouponId.value = null;
   isEdit.value = false;
 }
+
+async function deleteCoupons(couponsDelete) {
+  console.log(couponsDelete.id);
+  try {
+    loading.startLoading();
+    const response = await useCoupon.deleteCoupons(couponsDelete.id);
+    loading.endLoading();
+    massageOK.value = `${couponsDelete.code} deleted successfully!`;
+    showAlert.value = true;
+    return response;
+  } catch (error) {
+    console.log(error);
+    loading.endLoading();
+  }
+}
 </script>
+
 
   <style scoped>
 .send-btn {
