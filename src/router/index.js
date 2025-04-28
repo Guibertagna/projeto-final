@@ -12,6 +12,7 @@ import CheckoutView from '@/views/CheckoutView.vue';
 import CartUserView from '@/views/CartUserView.vue';
 import DetailsProductView from '@/views/DetailsProductView.vue';
 import ProfileView from '@/views/ProfileView.vue';
+import AllProducsView from '@/views/AllProducsView.vue';
 
 const routes = [
   { path: '/userlogin', name: 'login', component: LoginView },
@@ -71,6 +72,14 @@ const routes = [
     meta: {title: 'Moderator', requiresAuth: true}
 
   },
+  { 
+    path: '/products', 
+    name: 'All Products', 
+    component: AllProducsView,
+    meta: {title: 'Products'}
+
+  },
+
 
 ];
 

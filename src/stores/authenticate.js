@@ -1,6 +1,6 @@
 import { ref} from 'vue';
 import { defineStore } from 'pinia';
-import { editUser, ferify, uploadImage } from '@/service/HttService';
+import { editUser, ferify, getUser, uploadImage } from '@/service/HttService';
 import { renewToken } from '@/service/HttService';
 
 export const useAuthenticateStore = defineStore('authenticate', ()=>{
@@ -9,7 +9,8 @@ export const useAuthenticateStore = defineStore('authenticate', ()=>{
   const isAuthenticated = ref(false)
   const isEdit = ref(false)
   const image_user = ref()
-    function getFormData(){
+    
+function getFormData(){
     const formData = new FormData();
     formData.append('image', image_user.value);
     return formData;
@@ -24,6 +25,7 @@ export const useAuthenticateStore = defineStore('authenticate', ()=>{
     const formData = getFormData()
     try{
       const response = await uploadImage(formData)
+      getUserMe()
     }catch(error){
       console.log(error)
     }
@@ -57,13 +59,24 @@ export const useAuthenticateStore = defineStore('authenticate', ()=>{
   }
   }
   
-
+  async function getUserMe(){
+    try{
+      const response = await getUser()
+      user.value =  response.data
+      
+    }catch(error){
+      console.log(error)
+    }
+    
+  }
   return{
     saveUser,
     logout,
     ferifyMe, 
     logout,
     editUserStore,
+    addImg,
+    getUserMe,
     image_user,
     isEdit,
     token, 

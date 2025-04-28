@@ -1,67 +1,58 @@
 <template>
   <div class="all-content">
-    <link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
     <div class="profile">
-      <h1>Profile</h1>
+      <h1>Meu Perfil</h1>
       <div class="profile-card">
         <div class="icon-edit">
-          <i @click="startEdit()" class="fas fa-edit edit-icon" ></i>
+          <i @click="startEdit()" class="fas fa-edit edit-icon"></i>
         </div>
-        
-        <div v-if="userStore.user.image_path ==='/uploads/defaults/no_profile_image.png'" class="image-prfile">
 
-          {{ userStore.user.name.charAt(0) }}
-          
+        <div class="image-profile">
+          <template v-if="userStore.user.image_path === '/uploads/defaults/no_profile_image.png'">
+            <div class="initials">{{ userStore.user.name.charAt(0) }}</div>
+          </template>
+          <template v-else>
+            <img :src="getImg(userStore.user.image_path)" alt="Profile Picture" />
+          </template>
         </div>
-        <div v-else class="image-prfile">
-          <img :src="userStore.user.image_path">
+
+        <h3 id="name">{{ userStore.user.name }}</h3>
+
+        <div class="upload-container">
+          <label class="upload-label">
+            Trocar imagem
+            <input type="file" @change="handleFileUpload" style="display: none;" accept=".png, .jpg, .jpeg" />
+          </label>
         </div>
-        <label for="name"></label>
-        <h3 id="name">
-          {{ userStore.user.name }}
-          <div class="button" style="">
-            <button  style="font-size: small; padding: 10px; "  class="edit-button" @click="isAdd = true">Add imagem</button>
-          </div>
-          <div class="image">
-                  <label>
-                    add img
-                     <input type="file" @change="handleFileUpload" id="image" style="display: none;" accept=".png, .jpg, .jpeg">
-                  </label>
-                  
-                  </div>
-        </h3>
+
         <div class="card-content">
-        <div class="email">
-          <label for="email">E-mail: </label>
-          <p id="email"> {{ userStore.user.email }}
-           
-          </p>
-        </div>
-        <div class="logout">
-          <button class="button-log">logout</button>
-          <button class="button-delete">DELETE ACCONT</button>
-        </div>
+          <div class="email">
+            <label for="email">E-mail:</label>
+            <p id="email">{{ userStore.user.email }}</p>
+          </div>
+
+          <div class="logout">
+            <button class="button-log">Logout</button>
+            <button class="button-delete">Deletar Conta</button>
+          </div>
         </div>
       </div>
-
     </div>
-    <div v-if="userStore.isEdit" class="modal-backdrop" @click.self="isEdit = true">
+
+    <div v-if="userStore.isEdit" class="modal-backdrop" @click.self="userStore.isEdit = false">
       <div class="modal-content">
-  <h2>Edit Profile</h2>
-  
-  <input type="text" v-model="userStore.user.name" placeholder="Name" class="input-field">
-  <input type="email" v-model="userStore.user.email" placeholder="Email" class="input-field">
-  
-  <div class="button-group">
-    <button @click="userStore.editUserStore" class="edit-button">Edit</button>
-    <button @click="userStore.isEdit = false" class="close-button">Close</button>
-  </div>
-</div>
-</div>
+        <h2>Editar Perfil</h2>
+        <input type="text" v-model="userStore.user.name" placeholder="Nome" class="input-field" />
+        <input type="email" v-model="userStore.user.email" placeholder="Email" class="input-field" />
+
+        <div class="button-group">
+          <button @click="userStore.editUserStore" class="edit-button">Salvar</button>
+          <button @click="userStore.isEdit = false" class="close-button">Cancelar</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -82,91 +73,145 @@ onMounted(()=>{
     if (file) {
         userStore.image_user = file; 
         console.log("Arquivo selecionado:", file);
+        userStore.addImg()
     }
+}
+
+function getImg(imagePath) {
+  const baseUrl = 'http://35.196.79.227:8000';
+  return `${baseUrl}${imagePath}`;
 }
 
 </script>
 
 <style scoped>
-  .all-content{
-    width: 100%;
-    height: 1000px;
-  }
-  .profile{
-    display: flex;
-    justify-content: center;  
-    align-items: center;
-    flex-direction: column;
-    }
-  .profile-card{
-    border-radius: 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 40%;
-    height: auto;
-    border: 1px black solid;
-    margin: 30px;
-  }
+  .all-content {
+  width: 100%;
+  min-height: 100vh;
+  padding: 20px;
+  background: #f9f9f9;
+}
 
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  .image-prfile{
-    background-color: var(--secondary-color-orange) ;
-    font-size: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 20px ;
-    width: 80px;
-    height: 80px;
-    border-radius: 100%;
-    border: 1px black solid;
-  }
+.profile-card {
+  background: white;
+  border-radius: 30px;
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  position: relative;
+}
 
+.icon-edit {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
 
-  .card-content{
-    padding: 20px;
-    margin-left: 40px;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-  }
-  .logout{
-    display: flex;
-    gap: 40px;
-    justify-content: center;
-    margin-top: 50px ;
-  }
-  .button-log{
-    background-color: orange;
-    padding: 10px;
-    border-radius: 10px;
-  }
-  .button-delete{
-    background-color: rgb(247, 38, 38);
-    padding: 10px;
-    border-radius: 10px;
-  }
-  .edit-icon {
-
+.edit-icon {
   cursor: pointer;
-  font-size: 16px;
-  color: #555;
+  font-size: 18px;
+  color: #888;
   transition: color 0.3s;
 }
-.icon-edit{
-  display: flex;
-  align-items: end;
-  justify-content: end;
-  width: 100%;
-  margin-top:20px;
-  margin-right: 30px;
+
+.edit-icon:hover {
+  color: #f39c12;
 }
-  .edit-icon:hover {
-    color: orange;
-  }
-  .modal-backdrop {
+
+.image-profile {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: var(--secondary-color-orange, #f39c12);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  margin: 20px auto;
+  border: 3px solid #ddd;
+}
+
+.image-profile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.initials {
+  font-size: 48px;
+  color: white;
+}
+
+h3#name {
+  margin-top: 10px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.upload-container {
+  margin: 10px 0;
+}
+
+.upload-label {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #f39c12;
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s;
+}
+
+.upload-label:hover {
+  background: #e67e22;
+}
+
+.card-content {
+  margin-top: 20px;
+}
+
+.email {
+  margin-bottom: 20px;
+}
+
+.logout {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.button-log, .button-delete {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.button-log {
+  background-color: #3498db;
+}
+
+.button-delete {
+  background-color: #e74c3c;
+}
+
+.button-log:hover, .button-delete:hover {
+  opacity: 0.9;
+}
+
+/* Modal */
+.modal-backdrop {
   position: fixed;
   top: 0;
   left: 0;
@@ -178,14 +223,14 @@ onMounted(()=>{
   align-items: center;
   z-index: 1000;
 }
+
 .modal-content {
-  width: 500px;
+  width: 90%;
+  max-width: 400px;
   background: white;
   padding: 30px;
   border-radius: 20px;
-  text-align: center;
-  min-width: 300px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 .input-field {
@@ -194,7 +239,6 @@ onMounted(()=>{
   margin: 10px 0;
   border-radius: 10px;
   border: 1px solid #ccc;
-  font-size: 16px;
 }
 
 .button-group {
@@ -203,33 +247,26 @@ onMounted(()=>{
   margin-top: 20px;
 }
 
-.edit-button {
-  background-color: var(--secondary-color-orange);
-  color: white;
+.edit-button, .close-button {
+  padding: 10px 20px;
   border: none;
-  padding: 12px 24px;
   border-radius: 10px;
+  color: white;
+  font-weight: bold;
   cursor: pointer;
-  font-size: 16px;
 }
-.button{
-  width: 100%; align-items: center; display: flex; justify-content: center;
+
+.edit-button {
+  background-color: #2ecc71;
 }
+
 .close-button {
   background-color: #e74c3c;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 16px;
 }
 
-.edit-button:hover,
-.close-button:hover {
+.edit-button:hover, .close-button:hover {
   opacity: 0.9;
 }
-
 
 </style>
 

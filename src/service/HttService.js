@@ -489,3 +489,18 @@ export async function  uploadImage(img) {
     }
     
 }
+export async function getUser() {
+    
+    try{
+
+        const response = await apiUrl.get(`/users/me`, {
+            headers:{
+                ...authHeaders(),
+            }
+        });
+        
+        return response;
+    }catch(error){
+        console.error('Error ao pegar user', error)
+    }
+}
