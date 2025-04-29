@@ -435,7 +435,7 @@ export async function editUser(userData) {
         return response
     }catch(error){
         throw error;
-        console.log("erro ao alte rardados" + error)   
+       
     }
 }
 export async function createDiscounts(discount) {
@@ -476,11 +476,9 @@ export async function editDiscountsService(discounts, discount_id) {
                 'Content-Type': 'application/json' 
             }
         })
-   
         return response
     }catch(error){
         throw error;
-        console.log("erro ao editar coupon" + error)   
     }
 }
 export async function deleteDiscountsService(id) {
@@ -543,5 +541,36 @@ export async function getOrdersService() {
         console.error('Error ao pegar user', error)
         throw error;
 
+    }
+}
+export async function  uploadImageProducts(id, img) {
+    try{
+
+        const response = await apiUrl.put(`/products/${id}`,img,{
+            headers: {
+                ...authHeaders(),
+                "Content-Type": 'multipart/form-data',
+            }
+        })
+        return response
+    }catch(error){
+        throw error;
+     
+    }
+    
+}
+
+export async function editAddressService(address_id, address) {
+    console.log(address_id.value)
+    try{
+        const response = await apiUrl.put(`/addresses/${address_id.value}`,address.value, {
+            headers: {
+                ...authHeaders(),   
+                'Content-Type': 'application/json' 
+            }
+        })
+        return response
+    }catch(error){
+        throw error;
     }
 }

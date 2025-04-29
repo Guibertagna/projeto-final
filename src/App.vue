@@ -9,13 +9,16 @@ import { useCategoriesStore } from './stores/categories';
 import { useGetProducts } from '@/stores/getProducts';
 import { useDiscounts } from './stores/discounts';
 import { useOrder } from './stores/order';
+import { useAddresses } from './stores/addresses';
 const useCoupon = useCoupons();
 const useCategory = useCategoriesStore();
 const useAuthenticate = useAuthenticateStore();
 const useGet = useGetProducts();
 const usediscounts = useDiscounts()
 const order = useOrder()
+const address = useAddresses()
 onMounted(() => {
+  address.getAddress()
     useGet.getProducts()
     useCoupon.getCouponsStore();
     useAuthenticate.ferifyMe(); 

@@ -40,11 +40,7 @@ import AddressesComponent from './AddressesComponent.vue';
 
 const userorder = useOrder();
 const useAddress = useAddresses();
-const useCart = useCartProducts();
 
-function sendOrder() {
-      userorder.addOrder();
-}
 function creatAdress() {
   useAddress.isCreateAddress = true;
   console.log(useAddress.userAddresses.length != 0);
@@ -53,7 +49,7 @@ function creatAdress() {
 
 onMounted(async () => {
 
-  await useAddress.getAddress();
+
   if (useAddress.userAddresses.length == 0) {
     useAddress.isCreateAddress = true;
   }

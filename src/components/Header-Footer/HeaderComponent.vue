@@ -75,6 +75,7 @@ function gotoCreateCategories(){
 
 
 <style scoped>
+
 .arrow-right {
   filter: brightness(0) saturate(100%) invert(55%) sepia(84%) saturate(479%) hue-rotate(4deg) brightness(102%) contrast(103%);
 }
@@ -168,7 +169,9 @@ function gotoCreateCategories(){
   .promotion img.arrow-right {
     display: none;
   }
-
+  .container-header{
+    height: 130px;
+}
   .shop-now {
     display: none;
 

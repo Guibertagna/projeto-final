@@ -25,6 +25,7 @@ function getFormData(){
     isAuthenticated.value = false
     router.push('/userlogin')
   }
+  
   async function addImg(){
     const formData = getFormData()
     try{

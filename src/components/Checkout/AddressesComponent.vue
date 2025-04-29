@@ -39,7 +39,6 @@
 </script>
 <style scoped>
 .address-section{
-
     border-radius: 5px;
     border: 1px solid var(--primary-color);
     padding: 20px;

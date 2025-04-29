@@ -1,5 +1,5 @@
 import { ref} from 'vue';
-import { getProductsById, getProductsService, getProductsServiceCategory, createProduct, deleteProductService, editProduct } from '@/service/HttService';
+import { getProductsById, getProductsService, getProductsServiceCategory, createProduct, deleteProductService, editProduct, uploadImageProducts } from '@/service/HttService';
 import { defineStore } from 'pinia';
 export const useGetProducts = defineStore('allroducts', ()=>{
     const products = ref([])
@@ -11,7 +11,12 @@ export const useGetProducts = defineStore('allroducts', ()=>{
     const productStock = ref(0)
     const productCategory_id = ref(0)
     const productImg = ref('')
-
+    function getFormDataImage(){
+        const formData = new FormData();
+        formData.append('image', productImg.value);
+        return formData;
+    }
+    
     function getFormData(){
             const formData = new FormData();
             formData.append('name', productName.value)
@@ -25,11 +30,12 @@ export const useGetProducts = defineStore('allroducts', ()=>{
         async function createProductStore() {
             try {
                 const formData = getFormData()
-                
+
                 const data = await createProduct(formData);
                 products.value.push(data);
-                console.log(data)
+                return data
             }catch (error) {
+                throw error
                 console.error("Erro ao criar produto:", error);
             }
         }
@@ -54,6 +60,17 @@ export const useGetProducts = defineStore('allroducts', ()=>{
         
     }
 
+      async function addImgProduct(idProduct){
+        console.log(idProduct)
+        const formData = getFormDataImage()
+        try{
+          const response = await uploadImageProducts(idProduct, formData)
+          products.value.push(response);
+        }catch(error){
+          console.log(error)
+        }
+      }
+    
     async function getProductsCategory(idCategory) {
         try{
             const storeProductsFiltred = await getProductsServiceCategory(idCategory);
@@ -94,6 +111,7 @@ export const useGetProducts = defineStore('allroducts', ()=>{
         createProductStore,
         deleteProduct,
         updateProduct,
+        addImgProduct,
         productName,
         productDescription,
         productPrice,

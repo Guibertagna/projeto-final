@@ -60,7 +60,15 @@
   </div>
   <div class="card-products-grid">
     <div v-for="product in getProducts.products" :key="product.id" class="card-product">
+                      
+       
       <img :src="getImg(product.image_path)" alt="Product Image" class="product-image" />
+      <div class="upload-container">
+          <label class="upload-label">
+          Change image Product
+            <input type="file" @change="handleFileUploadproduct($event, product)" style="display: none;" accept=".png, .jpg, .jpeg" />
+          </label>
+        </div>
       <div class="card-body">
         <h4>{{ product.name.slice(0, 50) }}{{ product.name.length > 50 ? '...' : '' }}</h4>
         <p class="description">{{ product.description.slice(0, 50) }}{{ product.description.length > 50 ? '...' : '' }}</p>
@@ -108,7 +116,7 @@
                     </option>
                 </select>
             </div>
-                
+  
             
             <div class="modal-buttons">
                 <button @click="sendEditProduct(getProducts.productId)">Save</button>
@@ -186,6 +194,7 @@ async function startEditProduct(product) {
 }
 
 async function sendEditProduct(product_id) {
+    loading.startLoading()
     try {
         const response = await getProducts.updateProduct(product_id);
         
@@ -196,25 +205,31 @@ async function sendEditProduct(product_id) {
                 getProducts.products[index] = response.data;
                 console.log("Produto atualizado no estado local.");
                 cancelEdit()
+                loading.endLoading()
             } else {
                 console.warn("Produto com o ID não encontrado na lista local.");
             }
         }
+        loading.endLoading()
     } catch (error) {
         console.error("Erro ao editar produto:", error);
     }
 }
 async function sendProduct(){
     try{
-        loading.startLoading()
+    loading.startLoading()
       const response = await getProducts.createProductStore()
       cancelEdit()
-      loading.endLoading()
       showAlert.value = true
       massageOK.value = 'Product create sussefully'
+      loading.endLoading()
       return response
     }catch(error){
-
+        console.log(error)
+        cancelEdit()
+        loading.endLoading()
+        showErrorAlert.value = true
+        errorMassage.value = 'Error!'
     }
 
 } 
@@ -226,6 +241,15 @@ function cancelEdit (){
     getProducts.productStock = '';
     getProducts.productCategory_id = '';
     getProducts.productImg = null;
+}
+function handleFileUploadproduct(event, product) {
+    const file = event?.target?.files?.[0];
+    if (file) {
+        getProducts.productImg = file; 
+        console.log("Arquivo selecionado:", file);
+        console.log(product.id)
+        getProducts.addImgProduct(product.id)
+    }
 }
 
 function handleFileUpload(event) {
