@@ -1,7 +1,32 @@
 <template>
-    <div class="all-products">
+  <div class="all-products">
+    <div class="search-bar">
+      <input
+        v-model="typedTerm"
+        @keyup.enter="applySearch"
+        type="text"
+        placeholder="Search product by name..."
+      />
+    </div>
+
+    <div class="content">
+      <!-- Sidebar de categorias -->
+      <aside class="sidebar">
+        <h3>Categories</h3>
+        <div v-for="category in categories.categories.data" :key="category.id" class="category-item">
+          <input
+            type="checkbox"
+            :id="`category-${category.da}`"
+            :value="category.id"
+            v-model="selectedCategories"
+          />
+          <label :for="`category-${category.id}`">{{ category.name}}</label>
+        </div>
+      </aside>
+
+      <!-- Produtos -->
       <div class="product-grid">
-        <div class="product-card" v-for="product in products" :key="product.id">
+        <div class="product-card" v-for="product in filteredProducts" :key="product.id">
           <div @click="goToDetails(product.id)">
             <div class="img-product">
               <div v-if="isNew" class="flag-new">New</div>
@@ -10,13 +35,14 @@
             <div class="name-description">
               <h4>{{ product.name.slice(0, 50) }}{{ product.name.length > 50 ? '...' : '' }}</h4>
               <h5>R$ {{ product.price }}</h5>
+              <h7>Category: {{ product.category.name }}</h7>
             </div>
           </div>
-  
+
           <div class="button-product">
             <AddCard :productId="product.id" :unit-price="Number(product.price)" />
           </div>
-  
+
           <div class="rating">
             <span class="filled">★</span><span class="filled">★</span>
             <span class="filled">★</span><span>★</span><span>★</span>
@@ -24,33 +50,65 @@
         </div>
       </div>
     </div>
-  </template>
-  
-  <script setup>
-  import { useRouter } from 'vue-router';
-  import { storeToRefs } from 'pinia';
-    import { useGetProducts } from '@/stores/getProducts';
-  import AddCard from './AddCard.vue';
-  
-  const router = useRouter();
-  const productStore = useGetProducts();
-  const { products } = storeToRefs(productStore); // Aqui pegamos o array diretamente
-  
-  function getImg(imagePath) {
-    const baseUrl = 'http://35.196.79.227:8000';
-    return `${baseUrl}${imagePath}`;
-  }
-  
-  function goToDetails(id_product) {
-    router.push(`/products/${id_product}`);
-  }
-  
-  // Se você quiser manter "New" manual ou condicionar baseado na data do produto, podemos ajustar depois.
-  const isNew = false; // ou lógica para calcular se o produto é novo
-  </script>
-  
+  </div>
+</template>
+
+<script setup>
+import { useRouter } from 'vue-router';
+import { storeToRefs } from 'pinia';
+import { useGetProducts } from '@/stores/getProducts';
+import AddCard from './AddCard.vue';
+import { ref, computed, onMounted } from 'vue';
+import { useCategoriesStore } from '@/stores/categories';
+
+const router = useRouter();
+const categories = useCategoriesStore();
+const productStore = useGetProducts();
+const { products } = storeToRefs(productStore);
+
+const searchTerm = ref('');
+const typedTerm = ref('');
+const allCategories = ref([]);
+const selectedCategories = ref([]); // <-- categorias selecionadas
+
+function getNameCategories() {
+  allCategories.value = categories.categories;
+}
+
+function applySearch() {
+  searchTerm.value = typedTerm.value;
+}
+
+// Filtro por nome e categorias
+const filteredProducts = computed(() => {
+  return products.value.filter(product => {
+    const matchesSearch = product.name.toLowerCase().includes(searchTerm.value.toLowerCase());
+    const matchesCategory =
+      selectedCategories.value.length === 0 ||
+      selectedCategories.value.includes(product.category.id);
+    return matchesSearch && matchesCategory;
+  });
+});
+
+function getImg(imagePath) {
+  const baseUrl = 'http://35.196.79.227:8000';
+  return `${baseUrl}${imagePath}`;
+}
+
+function goToDetails(id_product) {
+  router.push(`/products/${id_product}`);
+}
+
+onMounted(() => {
+  getNameCategories();
+});
+
+const isNew = false;
+</script>
+
   <style scoped>
   .all-products {
+    min-height: 100vh;
     padding: 30px;
   }
   
@@ -145,5 +203,64 @@
   .rating span.filled {
     color: gold;
   }
+  .search-bar {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.search-bar input {
+  padding: 10px;
+  width: 100%;
+  max-width: 400px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid var(--neutral-color-03);
+}
+.content {
+  display: flex;
+  gap: 20px;
+}
+
+.sidebar {
+  width: 200px;
+  padding: 10px;
+  border-right: 1px solid var(--neutral-color-03);
+  background-color: var(--neutral-color-01);
+}
+
+.sidebar h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.category-item {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.category-item label {
+  margin-left: 8px;
+  cursor: pointer;
+}
+
+.product-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+@media (max-width: 768px) {
+  .content {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--neutral-color-03);
+    margin-bottom: 20px;
+  }
+}
   </style>
   

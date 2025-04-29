@@ -9,7 +9,7 @@
     import { useGetProducts } from "@/stores/getProducts";
     
     const allProducts = computed(() => getStoreProducts.products.filter(
-      product => product.category.id === 170
+      product => product.category.id === 200
     ));
     const getStoreProducts = useGetProducts();
     

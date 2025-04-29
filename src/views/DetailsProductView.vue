@@ -64,6 +64,7 @@
 
 
 .card-products {
+  max-width: 100%;
   display: flex;
   flex-wrap: wrap;
   gap: 20px;

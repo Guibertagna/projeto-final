@@ -16,7 +16,7 @@ import { useGetProducts } from "@/stores/getProducts";
 
 const loading = ref(true); // Aqui começa como true
 const allProducts = computed(() => getStoreProducts.products.filter(
-    product => product.category.id === 125
+    product => product.category.id === 199
   ));
 const getStoreProducts = useGetProducts();
 

@@ -14,7 +14,9 @@
                     <router-link to="/" class="back-button">
                         <li >Home</li>
                     </router-link>
+                    <router-link to="/products" >
                     <li>Shop</li>
+                </router-link>
                     <li>Product</li>
                     <li>Contact Us</li>
                 </nav>

@@ -87,10 +87,11 @@ function scrollRight() {
 
 <style scoped>
 .carousel-wrapper {
+  position: relative;
   display: flex;
   align-items: center;
-  position: relative;
   padding: 30px;
+  overflow: hidden; 
 }
 .all-cards {
   display: flex;
@@ -135,15 +136,17 @@ function scrollRight() {
   
 }
 .scroll-btn.left {
-  
+  background-color: transparent;
   margin-right: 10px;
 }
 
 .scroll-btn.right {
+  background-color: transparent;
   margin-left: 10px;
 }
 .scroll-btn {
   color: rgb(0, 0, 0);
+  background-color: black;
   border: none;
   font-size: 5rem;
   padding: 10px;
@@ -153,6 +156,7 @@ function scrollRight() {
 }
 
 .button-product {
+ 
   margin-top: auto;
   display: flex;
   justify-content: center;

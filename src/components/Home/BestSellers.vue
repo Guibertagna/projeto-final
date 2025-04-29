@@ -21,7 +21,7 @@ const loading = ref(true);
 const getStoreProducts = useGetProducts();
 
 const allProducts = computed(() => getStoreProducts.products.filter(
-  product => product.category.id === 39
+  product => product.category.id === 197
 ));
 
 onMounted(async () => {

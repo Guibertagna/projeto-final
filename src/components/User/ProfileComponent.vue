@@ -94,7 +94,7 @@
             <button class="button" @click="editAddress()">
                 Send
             </button>
-            <button v-if="useAddress.userAddresses.length != 0" class="button-cancel" @click="useAddress.isCreateAddress = false">
+            <button class="button-cancel" @click="cancelEdit()">
                 Cancel
             </button>
         </div>
@@ -220,7 +220,6 @@ function startEditAddress(address){
 
 .profile {
   align-items: stretch;
-
   margin-top: 20px ;
   gap: 30px;
   display: flex;
@@ -425,7 +424,7 @@ h3#name {
     border-radius: 5px;
     border: 1px solid var(--primary-color);
     padding: 20px;
-    margin-top: 20px;   
+    width: 450px;  
     background-color: white;
     align-content: start;
     text-align: start;
@@ -469,6 +468,13 @@ h3#name {
         display: block;
         font-weight: bold;
         margin-top: 8px;
+    }
+    @media (max-width: 768px) {
+      .profile{
+        display: flex;
+        flex-direction: column;
+      }
+      
     }
 </style>
 

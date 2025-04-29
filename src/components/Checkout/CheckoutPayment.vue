@@ -47,14 +47,21 @@
       
       <button class="submity" @click="submitPayment()">Confirmar Pagamento</button>
     </div>
+    <LoaderComponent/>
+    <AlertBoxComponent :visible="showAlert" :message="massageOK" @close="showAlert = false"/>
+    
   </div>
 </template>
   
   <script setup>
+  import LoaderComponent from '../Loaders/LoaderComponent.vue';
+  import AlertBoxComponent from '../Loaders/AlertBoxComponent.vue';
 import { ref } from "vue";
 import { useOrder } from "@/stores/order";
 const selectedMethod = ref("");
 const cardNumber = ref("");
+const showAlert = ref(false)
+const massageOK = ref()
 const installments = ref(null);
 const order = useOrder();
 function submitPayment() {
@@ -62,7 +69,9 @@ function submitPayment() {
         !selectedMethod.value || // Caso nenhum método seja selecionado
         (selectedMethod.value === 'credit-card' && (cardNumber.value === '' || installments.value === null)) // Caso seja 'credit-card' e os campos estejam vazios
     ) {
-        alert("Please select a valid payment method or fill in all required fields.");
+      showAlert.value= true
+      massageOK.value = 'you need to add all payment information'
+       
         return;
     } else {
         order.addOrder();
