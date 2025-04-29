@@ -16,7 +16,7 @@ import SkeletonComponent from "@/components/Loaders/SkeletonComponent.vue"
 import { ref, onMounted, computed } from "vue";
 import { useGetProducts } from "@/stores/getProducts";
 
-const loading = ref(true); // Aqui começa como true
+const loading = ref(true);
 
 const getStoreProducts = useGetProducts();
 
@@ -25,7 +25,6 @@ const allProducts = computed(() => getStoreProducts.products.filter(
 ));
 
 onMounted(async () => {
-  // Simula carregamento real (se você ainda não tiver um fetch de verdade aqui)
   await new Promise(resolve => setTimeout(resolve, 1000)); // só pra efeito visual
   loading.value = false
 });

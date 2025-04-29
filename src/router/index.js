@@ -13,6 +13,7 @@ import CartUserView from '@/views/CartUserView.vue';
 import DetailsProductView from '@/views/DetailsProductView.vue';
 import ProfileView from '@/views/ProfileView.vue';
 import AllProducsView from '@/views/AllProducsView.vue';
+import OdersView from '@/views/OdersView.vue';
 
 const routes = [
   { path: '/userlogin', name: 'login', component: LoginView },
@@ -77,8 +78,15 @@ const routes = [
     name: 'All Products', 
     component: AllProducsView,
     meta: {title: 'Products'}
+  },
+  { 
+    path: '/orders', 
+    name: 'All Orders', 
+    component: OdersView,
+    meta: {title: 'Orders'}
 
   },
+
 
 
 ];

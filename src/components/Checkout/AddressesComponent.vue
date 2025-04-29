@@ -39,6 +39,7 @@
 </script>
 <style scoped>
 .address-section{
+
     border-radius: 5px;
     border: 1px solid var(--primary-color);
     padding: 20px;
@@ -47,6 +48,7 @@
     display: flex;
     flex-direction: column;
 }
+
     .input {
         width: 100%;
         padding: 8px;
@@ -62,7 +64,7 @@
         justify-content: space-between;
     }
     .button{
-        background-color: green;
+        background-color: var(--secondary-color-orange);
         color: white;
         padding: 10px 20px;
         border: none;

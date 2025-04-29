@@ -32,6 +32,7 @@ onMounted(()=>{
     }
     .checkout-container{
         margin: 50px;
+        height: 100%;
         gap: 100px;
         display: flex;
         flex-direction: row;

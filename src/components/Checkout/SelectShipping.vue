@@ -47,6 +47,7 @@ const formatCurrency = (value) => {
 <style  scoped>
 
 .all-frete {
+
   display: flex;
   height: 100%;
   justify-content: center;
@@ -55,7 +56,8 @@ const formatCurrency = (value) => {
 }
 .radio-options {
   flex: 1 1 300px;
-  background-color: #fff;
+  background-color:  var(--secondary-color-orange);
+  
   border-radius: 12px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   padding: 40px;
@@ -75,7 +77,7 @@ const formatCurrency = (value) => {
   align-items: center;
   gap: 10px;
   padding: 12px;
-  border: 1px solid #ccc;
+  border: 1px solid #000000;
   border-radius: 8px;
   transition: background 0.2s;
 }
@@ -89,7 +91,7 @@ const formatCurrency = (value) => {
   font-size: 18px;
   font-weight: bold;
   text-align: right;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid #000000;
   padding-top: 15px;
 }
 

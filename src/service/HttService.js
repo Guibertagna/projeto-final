@@ -507,7 +507,7 @@ export async function  uploadImage(img) {
         })
     }catch(error){
         throw error;
-        console.error(error)
+     
     }
     
 }
@@ -516,6 +516,23 @@ export async function getUser() {
     try{
 
         const response = await apiUrl.get(`/users/me`, {
+            headers:{
+                ...authHeaders(),
+            }
+        });
+        
+        return response;
+    }catch(error){
+        console.error('Error ao pegar user', error)
+        throw error;
+
+    }
+}
+export async function getOrdersService() {
+    
+    try{
+
+        const response = await apiUrl.get(`/orders/`, {
             headers:{
                 ...authHeaders(),
             }
