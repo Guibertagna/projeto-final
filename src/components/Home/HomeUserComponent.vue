@@ -1,6 +1,6 @@
 <template>
     <div class="allContent">
-        <div class="banner" :style="{ backgroundImage: `url(${bannerImage})` }">
+        <div class="banner" :style="{ backgroundImage: `url(${bannerImageToUse})` }">
             <div class="content-banner-dad">
                 <div class="content-banner">
                     <div class="tittles">
@@ -44,23 +44,49 @@
 </template>
 
 <script setup>
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import bannerImage from '@/assets/bannerImage.png';
+import bannerResponsive from '@/assets/banner-responsive.png';
+
 import CategoriresCard from './CategoriresCard.vue';
 import BestSellers from './BestSellers.vue';
 import PromotionCard from './PromotionCard.vue';
 import InformationComponents from './InformationComponents.vue';
 import NewArrivals from './NewArrivals.vue';
 
+const windowWidth = ref(window.innerWidth);
+
+const updateWidth = () => {
+  windowWidth.value = window.innerWidth;
+};
+
+onMounted(() => {
+  window.addEventListener('resize', updateWidth);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', updateWidth);
+});
+
+const bannerImageToUse = computed(() =>
+  windowWidth.value <= 768 ? bannerResponsive : bannerImage
+);
 </script>
+
 
 <style scoped>
 .banner{
     display: flex;
     background-color: transparent;
     flex-direction: column;
+    align-items: end;
     justify-content: center;
     padding-right: 100px;
-    height: 100vh;
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center; /* Posiciona a imagem no centro */
+  background-repeat: no-repeat; /* Impede a repetição da imagem */
+
 }
 .best {
   font-weight: bold;
@@ -74,12 +100,19 @@ import NewArrivals from './NewArrivals.vue';
     font-size: 75px;
 }
 
-.content-banner{
+.content-banner {
     display: flex;
     flex-direction: column;
     align-items: end;
 }
 
+.end-banner{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
 .tittles{
     width: 600px;
 
@@ -110,5 +143,35 @@ import NewArrivals from './NewArrivals.vue';
     gap: 20px;
     flex-direction: row;
 }
+@media (max-width: 768px) {
+  .banner {
+    display: flex;
+    justify-content: end;
+
+    padding-right: 20px;
+    padding-left: 20px;
+    padding-bottom: 30px;
+    align-items: end;
+  }
+
+  .tittles {
+    width: 100%;
+  }
+
+  .text1-banner {
+    font-size: 36px;
+    text-align: center;
+  }
+
+  .text2-banner {
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .content-banner {
+    align-items: center;
+  }
+}
+
 
 </style>

@@ -219,5 +219,38 @@ function scrollRight() {
   font-weight: bold;
   margin: 0; 
 }
+@media (max-width: 768px) {
+  .carousel-wrapper {
+    padding: 10px;
+  }
+
+  .scroll-btn {
+    display: none; /* Oculta os botões em mobile */
+  }
+
+  .products-card {
+    width: 180px; /* Menor largura dos cards */
+    margin: 5px;
+  }
+
+  .img-product {
+    height: 140px;
+  }
+
+  .name-discription h4, 
+  .name-discription h5 {
+    font-size: 14px;
+  }
+
+  .button-product button {
+    width: 140px;
+    font-size: 14px;
+  }
+
+  .rating span {
+    font-size: 16px;
+  }
+}
+
 
 </style>

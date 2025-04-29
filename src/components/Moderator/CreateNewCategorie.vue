@@ -412,4 +412,14 @@ button.disabled {
 .modal-buttons button {
   margin-left: 0.5rem;
 }
+@media (max-width: 768px) {
+    .category-card {
+        width: 100%;
+        height: auto;
+    }
+
+    .create-category-container {
+        width: 90%;
+    }
+}
 </style>

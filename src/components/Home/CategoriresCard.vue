@@ -115,5 +115,30 @@ h2{
 
 }
 
+@media (max-width: 768px) {
+  .tille {
+    justify-content: center;
+    padding-left: 0;
+    text-align: center;
+  }
+
+  .card-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .headphone,
+  .buds-acessories {
+    max-width: 100%;
+  }
+
+  .accessories,
+  .earbuds {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+
 
 </style>

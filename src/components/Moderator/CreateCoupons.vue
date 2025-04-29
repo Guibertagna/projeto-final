@@ -398,9 +398,7 @@ input {
   justify-content: center;
   align-items: center;
   gap: 30px;
-  
   margin-top: 32px;
-
 }
 
 .card-coupon {
@@ -516,6 +514,15 @@ input {
 
 .modal-buttons button {
   margin-left: 0.5rem;
+}
+@media  (max-width: 768px) {
+  .create-coupon{
+    width: 90%;
+  }
+.all-card-coupon{
+display: flex;
+flex-direction: column;
+}
 }
 </style>
   

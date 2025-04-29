@@ -551,4 +551,15 @@ select{
 .title {
   text-align: center;
 }
+@media  (max-width: 768px) {
+  .create-discounts{
+    width: 90%;
+  }
+.all-card-discount{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+}
 </style>

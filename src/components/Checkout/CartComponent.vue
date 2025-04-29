@@ -53,6 +53,7 @@
 
         <!-- Subtotal -->
         <div class="subtotal-cell">
+          <P class="price-responsive"><strong>Total Price: </strong></P>
           {{ formatCurrency(item.total_price) }}
         </div>
       </div>
@@ -184,9 +185,12 @@ onMounted(() => {
 
 
 <style scoped>
+@media (min-width: 769px) {
+  .price-responsive {
+    display: none; /* Oculta o texto "Total Price:" em telas maiores */
+  }
+}
 
-
-/* Layout de checkout (vertical) */
 .cart-checkout {
   margin: auto;
   background-color: #fff;
@@ -413,5 +417,63 @@ onMounted(() => {
   padding: 10px;
   margin-top: 20px;
 }
+
+@media (max-width: 768px) {
+ 
+  .cart-header-checkout,
+  .cart-item-row,
+  .cart-item-checkout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+  }
+  .cart-header-checkout,.cart-heade{
+    display: none;
+  }
+
+.subtotal-cell{
+  display: flex;
+  gap: 10px;
+}
+  .cart-item-checkout .product-cell img,
+  .product-cell img {
+    width: 100px;
+    height: auto;
+  }
+
+  .cart-summary {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .coupon-used,
+  .cupon-name,
+  .prices {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .input-coupons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .input-coupons input,
+  .input-coupons button {
+    width: 100%;
+  }
+
+  .cart-checkout,
+  .card {
+    padding: 20px 15px;
+  }
+
+  .button-checkout {
+    width: 100%;
+  }
+}
+
 
 </style>

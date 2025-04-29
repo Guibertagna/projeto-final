@@ -51,4 +51,15 @@
         height: 250px;
         background-color: var(--neutral-color-03);
     }
+    @media (max-width: 768px){
+        .squares{
+        margin: 40px;
+        align-items: center;
+        display: flex   ;
+        gap: 24px;
+        flex-direction: column;
+        justify-content: center;
+    }
+        
+    }
 </style>

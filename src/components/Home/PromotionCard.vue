@@ -84,9 +84,16 @@
   .promotion-content h1{
     font-weight: bold;
   }
+  .left-photo,.ritgh-timer {
+    flex: 1; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
   .ritgh-timer {
     align-content: center;
-    width: 100vh;
+    width: 100%;
     background-color: var(--secondary-color-orange);
     padding: 20px;
   
@@ -134,6 +141,33 @@
   .button{
     padding: 20px;
     align-content: start;
+  }
+  
+  @media (max-width: 768px) {
+    .all-content {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .left-photo {
+      display: none;
+    }
+
+    .ritgh-timer {
+      width: 100%;
+      padding: 30px 20px;
+    }
+
+
+    .timer span{
+    align-items: center;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: white;
+  }
   }
   </style>
   
