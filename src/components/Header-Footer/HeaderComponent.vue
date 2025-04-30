@@ -38,6 +38,9 @@
                             <p v-if="userStore.user.role === 'ADMIN' || userStore.user.role === 'MODERATOR'" @click="gotoTrack()">
                                 Track Orders
                             </p>
+                            <p v-if="userStore.user.role === 'ADMIN' " @click="goToCreateModerator()">
+                                Create Moderator
+                            </p>
                         </div>
                     </div>
                     <router-link to="/cart">
@@ -70,6 +73,9 @@ const toggleCart = () => {
 function gotoModerator(){
     showDropdown.value = !showDropdown.value;
     router.push('/moderator')
+}
+function goToCreateModerator(){
+    router.push('/create-moderator')
 }
 function gotoTrack(){
     showDropdown.value = !showDropdown.value;

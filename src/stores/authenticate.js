@@ -1,7 +1,6 @@
-import { ref} from 'vue';
+import { ref, computed} from 'vue';
 import { defineStore } from 'pinia';
-import { editUser, ferify, getUser, uploadImage } from '@/service/HttService';
-import { renewToken } from '@/service/HttService';
+import { editUser, ferify, getUser, registerModerator, uploadImage } from '@/service/HttService';
 import { useRouter } from 'vue-router';
 import { useCartProducts } from './cartStore';
 export const useAuthenticateStore = defineStore('authenticate', ()=>{
@@ -11,13 +10,23 @@ export const useAuthenticateStore = defineStore('authenticate', ()=>{
   const isAuthenticated = ref(false)
   const isEdit = ref(false)
   const image_user = ref()
+  const nameModerator = ref()
+  const emailModerator = ref()
+  const passwordModetator = ref()
+
   const cartProducts = useCartProducts()
 function getFormData(){
     const formData = new FormData();
     formData.append('image', image_user.value);
     return formData;
 }
+const infoModerator = computed(() => ({
+  name: nameModerator.value,
+  email: emailModerator.value,
+  password: passwordModetator.value,
+  role: "MODERATOR"
 
+}));
   function logout() {
     token.value = null
     user.value = {}
@@ -74,7 +83,17 @@ function getFormData(){
     }
     
   }
+  async function createModerator() {
+    try{
+      const response = await  registerModerator(infoModerator)
+      return response
+    }catch(error){
+      throw error
+    }
+ 
+  }
   return{
+    createModerator,
     saveUser,
     logout,
     ferifyMe, 
@@ -87,6 +106,9 @@ function getFormData(){
     token, 
     user, 
     isAuthenticated,
+    nameModerator, 
+    emailModerator,
+    passwordModetator,
      
   }
     

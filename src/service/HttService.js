@@ -599,4 +599,17 @@ export async function deleteAddres(addrres_is) {
     }
 }
 
+export async function registerModerator(credentialsModerator) {
+    try {
+        
+        const response = await apiUrl.post('/users/create-moderator', credentialsModerator.value,{
+            headers: {
+                ...authHeaders(),   
+            }
+        }); 
+        return response;
+    }catch (error) {
+        throw error;
+    }
+}
 

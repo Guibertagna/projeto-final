@@ -14,6 +14,7 @@ import AllProducsView from '@/views/AllProducsView.vue';
 import OdersView from '@/views/OdersView.vue';
 import OrderDetail from '@/components/User/OrderDetail.vue';
 import TrackOrders from '@/components/Moderator/TrackOrders.vue';
+import CreateModerator from '@/components/User/CreateModerator.vue';
 
 const routes = [
   { path: '/userlogin', name: 'login', component: LoginView, meta: { title: 'Login', requiresAuth: false } },
@@ -100,6 +101,13 @@ const routes = [
     component: OrderDetail,
     props: true,
     meta: { title: 'Order', requiresAuth: true }
+  },
+  {
+    path: '/create-moderator',
+    name: 'Create Moderator',
+    component: CreateModerator,
+    props: true,
+    meta: { title: 'Create Moderator', requiresAuth: true }
   }
 ];
 

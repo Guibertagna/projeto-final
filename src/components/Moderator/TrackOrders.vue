@@ -25,11 +25,7 @@
   
   <style scoped>
   .all-content{
-    display: flex;
-    align-items: center;
-    justify-content: start;
-    flex-direction: column;
-    height: 100vh;
+    height: 100%;
   }
   h1 {
     margin-bottom: 1rem;
