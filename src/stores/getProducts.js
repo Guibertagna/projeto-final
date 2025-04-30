@@ -1,16 +1,22 @@
-import { ref} from 'vue';
-import { getProductsById, getProductsService, getProductsServiceCategory, createProduct, deleteProductService, editProduct, uploadImageProducts } from '@/service/HttService';
+import { ref, computed} from 'vue';
+import { getProductsById, getProductsService, getProductsServiceCategory, createProduct, deleteProductService, editProduct, uploadImageProducts, editStockProduct } from '@/service/HttService';
 import { defineStore } from 'pinia';
 export const useGetProducts = defineStore('allroducts', ()=>{
     const products = ref([])
     const productId =ref([])
+    const newStock = ref(0)
     const filtredProcducts = ref([])
     const productName = ref('')
     const productDescription = ref(''); 
     const productPrice = ref(0)
+    const productPriceDiscount = ref(0)
     const productStock = ref(0)
     const productCategory_id = ref(0)
     const productImg = ref('')
+       const stockInformation = computed(() => ({
+            stock: newStock.value,
+           
+        }));
     function getFormDataImage(){
         const formData = new FormData();
         formData.append('image', productImg.value);
@@ -104,6 +110,15 @@ export const useGetProducts = defineStore('allroducts', ()=>{
         console.error("Erro ao editar produto " + idProduct + ":", error)
     }
 }
+    async function  updateStock(idProduct) {
+        try{
+            const response = await editStockProduct(idProduct , stockInformation.value)
+            return response
+        } catch(error) {
+            console.error("Erro ao editar produto " + idProduct + ":", error)
+        }
+
+    }
     return{
         getProducts,
         getProductsCategory,
@@ -112,6 +127,9 @@ export const useGetProducts = defineStore('allroducts', ()=>{
         deleteProduct,
         updateProduct,
         addImgProduct,
+        updateStock,
+        productPriceDiscount,
+        newStock,
         productName,
         productDescription,
         productPrice,

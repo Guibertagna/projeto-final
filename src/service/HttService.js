@@ -534,3 +534,15 @@ export async function editAddressService(address_id, address) {
         throw error;
     }
 }
+export async function editStockProduct(product_id, stock) {
+    try{
+        const response = await apiUrl.put(`/products/${product_id}/stock`,stock, {
+            headers: {
+                ...authHeaders(),   
+            }
+        })
+        return response
+    }catch(error){
+        throw error;
+    }
+}

@@ -1,5 +1,6 @@
 <template>
     <div class="all-content">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <div class="card-create">
            <div class="title">
                 <h3 >Add new product</h3>
@@ -65,17 +66,22 @@
       <img :src="getImg(product.image_path)" alt="Product Image" class="product-image" />
       <div class="upload-container">
           <label class="upload-label">
-          Change image Product
+            Change image Product
             <input type="file" @change="handleFileUploadproduct($event, product)" style="display: none;" accept=".png, .jpg, .jpeg" />
           </label>
         </div>
-      <div class="card-body">
-        <h4>{{ product.name.slice(0, 50) }}{{ product.name.length > 50 ? '...' : '' }}</h4>
-        <p class="description">{{ product.description.slice(0, 50) }}{{ product.description.length > 50 ? '...' : '' }}</p>
+        <div class="card-body">
+  <h4>{{ product.name.slice(0, 50) }}{{ product.name.length > 50 ? '...' : '' }}</h4>
+  <p class="description">{{ product.description.slice(0, 50) }}{{ product.description.length > 50 ? '...' : '' }}</p>
 
-        <p class="price"><strong>Price:</strong> ${{ product.price }}</p>
-        <p class="stock"><strong>Stock:</strong> {{ product.stock }}</p>
-      </div>
+  <p class="price"><strong>Price:</strong> ${{ product.price }}</p>
+  <p class="stock">
+    <strong>Stock:</strong> {{ product.stock }}
+    <button @click="startEditStock(product)" class="icon-button" aria-label="Edit stock">
+      <span class="material-icons">edit</span>
+    </button>
+  </p>
+</div>
       <div class="buttons"> 
       <button class="delete-btn" @click="startEditProduct(product) ">
         Edit
@@ -87,6 +93,21 @@
     
     </div>
   </div>
+</div>
+<div v-if="isEditStock" class="modal-products">
+    <div class="modal-content">
+    <div class="title">
+        <h3 >Edit stock product</h3>
+    </div>
+    <div class="form">
+        <label for="stock">Stock of product</label>
+        <input placeholder="New Stock" v-model="getProducts.newStock" id="stock" type="number">
+    </div>
+    <div class="modal-buttons">
+                <button class="save-btn" @click="sendNewStock(getProducts.productId)">Save</button>
+                <button class="cancel-btn" @click="cancelEdit">Cancel</button>
+            </div>
+</div>
 </div>
 <div class="modal-products" v-if="isEdit">
          <div class="modal-content">
@@ -125,14 +146,14 @@
         </div> 
         </div>
         <LoaderComponent/>
-<AlertBoxComponent :visible="showAlert" :message="massageOK" @close="showAlert = false"/>
-<ConfirmComponent
-  :nameconfirm="confirMessage"
-  :visible="showConfirm"
-  @cancel="showConfirm = false"
-  @confirm="deleProduct(productDelete), showConfirm = false"
-/>
-<ErrorAlert :message="errorMassage" :visible="showErrorAlert" @close="showErrorAlert = false" />
+        <AlertBoxComponent :visible="showAlert" :message="massageOK" @close="showAlert = false"/>
+        <ConfirmComponent
+            :nameconfirm="confirMessage"
+            :visible="showConfirm"
+            @cancel="showConfirm = false"
+            @confirm="deleProduct(productDelete), showConfirm = false"
+            />
+        <ErrorAlert :message="errorMassage" :visible="showErrorAlert" @close="showErrorAlert = false" />
 
 
     </div>
@@ -149,6 +170,7 @@ import LoaderComponent from "../Loaders/LoaderComponent.vue";
 import AlertBoxComponent from "../Loaders/AlertBoxComponent.vue"; 
 import ConfirmComponent from "../Loaders/ConfirmComponent.vue"; 
 import ErrorAlert from '../Loaders/ErrorAlert.vue';
+const isEditStock = ref(false)
 const loading = useLoader(); 
 const showAlert = ref(false);
 const massageOK = ref('');
@@ -177,16 +199,22 @@ const isFormValid = computed(() => {
            !getProducts.productStock || 
            !getProducts.productCategory_id;
 });
+async function  startEditStock(product) {
+    if(product){
+        isEditStock.value = true
+        getProducts.productId = product.id
+        getProducts.newStock = product.stock
+    }
+}
 
 async function startEditProduct(product) {
   console.log("Iniciando edição do prdoduto:", product);
   if (product) {
     isEdit.value = true;
-    getProducts.productId = product.id;
+    getProducts.productId = product.id
     getProducts.productName = product.name;
     getProducts.productDescription = product.description;
     getProducts.productPrice = product.price;
-    getProducts.productStock = product.stock;
     getProducts.productCategory_id = product.category_id;
     getProducts.productImg = product.image_path;
 
@@ -208,6 +236,7 @@ async function sendEditProduct(product_id) {
                 showAlert.value= true
                 massageOK.value ="Product edited successfully!"
             } else {
+                cancelEdit()
                 showErrorAlert.value = true
                 errorMassage.value = 'Error editing product, try again!'
             }
@@ -215,8 +244,37 @@ async function sendEditProduct(product_id) {
         
         loading.endLoading()
     } catch (error) {
-        console.error("Erro ao editar produto:", error);
+        showErrorAlert.value = true
+                errorMassage.value = 'Error editing product, try again!'
         loading.endLoading()
+        cancelEdit()
+    }
+}
+async function sendNewStock(product_id) {
+    loading.startLoading()
+    try{
+        const response = await getProducts.updateStock(product_id)
+        if (response?.status === 200) {
+            const index = getProducts.products.findIndex(product => product.id === product_id);
+            
+            if (index !== -1) {
+                getProducts.products[index] = response.data;
+                cancelEdit()
+                loading.endLoading()
+                showAlert.value= true
+                massageOK.value ="Stock edited successfully!"
+            } else {
+                cancelEdit()
+                showErrorAlert.value = true
+                errorMassage.value = 'Error editing product, try again!'
+            }
+        }
+    }catch(error){
+        showErrorAlert.value = true
+                errorMassage.value = 'Error editing product, try again!'
+        loading.endLoading()
+        cancelEdit()
+        
     }
 }
 async function sendProduct(){
@@ -239,6 +297,7 @@ async function sendProduct(){
 } 
 function cancelEdit (){
     isEdit.value = false;
+    isEditStock.value = false
     getProducts.productName = '';
     getProducts.productDescription = '';
     getProducts.productPrice = '';
@@ -246,13 +305,43 @@ function cancelEdit (){
     getProducts.productCategory_id = '';
     getProducts.productImg = null;
 }
-function handleFileUploadproduct(event, product) {
+async function handleFileUploadproduct(event, product) {
     const file = event?.target?.files?.[0];
     if (file) {
         getProducts.productImg = file; 
         console.log("Arquivo selecionado:", file);
         console.log(product.id)
-        getProducts.addImgProduct(product.id)
+        loading.startLoading()
+        try{
+            const response = await getProducts.addImgProduct(product.id)
+            if (response?.status === 200) {
+            const index = getProducts.products.findIndex(product => product.id === product_id);
+            
+            if (index !== -1) {
+                getProducts.products[index] = response.data;
+                cancelEdit()
+                loading.endLoading()
+                showAlert.value= true
+                massageOK.value ="Stock edited successfully!"
+            } else {
+                loading.endLoading()
+                cancelEdit()
+                showErrorAlert.value = true
+                errorMassage.value = 'Error editing product, try again!'
+            }
+        }else{
+            loading.endLoading()
+                cancelEdit()
+                showErrorAlert.value = true
+                errorMassage.value = 'Error editing product, try again!'
+        }
+        }catch(error){
+                loading.endLoading()
+                cancelEdit()
+                showErrorAlert.value = true
+                errorMassage.value = 'Error editing product, try again!'
+        }
+        
     }
 }
 
@@ -433,7 +522,17 @@ textarea{
     padding: 15px;
     flex-grow: 1;
 }
-
+.upload-label{
+    margin-top: 30px;
+    padding: 7px;
+    border-radius: 9px;
+    background-color: var(--secondary-color-orange);
+}
+.upload-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 .card-body h4 {
     font-size: 18px;
     margin-bottom: 10px;
@@ -444,7 +543,24 @@ textarea{
     color: #555;
     margin-bottom: 10px;
 }
+.stock-row {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Espaço entre elementos */
+}
 
+.icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+
+.icon-button .material-icons {
+  font-size: 18px;
+  color: #555;
+}
 .price, .stock {
     font-size: 14px;
     margin-bottom: 5px;
@@ -473,7 +589,7 @@ textarea{
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.4); /* fundo escuro */
+    background-color: rgba(0, 0, 0, 0.4);
     display: flex;
     justify-content: center;
     align-items: center;
