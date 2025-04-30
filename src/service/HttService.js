@@ -489,10 +489,24 @@ export async function getUser() {
     }
 }
 export async function getOrdersService() {
-    
     try{
 
         const response = await apiUrl.get(`/orders/`, {
+            headers:{
+                ...authHeaders(),
+            }
+        });
+        
+        return response;
+    }catch(error){
+        throw error;
+
+    }
+}
+export async function getOrdersServiceAll() {
+    try{
+
+        const response = await apiUrl.get(`/orders/all/`, {
             headers:{
                 ...authHeaders(),
             }
@@ -546,3 +560,43 @@ export async function editStockProduct(product_id, stock) {
         throw error;
     }
 }
+export async function EditsStatus(orders_id, status) {
+    try{
+        const response = await apiUrl.put(`/orders/${orders_id}`,status, {
+            headers: {
+                ...authHeaders(),   
+            }
+        })
+        return response
+    }catch(error){
+        throw error;
+    }
+}
+
+export async function cancelOrder(order_id) {
+    try{
+        const response = await apiUrl.delete(`/orders/${order_id}`, {
+            headers: {
+                ...authHeaders(),   
+            }
+        })
+        return response
+    }catch(error){
+        throw error;
+    }
+}
+
+export async function deleteAddres(addrres_is) {
+    try{
+        const response = await apiUrl.delete(`/orders/${addrres_is}`, {
+            headers: {
+                ...authHeaders(),   
+            }
+        })
+        return response
+    }catch(error){
+        throw error;
+    }
+}
+
+

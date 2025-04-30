@@ -20,15 +20,15 @@ const order = useOrder()
 const cart = useCartProducts()
 const address = useAddresses()
 onMounted(() => {
-  address.getAddress()
+    address.getAddress()
     useGet.getProducts()
     useCoupon.getCouponsStore();
     useAuthenticate.ferifyMe(); 
     useCategory.getCategoriesStores();
     usediscounts.getDiscounts()
     order.getOrders()
+    order.getOrdersAll()
     cart.getItemsCartStore()
-    console.log("Verificando autenticação do usuário...");
 });
 </script>
 

@@ -1,6 +1,6 @@
 import { computed, ref} from 'vue';
 import { defineStore } from 'pinia';
-import { getOrdersService, sendOrders } from '@/service/HttService';
+import { cancelOrder, EditsStatus, getOrdersService, getOrdersServiceAll, sendOrders } from '@/service/HttService';
 import { useCartProducts } from './cartStore';
 export const useOrder = defineStore('order', ()=>{
     const address = ref()
@@ -8,11 +8,17 @@ export const useOrder = defineStore('order', ()=>{
     const order_socket = ref([])
     const useCart = useCartProducts()
     const userOrders = ref([])
+    const allOrders = ref([])
+    const statusOrder = ref()
+
     const informationOrder = computed(() => ({
         address_id: address.value, 
         coupon_id: coupom.value
     }));
-    
+    const statusInformation = computed(() => ({
+        status: statusOrder.value,
+       
+    }));
     async function addOrder() {
         try {
             console.log(informationOrder.value)
@@ -20,6 +26,7 @@ export const useOrder = defineStore('order', ()=>{
           
             if (response.status === 201) {
                 userOrders.value = [...userOrders.value, response.data]
+                allOrders.value = [...userOrders.value, response.data]
                 getOrders()
                 useCart.itemsCart = {
                     items: [],
@@ -46,7 +53,32 @@ export const useOrder = defineStore('order', ()=>{
 
     }
 
+    async function  getOrdersAll() {
+        try{
+            const response = await getOrdersServiceAll()
+            allOrders.value = response.data
+            console.log(response)
+        }catch(error){
+            console.log(error)
+        }
 
+    }
+    async function  editStatus(idOrder) {
+        try{
+            const response = await EditsStatus(idOrder, statusInformation.value)
+            return response
+        }catch(error){
+            console.error("Erro ao editar produto " + idProduct + ":", error)
+        }
+    }
+    async function  cancelOrderStore(idOrder) {
+        try{
+            const response = await cancelOrder(idOrder)
+            return response
+        }catch(error){
+            console.error("Erro cancelar" + idOrder + ":", error)
+        }
+    }
 
 
     return{
@@ -54,7 +86,12 @@ export const useOrder = defineStore('order', ()=>{
         coupom,
         order_socket,
         userOrders,
+        allOrders,
+        statusInformation,
+        cancelOrderStore,
+        editStatus,
         getOrders,
+        getOrdersAll,
         addOrder,
     }
     

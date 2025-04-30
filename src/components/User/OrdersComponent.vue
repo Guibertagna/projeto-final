@@ -46,6 +46,9 @@
           <strong>Total:</strong> {{ formatCurrency(calculateTotalAmount(order.products).toFixed(2))}}
         </p>
       </div>
+      <div class="button-cancel">
+        <button style="padding: 10px; background-color: red; border-radius: 8px; color: var(--neutral-color-01);" @click="cancel(order)">Cancel Order</button>
+      </div>
     </div>
   </div>
 </template>
@@ -122,6 +125,20 @@ function getStatusColor(status) {
       return '#EF4444'; // vermelho
     default:
       return '#9CA3AF'; // cinza
+  }
+}
+async function cancel(orderInfo) {
+  console.log(orderInfo.id)
+  try {
+    const response = await order.cancelOrderStore(orderInfo.id)
+    if (response.status === 204) {
+      const orderToUpdate = order.userOrders.find(o => o.id === orderInfo.id)
+      if (orderToUpdate) {
+        orderToUpdate.status = 'CANCELED'
+      }
+    }
+  } catch (error) {
+    console.error('Erro ao cancelar o pedido:', error)
   }
 }
   </script>

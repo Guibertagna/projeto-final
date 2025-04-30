@@ -3,7 +3,8 @@
     <div class="logo-container">
       <img src="@/assets/logo.png" class="logo-img" alt="Logo">
     </div>
-<RegisterLoginComponent/>
+    
+    <RegisterLoginComponent/>
   </div>
 </template>
 <script setup>
@@ -33,6 +34,10 @@ import RegisterLoginComponent from './RegisterLoginComponent.vue';
   width: 250px;
   height: 250px;
 }
-
+@media (max-width: 768px) {
+  .logo-container{
+    display: none;
+  }
+}
 
 </style>

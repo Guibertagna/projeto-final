@@ -11,7 +11,10 @@ export const useCartProducts = defineStore("cart",() => {
     const unitPrice = ref();
     const discountCoupon = ref(0);
     const discountCouponView = ref(null);
-    const itemsCart = ref([]);
+    const itemsCart = ref({
+      items: [],
+      total_amount: 0
+    });
     const isCheckout = ref(false);
     const shipping = ref(0);
     const cart = ref(0);
@@ -31,7 +34,7 @@ export const useCartProducts = defineStore("cart",() => {
       
     });
     const finalPrice = computed(() => {
-      const total = itemsCart.value.items.reduce((acc, item) => {
+      const total = itemsCart.value.items?.reduce((acc, item) => {
         return acc + item.unit_price * item.quantity;
       }, 0);
       return total ;
@@ -51,15 +54,25 @@ export const useCartProducts = defineStore("cart",() => {
     async function addProducts() {
       try {
         const response = await addItemCart(productInformationCopy.value);
+        
+        // Verifique a estrutura da resposta para garantir que é o que você espera
+        console.log("Resposta do addItemCart:", response);
+        
         if (response.status === 204) {
+          // Verifique se itemsCart.value é um objeto com a estrutura correta
+          if (!itemsCart.value.items) {
+            itemsCart.value.items = []; // Inicializa se não houver
+          }
+    
+          // Adiciona o produto corretamente
           itemsCart.value.items = [
             ...itemsCart.value.items,
             { ...productInformation.value },
           ];
           itemsCart.value.total_amount = finalPrice.value;
         }
-        console.log(response);
-        console.log(itemsCart.value.items);
+        
+        console.log("Itens no carrinho:", itemsCart.value.items);
         return response;
       } catch (error) {
         console.error("Erro ao adicionar produto ao carrinho:", error);

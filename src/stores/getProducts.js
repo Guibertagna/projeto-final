@@ -119,6 +119,7 @@ export const useGetProducts = defineStore('allroducts', ()=>{
         }
 
     }
+    
     return{
         getProducts,
         getProductsCategory,

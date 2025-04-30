@@ -34,24 +34,30 @@
           </div>
 
           <div class="logout">
-            <button class="button-log">Logout</button>
+            <button class="button-log" @click="userStore.logout()">Logout</button>
             <button class="button-delete">Deletar Conta</button>
           </div>
         </div>
       </div>
       <div class="address">
         <h3>Addresses</h3>
-        <div v-for="address in useAddress.userAddresses" :key="address.id">
-          <div class="information">
-          <ul>
-            <li class="liInformation">
-            
-              {{ address.street }}, {{ address.number }}, {{ address.zip }} - {{ address.city }}, {{ address.state }}, {{ address.country }}  <i @click="startEditAddress(address)" class="fas fa-edit edit-icon"></i>
-            </li>
-          </ul>
-          </div>
-
-        </div>
+        <div v-if="useAddress.userAddresses.length === 0">
+  <p>You do not have any registered address yet, go to checkout to register.</p>
+  
+</div>
+<div v-else>
+  <div v-for="address in useAddress.userAddresses" :key="address.id">
+    <div class="information">
+      <ul>
+        <li class="liInformation">
+          {{ address.street }}, {{ address.number }}, {{ address.zip }} - {{ address.city }}, {{ address.state }}, {{ address.country }}  
+          <i @click="confirmDelete(address)" class="fas fa-trash trash-icon"></i>
+          <i @click="startEditAddress(address)" class="fas fa-edit edit-icon"></i>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
       </div>
     </div>
     
@@ -106,7 +112,7 @@
 :nameconfirm="confirMessage"
   :visible="showConfirm"
   @cancel="showConfirm = false"
-@confirm="() => { deleteDiscounts(discountDelete); showConfirm = false }"
+@confirm="() => { hendleDelete(addressDelete); showConfirm = false }"
 />
   </div>
 </template>
@@ -121,8 +127,9 @@ import LoaderComponent from '../Loaders/LoaderComponent.vue';
   import ConfirmComponent from '../Loaders/ConfirmComponent.vue';
 const useAddress = useAddresses()
 const isEditAddresses = ref(false)
-
+const addressDelete = ref()
 const loading = useLoader()
+
 const showConfirm = ref(false)
   const confirMessage = ref()
   const showAlert = ref(false)
@@ -148,7 +155,24 @@ function handleKeyDown(event) {
     isEditAddresses.value = false
     userStore.isEdit = false 
   }
+  function confirmDelete(address) {
+    addressDelete.value = address;
+  console.log(addressDelete.value.id)
+  showConfirm.value = true;
+}
+async function hendleDelete(addressDelete){
+  try{
+    loading.startLoading()
+    const response = await useAddress.deleteStoreAddress(addressDelete.id)
+    loading.endLoading()
+    massageOK.value =` deleted successfully!` 
+    showAlert.value = true
+    return response
 
+  }catch(error){
+    console.log(error)
+  }
+}
   function handleFileUpload(event) {
     const file = event.target.files[0];
     if (file) {

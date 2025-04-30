@@ -1,7 +1,7 @@
 import { computed, ref } from "vue";
 
 import { defineStore } from "pinia";
-import { addAddresses, editAddressService, getAllAddresses } from "@/service/HttService";
+import { addAddresses, deleteAddres, editAddressService, getAllAddresses } from "@/service/HttService";
 import { useAuthenticateStore } from "./authenticate";
 export const useAddresses = defineStore("addresses", () => {
   const streetStore = ref();
@@ -65,6 +65,23 @@ async function updateAddress(idEdited) {
     }
 
   }
+  async function  deleteStoreAddress(id) {
+    try{
+      const response = await deleteAddres(id)
+      if (response.status === 204) {
+        userAddresses.value = userAddresses.value.filter(
+          (address) => address.id !== id
+        );
+        console.log("endereço deletado do pinia com sucesso");
+      }else{
+        console.log("DEU MERDAAA"+ id);
+      }
+    }catch(error){
+
+
+    }
+    
+  }
   return {
     streetStore,
     numberStore,
@@ -75,6 +92,7 @@ async function updateAddress(idEdited) {
     countryStore,
     isCreateAddress,
     addAddress_id,
+    deleteStoreAddress,
     updateAddress,
     getAddress,
     addAddress,

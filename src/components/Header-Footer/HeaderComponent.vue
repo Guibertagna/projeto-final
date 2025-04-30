@@ -26,12 +26,18 @@
                         <img src="@/assets/icons/user-circle.svg" @click="toggleDropdown" class="user-icon">
                         <div v-if="showDropdown" class="dropdown-menu">
                             <router-link to="/profile" class="back-button">
-                        <p>Profile</p>
-                    </router-link>
-                            <p>Settings</p>
+                                <p>Profile</p>
+                            </router-link>
+                            <router-link to="/orders" >
+                                <p>Orders</p>
+                            </router-link>
                             <p @click="userStore.logout()">Logout</p>
-                            <p v-if="userStore.user.role == 'ADMIN' || 'MODERATOR'"  @click="gotoModerator()"> Moderator Area</p>
-                            
+                            <p v-if="userStore.user.role === 'ADMIN' || userStore.user.role === 'MODERATOR'" @click="gotoModerator()">
+                                Moderator Area
+                            </p>
+                            <p v-if="userStore.user.role === 'ADMIN' || userStore.user.role === 'MODERATOR'" @click="gotoTrack()">
+                                Track Orders
+                            </p>
                         </div>
                     </div>
                     <router-link to="/cart">
@@ -64,6 +70,10 @@ const toggleCart = () => {
 function gotoModerator(){
     showDropdown.value = !showDropdown.value;
     router.push('/moderator')
+}
+function gotoTrack(){
+    showDropdown.value = !showDropdown.value;
+    router.push('/trackOrders')
 }
 
 
