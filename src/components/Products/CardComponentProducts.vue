@@ -100,9 +100,9 @@ function getDiscountedPrice(product) {
   if (!discount) return null;
 
   const discountPercent = parseFloat(discount.discount_percentage);
-  const originalPrice = parseFloat(product.price);
+  const originalPrice = parseFloat(product.price); // Deve ser sempre o original, nunca alterado
   const discountedPrice = originalPrice - (originalPrice * (discountPercent / 100));
-  return discountedPrice.toFixed(2);
+  return Number(discountedPrice.toFixed(2));
 }
 
 
