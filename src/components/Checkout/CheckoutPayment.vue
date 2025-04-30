@@ -58,28 +58,48 @@
   import AlertBoxComponent from '../Loaders/AlertBoxComponent.vue';
 import { ref } from "vue";
 import { useOrder } from "@/stores/order";
+import { useLoader } from '@/stores/loader';
+import { useRouter } from 'vue-router';
+const router = useRouter()
 const selectedMethod = ref("");
+const loading = useLoader()
 const cardNumber = ref("");
 const showAlert = ref(false)
 const massageOK = ref()
 const installments = ref(null);
 const order = useOrder();
-function submitPayment() {
-    if (
-        !selectedMethod.value || // Caso nenhum método seja selecionado
-        (selectedMethod.value === 'credit-card' && (cardNumber.value === '' || installments.value === null)) // Caso seja 'credit-card' e os campos estejam vazios
+async function submitPayment() {
+  loading.startLoading()
+    if ( !order.address ||!selectedMethod.value || (selectedMethod.value === 'credit-card' && (cardNumber.value === '' || installments.value === null)) // Caso seja 'credit-card' e os campos estejam vazios
     ) {
       showAlert.value= true
-      massageOK.value = 'you need to add all payment information'
-       
+      massageOK.value = 'Fill in the payment and address details'
+      loading.endLoading()
         return;
     } else {
-        order.addOrder();
+       try{
+         const response = await order.addOrder();
+         console.log(response)
+         if(response.status === 201 ){
+          goToDetails(response.data.id)
+          loading.endLoading()
+         }
+       
+         
+         return response
+       }catch(error){
+        
+        loading.endLoading()
+       }
     }
+}
+function goToDetails (id_product){
+  router.push(`/order-detail/${id_product}`);
 }
 </script>
   
   <style scoped>
+  
 .checkout-payment {
   width: 100%;
   display: flex;

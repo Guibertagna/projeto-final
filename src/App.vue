@@ -10,12 +10,14 @@ import { useGetProducts } from '@/stores/getProducts';
 import { useDiscounts } from './stores/discounts';
 import { useOrder } from './stores/order';
 import { useAddresses } from './stores/addresses';
+import { useCartProducts } from './stores/cartStore';
 const useCoupon = useCoupons();
 const useCategory = useCategoriesStore();
 const useAuthenticate = useAuthenticateStore();
 const useGet = useGetProducts();
 const usediscounts = useDiscounts()
 const order = useOrder()
+const cart = useCartProducts()
 const address = useAddresses()
 onMounted(() => {
   address.getAddress()
@@ -25,6 +27,7 @@ onMounted(() => {
     useCategory.getCategoriesStores();
     usediscounts.getDiscounts()
     order.getOrders()
+    cart.getItemsCartStore()
     console.log("Verificando autenticação do usuário...");
 });
 </script>

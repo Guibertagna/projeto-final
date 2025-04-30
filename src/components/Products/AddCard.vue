@@ -12,6 +12,10 @@
     const useAuthenticate = useAuthenticateStore();
     const route = useRouter();
     const props = defineProps({
+    prodName:{
+        type: String,
+        required: true,
+    },
     productId: {
         type: Number,
         required: true,
@@ -34,6 +38,7 @@
            route.push('/userlogin')
            
         }else{
+            useCart.nameProd = props.prodName
             useCart.productId = props.productId;
             useCart.quantity = 1
             useCart.unitPrice =  props.unitPrice;

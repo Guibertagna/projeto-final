@@ -119,8 +119,8 @@
   
             
             <div class="modal-buttons">
-                <button @click="sendEditProduct(getProducts.productId)">Save</button>
-                <button @click="cancelEdit">Cancel</button>
+                <button class="save-btn" @click="sendEditProduct(getProducts.productId)">Save</button>
+                <button class="cancel-btn" @click="cancelEdit">Cancel</button>
             </div>
         </div> 
         </div>
@@ -203,16 +203,20 @@ async function sendEditProduct(product_id) {
             
             if (index !== -1) {
                 getProducts.products[index] = response.data;
-                console.log("Produto atualizado no estado local.");
                 cancelEdit()
                 loading.endLoading()
+                showAlert.value= true
+                massageOK.value ="Product edited successfully!"
             } else {
-                console.warn("Produto com o ID não encontrado na lista local.");
+                showErrorAlert.value = true
+                errorMassage.value = 'Error editing product, try again!'
             }
         }
+        
         loading.endLoading()
     } catch (error) {
         console.error("Erro ao editar produto:", error);
+        loading.endLoading()
     }
 }
 async function sendProduct(){
@@ -485,6 +489,22 @@ textarea{
     border-radius: 8px;
     width: 400px;
     max-height: 90vh; /* limite máximo de altura */
+}
+.cancel-btn{
+    background-color: red ;
+}
+.save-btn{
+    background-color: var(--primary-color);
+}
+button {
+    margin-top: 20px;
+    padding: 10px 16px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.3s;
 }
 .modal-buttons {
   display: flex;

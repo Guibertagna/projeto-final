@@ -14,10 +14,13 @@ export const useOrder = defineStore('order', ()=>{
     }));
     
     async function addOrder() {
-        try{
+        try {
             console.log(informationOrder.value)
             const response = await sendOrders(informationOrder.value)
-            if(response.status === 201 ){
+          
+            if (response.status === 201) {
+                userOrders.value = [...userOrders.value, response.data]
+                getOrders()
                 useCart.itemsCart = {
                     items: [],
                     total_amount: 0
@@ -27,8 +30,8 @@ export const useOrder = defineStore('order', ()=>{
                 useCart.isCheckout = false
             }
             return response
-        }catch(error){
-            console.log("não foi possivel realizat o pedido" + error )
+        } catch (error) {
+            console.log("não foi possível realizar o pedido: " + error)
         }
     }
 
@@ -55,4 +58,4 @@ export const useOrder = defineStore('order', ()=>{
         addOrder,
     }
     
-},{persist: true})
+})

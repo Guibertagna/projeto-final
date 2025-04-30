@@ -11,12 +11,12 @@
           </div>
           <div class="name-discription">
             <h4>{{ products.name.slice(0, 50) }}{{ products.name.length > 50 ? '...' : '' }}</h4>
-            <h5>R$ {{ products.price }}</h5>
+            <h5>{{ formatCurrency(products.price) }}</h5>
           </div>
         </div>
 
         <div class="button-product">
-          <AddCard :productId="products.id" :unit-price="Number(products.price)" />
+          <AddCard :productId="products.id" :unit-price="Number(products.price)" :prod-name="products.name"/>
         </div>
 
         <div class="rating">
@@ -49,14 +49,22 @@ onMounted(() => {
   container.addEventListener('scroll', updateButtonVisibility);
   window.addEventListener('resize', updateButtonVisibility);
 });
-
+const formatCurrency = (value) => {
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+    minimumFractionDigits: 2,
+  }).format(value);
+};
 function getImg(imagePath) {
   const baseUrl = 'http://35.196.79.227:8000';
   return `${baseUrl}${imagePath}`;
 }
+
 function goToDetails (id_product){
   router.push(`/products/${id_product}`);
 }
+
 function updateButtonVisibility() {
   const container = cardContainer.value;
   if (!container) return;

@@ -60,8 +60,8 @@
     <textarea v-model="categoriesStore.descriptionCategorie" rows="4"></textarea>
 
     <div class="modal-buttons">
-      <button @click="sendEditCategory(selectedCategoryId)">Save</button>
-      <button @click="cancelEdit">Cancel</button>
+      <button class="save-btn" @click="sendEditCategory(selectedCategoryId)">Save</button>
+      <button class="cancel-btn"  @click="cancelEdit">Cancel</button>
     </div>
   </div>
 </div>
@@ -408,7 +408,12 @@ button.disabled {
   justify-content: flex-end;
   margin-top: 1rem;
 }
-
+.cancel-btn{
+    background-color: red ;
+}
+.save-btn{
+    background-color: var(--primary-color);
+}
 .modal-buttons button {
   margin-left: 0.5rem;
 }

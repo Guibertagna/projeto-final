@@ -6,6 +6,7 @@ import { useOrder } from "./order";
 export const useCartProducts = defineStore("cart",() => {
     const productId = ref();
     const quantity = ref();
+    const nameProd = ref()
     const cuponCart = ref();
     const unitPrice = ref();
     const discountCoupon = ref(0);
@@ -36,13 +37,20 @@ export const useCartProducts = defineStore("cart",() => {
       return total ;
     });
     const productInformation = computed(() => ({
+      name: nameProd,
       product_id: productId.value,
       quantity: quantity.value,
       unit_price: unitPrice.value,
     }));
+    const productInformationCopy = computed(() => ({
+      product_id: productId.value,
+      quantity: quantity.value,
+      unit_price: unitPrice.value,
+    }));
+    
     async function addProducts() {
       try {
-        const response = await addItemCart(productInformation.value);
+        const response = await addItemCart(productInformationCopy.value);
         if (response.status === 204) {
           itemsCart.value.items = [
             ...itemsCart.value.items,
@@ -82,6 +90,7 @@ export const useCartProducts = defineStore("cart",() => {
       try {
         const response = await getItemsCart();
         itemsCart.value = response;
+        console.log(itemsCart)
       } catch (error) {
         console.error("Não foi possível pegar itens do carrinho:", error);
       }
@@ -98,14 +107,17 @@ export const useCartProducts = defineStore("cart",() => {
       function applyCoupon() {
       const couponFound = useCouponsStore.couponStore.find(coupon => coupon.code === cuponCart.value);
       if(couponFound){
-        console.log(isApplyCupon.value)
         isApplyCupon.value = true;
         discountCouponView.value = couponFound.code;
-        console.log(discountCouponView.value)
         discountCoupon.value = couponFound.discount_percentage;
         orderStore.coupom = couponFound.id;
 
-      } 
+      } else{
+        isApplyCupon.value = false;
+        discountCouponView.value = '';
+        orderStore.coupom = '';
+        discountCoupon.value = '';
+      }
     }
     return {
       addProducts,
@@ -114,6 +126,7 @@ export const useCartProducts = defineStore("cart",() => {
       getItemsCartStore,
       deleteProductfromcart,
       addProducts,
+      nameProd,
       isApplyCupon,
       discountCoupon,
       discount,

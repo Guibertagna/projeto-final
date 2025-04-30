@@ -25,7 +25,7 @@ const allProducts = computed(() => getStoreProducts.products.filter(
 ));
 
 onMounted(async () => {
-  await new Promise(resolve => setTimeout(resolve, 1000)); // só pra efeito visual
+  await new Promise(resolve => setTimeout(resolve, 1000)); 
   loading.value = false
 });
 </script>

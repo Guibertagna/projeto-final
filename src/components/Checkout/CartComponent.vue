@@ -20,14 +20,14 @@
         <!-- Produto -->
         <div class="product-cell" @click="goToDetails(item.product_id)">
           <img :src="getImg(item?.product_id)" alt="Product Image" />
-  
+          <p>{{ item.name }}</p>
 
 
         </div>
 
         <!-- Quantidade -->
         <div class="quantity-cell">
-          <div  :class="useCart.isCheckout ? 'quantity-checkout' : 'border'">
+          <div :class="useCart.isCheckout ? 'quantity-checkout' : 'border'">
             <button
               v-if="!useCart.isCheckout"
               class="quantity-btn"
@@ -111,10 +111,11 @@ import { useCartProducts } from "@/stores/cartStore";
 import { useCoupons } from "@/stores/cupons";
 import { useRoute, useRouter } from "vue-router";
 import { useGetProducts } from "@/stores/getProducts"; 
+import { useOrder } from "@/stores/order";
 const useCart = useCartProducts();
 const useProducts = useGetProducts()
 const router = useRouter();
-
+const order = useOrder()
 const useCouponsStore = useCoupons();
 
 function getImg(product_id) {
@@ -174,10 +175,12 @@ function goToDetails (id_product){
 
 
 onMounted(() => {
+  order.coupom = null
   useCart.isApplyCupon = false;
   useCart.cuponCart = "";
   useCart.discountCoupon = 0;
   useCart.discount = 0;
+
   console.log(useCart.applyCoupon.value)
 
 });
@@ -187,7 +190,7 @@ onMounted(() => {
 <style scoped>
 @media (min-width: 769px) {
   .price-responsive {
-    display: none; /* Oculta o texto "Total Price:" em telas maiores */
+    display: none; 
   }
 }
 
@@ -222,7 +225,9 @@ onMounted(() => {
   padding: 15px;
   margin-bottom: 15px;
 }
-
+.border{
+  border: none;
+}
 .cart-item-checkout > div {
   display: flex;
   justify-content: space-between;
@@ -328,6 +333,7 @@ onMounted(() => {
 
 
 .quantity {
+  border: none;
   padding: 0 10px;
   min-width: 20px;
 }

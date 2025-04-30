@@ -17,11 +17,11 @@
                     <span>{{ product.description }}</span>
                 </div>
                 <div class="price-stock">
-                    <h2 class="price">R$ {{ product.price }}</h2>
+                    <h2 class="price">{{ formatCurrency(product.price )}}</h2>
                     <h4 class="stock">Stock: {{ product.stock }}</h4>
                 </div>
                 <div class="button-container">
-                    <AddCard :productId=" product.id" :unit-price="Number(  product.price)" />
+                    <AddCard :productId=" product.id" :unit-price="Number(  product.price)" :prod-name="product.name" />
                 
                 </div>
             </div>
@@ -34,7 +34,7 @@
     import { useGetProducts } from "@/stores/getProducts";
     import {  watch, computed } from "vue";
     import { useRouter } from "vue-router";
-import AddCard from "./AddCard.vue";
+    import AddCard from "./AddCard.vue";
 
     const props = defineProps({
     idProps: {
@@ -44,6 +44,7 @@ import AddCard from "./AddCard.vue";
     const router = useRouter()
     const useProducts = useGetProducts();
     const id = computed(() => Number(props.idProps.id));
+    
     const product = computed(() => {
         return useProducts.products.find(p => p.id === id.value);
     });
@@ -57,16 +58,14 @@ function goBack() {
         return `${baseUrl}${imagePath}`;
     }
 
-    watch(
-  [() => useProducts.products, () => props.idProps.id],
-  ([newProducts, newId]) => {
-    const id = Number(newId);
-    if (newProducts.length > 0) {
-      product.value = newProducts.find(p => p.id === id);
-    }
-  },
-  { immediate: true }
-);
+
+const formatCurrency = (value) => {
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+    minimumFractionDigits: 2,
+  }).format(value);
+};
 </script>
 
 <style scoped>

@@ -14,6 +14,7 @@ import DetailsProductView from '@/views/DetailsProductView.vue';
 import ProfileView from '@/views/ProfileView.vue';
 import AllProducsView from '@/views/AllProducsView.vue';
 import OdersView from '@/views/OdersView.vue';
+import OrderDetail from '@/components/User/OrderDetail.vue';
 
 const routes = [
   { path: '/userlogin', name: 'login', component: LoginView },
@@ -83,28 +84,39 @@ const routes = [
     path: '/orders', 
     name: 'All Orders', 
     component: OdersView,
-    meta: {title: 'Orders'}
+    meta: {title: 'Orders', requiresAuth: true}
 
   },
 
-
+  {
+    path: '/order-detail/:id',
+    name: 'Details order', 
+    component: OrderDetail, 
+    props: true, 
+    meta: {title: 'Order', requiresAuth: true}
+  },
 
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition; // volta para a posição anterior (ex: botão "voltar")
+    } else {
+      return { top: 0 }; // rola para o topo da página
+    }
+  }
 });
 
 
 router.beforeEach((to, from, next) => {
-
-  const auth = useAuthenticateStore()
+  const auth = useAuthenticateStore();
   if (to.meta.requiresAuth && !auth.isAuthenticated) {
-    next({ name: 'login' })
+    next({ name: 'login' });
+  } else {
+    next();
   }
-
-  next()
 });
-
 export default router;

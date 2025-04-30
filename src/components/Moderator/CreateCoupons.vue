@@ -157,7 +157,7 @@
           class="send-btn"
           @click="sendEditCoupon(selectedCouponId)"
         >
-          Edit coupon
+          Save
         </button>
         <button
           style="background-color: red"
@@ -165,7 +165,7 @@
           class="delete-btn"
           @click="cancelEdit(coupon)"
         >
-          Cancel Edit
+          Cancel 
         </button>
       </div>
 
@@ -247,7 +247,7 @@ function formatDate(dateString) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
-  return `${year}/${month}/${day}`;
+  return `${month}/${day}/${year}`;
 }
 
 async function starteditCoupon(coupon) {
