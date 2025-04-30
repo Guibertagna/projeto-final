@@ -7,14 +7,18 @@
         <div @click="goToDetails(products.id)">
           <div class="img-product">
             <div v-if="isNew" class="flag-new">New</div>
-            <img :src="getImg(products.image_path)" :alt="products.name" :title="products.name">
+            <div v-if="getActiveDiscount(products)" class="flag-promo">Promo</div>
+            <img :src="getImg(products.image_path)" :alt="products.name" :title="products.name" >
           </div>
           <div class="name-discription">
-            <h4>{{ products.name.slice(0, 50) }}{{ products.name.length > 50 ? '...' : '' }}</h4>
-            <h5>{{ formatCurrency(products.price) }}</h5>
-          </div>
+  <h4>{{ products.name.slice(0, 50) }}{{ products.name.length > 50 ? '...' : '' }}</h4>
+  <div v-if="getActiveDiscount(products)">
+    <h5 class="original-price">{{ formatCurrency(products.price) }}</h5>
+    <h5 class="discounted-price">{{ formatCurrency(getDiscountedPrice(products)) }}</h5>
+  </div>
+  <h5 v-else>{{ formatCurrency(products.price) }}</h5>
+</div>
         </div>
-
         <div class="button-product">
           <AddCard :productId="products.id" :unit-price="Number(products.price)" :prod-name="products.name"/>
         </div>
@@ -82,7 +86,24 @@ const props = defineProps({
     required: false
   }
 });
+function getActiveDiscount(product) {
+  const today = new Date();
+  return product.discounts?.find(discount => {
+    const start = new Date(discount.start_date);
+    const end = new Date(discount.end_date);
+    return today >= start && today <= end;
+  });
+}
 
+function getDiscountedPrice(product) {
+  const discount = getActiveDiscount(product);
+  if (!discount) return null;
+
+  const discountPercent = parseFloat(discount.discount_percentage);
+  const originalPrice = parseFloat(product.price);
+  const discountedPrice = originalPrice - (originalPrice * (discountPercent / 100));
+  return discountedPrice.toFixed(2);
+}
 
 
 function scrollLeft() {
@@ -204,6 +225,30 @@ function scrollRight() {
   left: 10px;
   border-radius: 4px;
 }
+.flag-promo {
+  position: absolute;
+  background-color: red;
+  color: white;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: bold;
+  top: 10px;
+  right: 10px;
+  border-radius: 4px;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: gray;
+  font-size: 14px;
+}
+
+.discounted-price {
+  color: green;
+  font-weight: bold;
+  font-size: 16px;
+}
+
 .img-product {
   position: relative; 
   width: 100%;
