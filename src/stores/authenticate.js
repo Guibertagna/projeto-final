@@ -34,7 +34,13 @@ const infoModerator = computed(() => ({
     isAuthenticated.value = false
     router.push('/userlogin')
   }
-  
+  function logoutnoredrect() {
+    token.value = null
+    user.value = {}
+    cartProducts.itemsCart = {}
+    isAuthenticated.value = false
+ 
+  }
   async function addImg(){
     const formData = getFormData()
     try{
@@ -69,7 +75,7 @@ const infoModerator = computed(() => ({
     console.log("Token expira em:", expiration);
     
   }catch (error) {  
-    logout();
+    logoutnoredrect()
   }
   }
   

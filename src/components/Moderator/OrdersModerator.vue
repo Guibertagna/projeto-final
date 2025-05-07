@@ -66,7 +66,7 @@
     <script setup>
     import { ref, computed } from 'vue';
     import { useOrder } from '@/stores/order';
-    const selectedStatus = ref()
+    const selectedStatus = ref('');
     const order = useOrder()
     const totalAmout = ref()
   
@@ -89,8 +89,10 @@
   }
   const filteredOrders = computed(() => {
     if (!selectedStatus.value) {
+      console.log('Todos os pedidos:', order.allOrders);
       return order.allOrders;
     }
+    console.log('Todos os pedidos:', order.allOrders);
     return order.allOrders.filter(o => o.status === selectedStatus.value);
   });
   function calculateTotalAmount(products) {
